@@ -1,0 +1,28 @@
+meta {
+  name: 204 - Insert - UC(S2P)
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:16107/misc/universal-credit/liability/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+}
+
+body:json {
+  {
+    "universalCreditLiabilityDetail": {
+      "nationalInsuranceNumber": "{{nino}}",
+      "universalCreditRecordType": "UC",
+      "universalCreditAction": "Insert",
+      "dateOfBirth": "2002-10-10",
+      "liabilityStartDate": "2025-08-19"
+    }
+  }
+  
+}

@@ -1,0 +1,13 @@
+meta {
+  name: Universal Credit Liability Notification
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'LOCAL') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  }
+  
+}
