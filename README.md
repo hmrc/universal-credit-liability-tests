@@ -52,11 +52,13 @@ sbt scalafmtAll
 
 ## Bruno testing
 Bruno collection is set up for conducting manual tests and can be found under `bruno`. 
-It has been developed and tested for `Bruno v1.29.0`.
+It has been developed and tested for `Bruno v2.1.0`.
 To use, in Bruno just select open collection, navigate to the `bruno` folder and open.
 
-There are two configured environment profiles, Local and QA. 
+There are two configured environment profiles, Local and QA.
 There are also two auth requests, corresponding to the two environment profiles.
+
+For more info on environment variables in Bruno see https://docs.usebruno.com/get-started/variables/environment-variables
 
 Before you can make requests to the Universal Credit Liability Notification API, a valid auth token is required.
 This is obtained by triggering the auth requests corresponding to the environment profile selected (it will fail otherwise).
