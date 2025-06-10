@@ -1,4 +1,4 @@
-package uk.gov.hmrc.dwp.api.service
+package uk.gov.hmrc.api.service
 
 import org.apache.pekko.actor.ActorSystem
 import play.api.libs.json.JsValue

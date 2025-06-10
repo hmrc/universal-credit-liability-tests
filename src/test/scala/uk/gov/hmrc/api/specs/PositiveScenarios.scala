@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.dwp.api.specs
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import uk.gov.hmrc.dwp.api.service.ApiService
-import uk.gov.hmrc.dwp.api.testData.*
+import uk.gov.hmrc.api.service.ApiService
+import uk.gov.hmrc.api.testData.*
 
 class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDataFile {
   Feature("Positive Scenario") {
@@ -31,7 +31,6 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       When("A request is sent")
 
       val response = ApiService().postNotification(insertURL, validHeaders, validInsertLCWLCWRALiabilityRequest)
-      println(response.body)
 
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT

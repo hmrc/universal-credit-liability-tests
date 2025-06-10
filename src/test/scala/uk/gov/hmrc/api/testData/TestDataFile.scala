@@ -1,4 +1,4 @@
-package uk.gov.hmrc.dwp.api.testData
+package uk.gov.hmrc.api.testData
 
 import play.api.libs.json.{JsValue, Json}
 
