@@ -5,25 +5,24 @@ meta {
 }
 
 post {
-  url: http://localhost:16107/misc/universal-credit/liability/notification
+  url: {{api-host}}/notification
   body: json
   auth: none
 }
 
 headers {
   Authorization: {{authorization}}
+  gov-uk-originator-id: {{originator-id}}
+  correlationId: {{$guid}}
 }
 
 body:json {
   {
-    "universalCreditLiabilityDetail": {
-      "nationalInsuranceNumber": "{{nino}}",
-      "universalCreditRecordType": "LCW/LCWRA",
-      "universalCreditAction": "Terminate",
-      "dateOfBirth": "2002-10-10",
-      "liabilityStartDate": "2025-08-19",
-      "liabilityEndDate": "2025-08-20"
-    }
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-08-20"
   }
   
 }
