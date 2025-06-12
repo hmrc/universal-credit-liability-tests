@@ -1,5 +1,5 @@
 meta {
-  name: QA
+  name: Dev/QA
   type: http
   seq: 2
 }
@@ -21,7 +21,7 @@ body:form-urlencoded {
 }
 
 script:pre-request {
-  if (bru.getEnvVar("ENVIRONMENT") !== 'QA') {
+  if (!['qa', 'development'].includes(bru.getEnvVar("ENVIRONMENT"))) {
     throw new Error('Environment must be set to QA');
   }
   
@@ -33,7 +33,6 @@ script:pre-request {
   
   bru.setEnvVar("totp", otp);
   
-  
 }
 
 script:post-response {
@@ -43,5 +42,4 @@ script:post-response {
   } else {
       throw new Error('Authentication failed');
   }
-  
 }

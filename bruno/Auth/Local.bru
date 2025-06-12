@@ -12,9 +12,9 @@ post {
 
 body:json {
   {
-    "clientId": "local-test-client-id",
+    "clientId": "{{$guid}}",
     "authProvider": "PrivilegedApplication",
-    "applicationId": "local-test-app-id",
+    "applicationId": "{{$guid}}",
     "applicationName": "Local test client app",
     "enrolments": [],
     "ttl": 5000
@@ -22,10 +22,9 @@ body:json {
 }
 
 script:pre-request {
-  if (bru.getEnvVar("ENVIRONMENT") !== 'LOCAL') {
+  if (bru.getEnvVar("ENVIRONMENT") !== 'local') {
     throw new Error('Environment must be set to Local');
   }
-  
 }
 
 script:post-response {
