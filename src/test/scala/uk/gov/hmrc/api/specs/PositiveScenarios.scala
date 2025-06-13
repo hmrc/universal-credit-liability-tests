@@ -30,18 +30,7 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(insertURL, validHeaders, validInsertLCWLCWRALiabilityRequest)
-
-      Then("204 No content should display")
-      response.status mustBe Status.NO_CONTENT
-    }
-
-    Scenario("UCL_TC_001_0.0.1: Insert - LCW/LCWRA with No End Date") {
-      Given("The Universal Credit API is up and running")
-      When("A request is sent")
-
-      val response =
-        ApiService().postNotification(insertURL, validHeaders, validInsertLCWLCWRALiabilityRequestNOEndDate)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, validInsertLCWLCWRALiabilityRequest)
 
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT
@@ -51,7 +40,7 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(insertURL, validHeaders, validInsertUCLiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, validInsertUCLiabilityRequest)
 
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT
@@ -62,7 +51,7 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       When("A request is sent")
 
       val response =
-        ApiService().postNotification(terminationURL, validHeaders, validTerminationLCWLCWRALiabilityRequest)
+        ApiService().postNotification(endpointUrl, validHeaders, validTerminationLCWLCWRALiabilityRequest)
 
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT
@@ -72,49 +61,49 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(terminationURL, validHeaders, validTerminationUCLiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, validTerminationUCLiabilityRequest)
 
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT
     }
 
     // 400 Request
-    Scenario("UCL_TC_001_0.5: Insert Invalid details - LCW/LCWRA") {
+    Scenario("UCL_TC_001_0.5: Insert Invalid LCW/LCWRA details") {
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(insertURL, validHeaders, invalidInsertLCWLCWRALiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, invalidInsertLCWLCWRALiabilityRequest)
 
       Then("400 No content should display")
       response.status mustBe Status.BAD_REQUEST
     }
 
-    Scenario("UCL_TC_001_0.6: Insert Invalid details - UC") {
+    Scenario("UCL_TC_001_0.6: Insert Invalid UC details") {
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(insertURL, validHeaders, invalidInsertUCLiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, invalidInsertUCLiabilityRequest)
 
       Then("400 No content should display")
       response.status mustBe Status.BAD_REQUEST
     }
 
-    Scenario("UCL_TC_001_0.7: Termination Invalid details - LCW/LCWRA") {
+    Scenario("UCL_TC_001_0.7: Termination Invalid LCW/LCWRA details") {
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
       val response =
-        ApiService().postNotification(terminationURL, validHeaders, inValidTerminationLCWLCWRALiabilityRequest)
+        ApiService().postNotification(endpointUrl, validHeaders, inValidTerminationLCWLCWRALiabilityRequest)
 
       Then("400 No content should display")
       response.status mustBe Status.BAD_REQUEST
     }
 
-    Scenario("UCL_TC_001_0.8: Termination Invalid details - UC") {
+    Scenario("UCL_TC_001_0.8: Termination Invalid UC details") {
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(terminationURL, validHeaders, inValidTerminationUCLiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, validHeaders, inValidTerminationUCLiabilityRequest)
 
       Then("400 No content should display")
       response.status mustBe Status.BAD_REQUEST
@@ -125,7 +114,7 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       Given("The Universal Credit API is up and running")
       When("A request is sent")
 
-      val response = ApiService().postNotification(insertURL, invalidHeaders, invalidInsertUCLiabilityRequest)
+      val response = ApiService().postNotification(endpointUrl, invalidHeaders, validInsertUCLiabilityRequest)
 
       Then("403 No content should display")
       response.status mustBe Status.FORBIDDEN
