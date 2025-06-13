@@ -1,0 +1,34 @@
+meta {
+  name: getAuthToken
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8585/application/session/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+   "clientId": "${UUID.randomUUID().toString}",
+   "authProvider": "PrivilegedApplication",
+   "applicationId": "${UUID.randomUUID().toString}",
+   "applicationName": "universal-credit-liability-api",
+   "enrolments": [],
+   "ttl": 60000
+  }
+  
+}
+
+body:form-urlencoded {
+  : 
+}
+
+tests {
+  test("Extract Authorization header", () => {
+    const authHeader = res.headers['authorization'];
+    bru.setVar("authorization", authHeader);
+  });
+}
