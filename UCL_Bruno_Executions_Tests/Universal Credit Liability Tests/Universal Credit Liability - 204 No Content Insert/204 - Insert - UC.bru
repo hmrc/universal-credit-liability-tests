@@ -1,0 +1,28 @@
+meta {
+  name: 204 - Insert - UC
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:16107/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
+  gov-uk-originator-id: ""
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "AB123456",
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19"
+  }
+}

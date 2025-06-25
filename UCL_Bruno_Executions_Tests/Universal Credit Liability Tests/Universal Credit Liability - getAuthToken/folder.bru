@@ -1,0 +1,14 @@
+meta {
+  name: Universal Credit Liability - getAuthToken
+  seq: 4
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'LOCAL') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  }
+  
+}

@@ -1,0 +1,28 @@
+meta {
+  name: FAILED - 415 - Missing Content Type
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:16107/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
+  gov-uk-originator-id: ""
+  ~Content-Type: application/json
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "AB123456",
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19"
+  }
+}

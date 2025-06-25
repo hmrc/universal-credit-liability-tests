@@ -1,0 +1,29 @@
+meta {
+  name: 204 - Terminate - LCW/LCWRA
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:16107/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
+  gov-uk-originator-id: ""
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "AB123456",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
+  }
+}

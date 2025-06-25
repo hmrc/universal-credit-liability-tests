@@ -1,0 +1,14 @@
+meta {
+  name: Universal Credit Liability - 204 No Content Insert
+  seq: 5
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'LOCAL') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  }
+  
+}
