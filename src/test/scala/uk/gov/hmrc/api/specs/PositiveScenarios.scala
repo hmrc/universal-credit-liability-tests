@@ -19,7 +19,8 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import uk.gov.hmrc.api.testData.TestDataFile
+import uk.gov.hmrc.api.service.ApiService
+import uk.gov.hmrc.api.testData.*
 
 class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDataFile {
 
@@ -69,5 +70,6 @@ class PositiveScenarios extends BaseSpec with GuiceOneServerPerSuite with TestDa
       Then("204 No content should display")
       response.status mustBe Status.NO_CONTENT
     }
+
   }
 }
