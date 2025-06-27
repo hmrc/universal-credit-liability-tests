@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Universal Credit Liability API Tests",
+  "name": "Universal Credit Liability Tests",
   "type": "collection",
   "ignore": [
     "node_modules",
