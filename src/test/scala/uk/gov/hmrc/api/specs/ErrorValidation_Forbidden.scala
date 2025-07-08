@@ -29,7 +29,7 @@ class ErrorValidation_Forbidden extends BaseSpec with GuiceOneServerPerSuite wit
     When("A request is sent")
 
     val response =
-      apiService.postNotificationWithValidToken(endpointUrl, invalidHeaders, validInsertUCLiabilityRequest)
+      apiService.postNotificationWithValidToken(invalidHeaders, validInsertUCLiabilityRequest)
 
     Then("403 No content should display")
     response.status mustBe Status.FORBIDDEN

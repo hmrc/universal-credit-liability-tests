@@ -25,9 +25,6 @@ trait TestDataFile {
 
   val randomNino: String = "AE%06d".format(Random.nextInt(999999))
 
-  val baseUrl             = s"http://localhost:16107"
-  val endpointUrl: String = s"$baseUrl/notification"
-
   val originatorId: String  = ""
   val correlationId: String = UUID.randomUUID().toString
 
@@ -128,5 +125,4 @@ trait TestDataFile {
   val getNoAuthToken: String      = ""
   val getExpiredAuthToken: String =
     "GNAP dummy-2b5998dccb61446fa2fa9d0f7211e181,Bearer JDkThJhFPxDJlUABxXqtpxYmzIwWik1RYVp61xoEcLudlSq6higSU7OEQEqBlgTBQHTNWWRzZl4T8m8tfArtX2o7gA/qYAHhfHqWOxAp0flCPkSIhfyXuZyHTfLRXSQ8i6AejDV6nH4Td0KWtpjTSzP05ue6FHXdOIOSD7ZvHOwYgyplVeOQ7qHLUwzFwxEW/SsCJHiDyv5jJQREo7nuFQQ"
-
 }

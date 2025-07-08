@@ -31,7 +31,6 @@ class ApiService extends HttpClient {
   val authHelper   = new AuthHelper
 
   def postNotificationWithValidToken(
-    url: String,
     headers: Seq[(String, String)],
     requestBody: JsValue
   ): StandaloneWSResponse = {

@@ -29,7 +29,7 @@ class ErrorValidation_BadRequest extends BaseSpec with GuiceOneServerPerSuite wi
     When("A request is sent")
 
     val response =
-      apiService.postNotificationWithValidToken(endpointUrl, validHeaders, invalidInsertLCWLCWRALiabilityRequest)
+      apiService.postNotificationWithValidToken(validHeaders, invalidInsertLCWLCWRALiabilityRequest)
 
     Then("400 No content should display")
     response.status mustBe Status.BAD_REQUEST
@@ -40,7 +40,7 @@ class ErrorValidation_BadRequest extends BaseSpec with GuiceOneServerPerSuite wi
     When("A request is sent")
 
     val response =
-      apiService.postNotificationWithValidToken(endpointUrl, validHeaders, invalidInsertUCLiabilityRequest)
+      apiService.postNotificationWithValidToken(validHeaders, invalidInsertUCLiabilityRequest)
 
     Then("400 No content should display")
     response.status mustBe Status.BAD_REQUEST
@@ -52,7 +52,7 @@ class ErrorValidation_BadRequest extends BaseSpec with GuiceOneServerPerSuite wi
 
     val response =
       apiService
-        .postNotificationWithValidToken(endpointUrl, validHeaders, inValidTerminationLCWLCWRALiabilityRequest)
+        .postNotificationWithValidToken(validHeaders, inValidTerminationLCWLCWRALiabilityRequest)
 
     Then("400 No content should display")
     response.status mustBe Status.BAD_REQUEST
@@ -63,7 +63,7 @@ class ErrorValidation_BadRequest extends BaseSpec with GuiceOneServerPerSuite wi
     When("A request is sent")
 
     val response =
-      apiService.postNotificationWithValidToken(endpointUrl, validHeaders, inValidTerminationUCLiabilityRequest)
+      apiService.postNotificationWithValidToken(validHeaders, inValidTerminationUCLiabilityRequest)
 
     Then("400 No content should display")
     response.status mustBe Status.BAD_REQUEST
