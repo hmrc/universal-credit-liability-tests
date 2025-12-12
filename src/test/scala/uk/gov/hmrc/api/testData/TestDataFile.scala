@@ -80,49 +80,4 @@ trait TestDataFile {
       |     "liabilityEndDate": "2025-01-04"
       |}
       |""".stripMargin)
-
-  val invalidInsertLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-       |{
-       |  "nationalInsuranceNumber": "$randomNino",
-       |  "universalCreditRecordType": "LCW/LCWRA/NDJ",
-       |  "universalCreditAction": "Insert",
-       |  "dateOfBirth": "2002-10-10",
-       |  "liabilityStartDate": "2015-08-19"
-       |}
-       |""".stripMargin)
-
-  val invalidInsertUCLiabilityRequest: JsValue = Json.parse(s"""
-       |{
-       |  "nationalInsuranceNumber": "$randomNino",
-       |  "universalCreditRecordType": "UC/NDJ",
-       |  "universalCreditAction": "Insert",
-       |  "dateOfBirth": "2002-10-10",
-       |  "liabilityStartDate": "2015-08-19"
-       |}
-       |""".stripMargin)
-
-  val inValidTerminationLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-      |{
-      |  "nationalInsuranceNumber": "$randomNino",
-      |  "universalCreditRecordType": "LCW/LCWRA/NDJ",
-      |  "universalCreditAction": "Terminate",
-      |  "liabilityStartDate": "2015-08-19",
-      |  "liabilityEndDate": "2025-01-04"
-      |}
-      |""".stripMargin)
-
-  val inValidTerminationUCLiabilityRequest: JsValue = Json.parse(s"""
-      |{
-      |  "nationalInsuranceNumber": "$randomNino",
-      |  "universalCreditRecordType": "UC/NDJ",
-      |  "universalCreditAction": "Terminate",
-      |  "liabilityStartDate": "2015-08-19",
-      |  "liabilityEndDate": "2025-01-04"
-      |}
-      |""".stripMargin)
-
-  val getInvalidAuthToken: String = "Invalid token"
-  val getNoAuthToken: String      = ""
-  val getExpiredAuthToken: String =
-    "GNAP dummy-2b5998dccb61446fa2fa9d0f7211e181,Bearer JDkThJhFPxDJlUABxXqtpxYmzIwWik1RYVp61xoEcLudlSq6higSU7OEQEqBlgTBQHTNWWRzZl4T8m8tfArtX2o7gA/qYAHhfHqWOxAp0flCPkSIhfyXuZyHTfLRXSQ8i6AejDV6nH4Td0KWtpjTSzP05ue6FHXdOIOSD7ZvHOwYgyplVeOQ7qHLUwzFwxEW/SsCJHiDyv5jJQREo7nuFQQ"
 }
