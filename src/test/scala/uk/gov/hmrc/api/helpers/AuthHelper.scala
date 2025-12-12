@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs
+package uk.gov.hmrc.api.helpers
 
-import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.GivenWhenThen
-import uk.gov.hmrc.api.service.ApiService
+import org.scalatest.Assertions.fail
+import play.api.libs.ws.StandaloneWSResponse
+import uk.gov.hmrc.api.service.AuthService
 
-trait BaseSpec extends AnyFeatureSpec with GivenWhenThen with Matchers {
+class AuthHelper {
 
-  val apiService = new ApiService
+  val authAPI: AuthService = new AuthService
+
+  def retrieveAuthBearerToken(): String = {
+    val authServiceRequestResponse: StandaloneWSResponse = authAPI.postLogin()
+    authServiceRequestResponse.header("Authorization").getOrElse(fail("Could not obtain auth bearer token"))
+  }
 }
