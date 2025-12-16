@@ -1,0 +1,20 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ✅ This removes most lines that show up as [application-pekko.actor...] -->
+    <logger name="org.apache.pekko" level="WARN"/>
+    <logger name="play.core.server" level="WARN"/>
+
+    <!-- Optional: more Play noise -->
+    <logger name="play.api.libs.concurrent" level="WARN"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

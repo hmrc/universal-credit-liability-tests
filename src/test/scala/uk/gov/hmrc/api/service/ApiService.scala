@@ -30,10 +30,7 @@ class ApiService extends HttpClient {
   val host: String = TestEnvironment.url("ucl")
   val authHelper   = new AuthHelper
 
-  def postNotificationWithValidToken(
-    headers: Seq[(String, String)],
-    requestBody: JsValue
-  ): StandaloneWSResponse = {
+  def postNotificationWithValidToken(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
 
     val token = authHelper.retrieveAuthBearerToken()
     makeRequest(headers, requestBody, token)

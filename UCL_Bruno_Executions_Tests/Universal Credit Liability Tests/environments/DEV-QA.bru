@@ -1,0 +1,12 @@
+vars {
+  ENVIRONMENT: {{ENVIRONMENT}}
+  api-host: https://api.{{ENVIRONMENT}}.tax.service.gov.uk
+  nino:
+}
+vars:secret [
+  TOTP_SECRET,
+  clientId,
+  clientSecret,
+  totp,
+  authorization
+]
