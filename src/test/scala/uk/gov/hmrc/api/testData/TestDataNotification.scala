@@ -21,7 +21,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import java.util.UUID
 import scala.util.Random
 
-trait TestDataFile {
+trait TestDataNotification {
 
   val randomNino: String = "AE%06d".format(Random.nextInt(999999))
 
@@ -39,6 +39,18 @@ trait TestDataFile {
     Seq(
       "Content-Type"  -> "application/json",
       "correlationId" -> correlationId
+    )
+
+  val invalidCorrelationIdHeaders: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> "application/json",
+      "correlationId"        -> "XYZ-ABCS-3e8dae97-b586-4cef-8511-68ac12da9028",
+      "gov-uk-originator-id" -> originatorId
+    )
+  val missingCorrelationIdHeaders: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> "application/json",
+      "gov-uk-originator-id" -> originatorId
     )
 
   private val dob                = "2002-10-10"
@@ -97,7 +109,24 @@ trait TestDataFile {
     uclPayload("UC", "Insert", "20288-08-19", dateOfBirth = Some(dob))
 
   val invalidInsertNINORequest: JsValue =
-    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dob), nino = " ")
+    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dob), nino = "347654")
+
+  val emptyInsertCreditRecordTypeRequest: JsValue =
+    uclPayload("", "Insert", insertStartDate, dateOfBirth = Some(dob))
+
+  val emptyInsertCreditActionRequest: JsValue =
+    uclPayload("LCW/LCWRA", "", insertStartDate, dateOfBirth = Some(dob))
+
+  val emptyInsertDateOfBirthRequest: JsValue =
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(""))
+
+  val emptyInsertStartDateRequest: JsValue =
+    uclPayload("UC", "Insert", "", dateOfBirth = Some(dob))
+
+  val emptyInsertNINORequest: JsValue =
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "")
+
+  // ---- Invalid Terminate payloads ----
 
   val inValidTerminationLCWLCWRALiabilityRequest: JsValue =
     uclPayload("LCW/LCWRA/ABC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
