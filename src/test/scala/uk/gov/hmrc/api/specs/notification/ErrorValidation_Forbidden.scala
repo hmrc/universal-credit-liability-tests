@@ -27,7 +27,8 @@ class ErrorValidation_Forbidden extends BaseSpec with GuiceOneServerPerSuite wit
   Feature("403 Forbidden scenarios") {
 
     val cases = Seq(
-      ("UCL_TC_001_0.9: Insert Invalid Headers details - UC",
+      (
+        "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
         invalidHeaders,
         validInsertUCLiabilityRequest,
         "403.22",
@@ -35,7 +36,7 @@ class ErrorValidation_Forbidden extends BaseSpec with GuiceOneServerPerSuite wit
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload,expCode, expMessage) =>
+    cases.foreach { case (scenarioName, headers, payload, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
@@ -49,7 +50,7 @@ class ErrorValidation_Forbidden extends BaseSpec with GuiceOneServerPerSuite wit
         And("Response body should contain correct error details")
         val actualJson = Json.parse(response.body)
         val actualCode = (actualJson \ "code").as[String]
-        val actualMsg = (actualJson \ "message").as[String]
+        val actualMsg  = (actualJson \ "message").as[String]
 
         assert(actualCode == expCode)
         assert(actualMsg == expMessage)
