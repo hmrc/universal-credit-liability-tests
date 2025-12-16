@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.api.testData
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 
 import java.util.UUID
 import scala.util.Random
@@ -41,85 +41,69 @@ trait TestDataFile {
       "correlationId" -> correlationId
     )
 
-  val validInsertLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "LCW/LCWRA",
-        |  "universalCreditAction": "Insert",
-        |  "dateOfBirth": "2002-10-10",
-        |  "liabilityStartDate": "2025-08-19"
-        |}
-        |""".stripMargin)
+  private val dob                = "2002-10-10"
+  private val insertStartDate    = "2025-08-19"
+  private val terminateStartDate = "2015-08-19"
+  private val terminateEndDate   = "2025-01-04"
 
-  val validInsertUCLiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "UC",
-        |  "universalCreditAction": "Insert",
-        |  "dateOfBirth": "2002-10-10",
-        |  "liabilityStartDate": "2025-08-19"
-        |}
-        |""".stripMargin)
+  private def uclPayload(
+    recordType: String,
+    action: String,
+    startDate: String,
+    dateOfBirth: Option[String] = None,
+    endDate: Option[String] = None,
+    nino: String = randomNino
+  ): JsObject = {
+    val base = Json.obj(
+      "nationalInsuranceNumber"   -> nino,
+      "universalCreditRecordType" -> recordType,
+      "universalCreditAction"     -> action,
+      "liabilityStartDate"        -> startDate
+    )
 
-  val validTerminationLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "LCW/LCWRA",
-        |  "universalCreditAction": "Terminate",
-        |  "liabilityStartDate": "2015-08-19",
-        |  "liabilityEndDate": "2025-01-04"
-        |}
-        |""".stripMargin)
+    val dobObj = dateOfBirth.fold(Json.obj())(d => Json.obj("dateOfBirth" -> d))
+    val endObj = endDate.fold(Json.obj())(d => Json.obj("liabilityEndDate" -> d))
 
-  val validTerminationUCLiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |     "nationalInsuranceNumber": "$randomNino",
-        |     "universalCreditRecordType": "UC",
-        |     "universalCreditAction": "Terminate",
-        |     "liabilityStartDate": "2015-08-19",
-        |     "liabilityEndDate": "2025-01-04"
-        |}
-        |""".stripMargin)
+    base ++ dobObj ++ endObj
+  }
 
-  val invalidInsertLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "LCW/LCWRA/NDJ",
-        |  "universalCreditAction": "Insert",
-        |  "dateOfBirth": "2002-10-10",
-        |  "liabilityStartDate": "2015-08-19"
-        |}
-        |""".stripMargin)
+  // ---- Valid payloads ----
+  val validInsertLCWLCWRALiabilityRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob))
 
-  val invalidInsertUCLiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "UC/NDJ",
-        |  "universalCreditAction": "Insert",
-        |  "dateOfBirth": "2002-10-10",
-        |  "liabilityStartDate": "2015-08-19"
-        |}
-        |""".stripMargin)
+  val validInsertUCLiabilityRequest: JsValue =
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob))
 
-  val inValidTerminationLCWLCWRALiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "LCW/LCWRA/NDJ",
-        |  "universalCreditAction": "Terminate",
-        |  "liabilityStartDate": "2015-08-19",
-        |  "liabilityEndDate": "2025-01-04"
-        |}
-        |""".stripMargin)
+  val validTerminationLCWLCWRALiabilityRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
 
-  val inValidTerminationUCLiabilityRequest: JsValue = Json.parse(s"""
-        |{
-        |  "nationalInsuranceNumber": "$randomNino",
-        |  "universalCreditRecordType": "UC/NDJ",
-        |  "universalCreditAction": "Terminate",
-        |  "liabilityStartDate": "2015-08-19",
-        |  "liabilityEndDate": "2025-01-04"
-        |}
-        |""".stripMargin)
+  val validTerminationUCLiabilityRequest: JsValue =
+    uclPayload("UC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
+
+  // ---- Invalid Insert payloads ----
+  val invalidInsertLCWLCWRALiabilityRequest: JsValue =
+    uclPayload("LCW/LCWRA/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dob))
+
+  val invalidInsertUCLiabilityRequest: JsValue =
+    uclPayload("UC/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dob))
+
+  val invalidInsertCreditActionRequest: JsValue =
+    uclPayload("UC", "insert", terminateStartDate, dateOfBirth = Some(dob))
+
+  val invalidInsertDateOfBirthRequest: JsValue =
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some("202-10-10"))
+
+  val invalidInsertStartDateRequest: JsValue =
+    uclPayload("UC", "Insert", "20288-08-19", dateOfBirth = Some(dob))
+
+  val invalidInsertNINORequest: JsValue =
+    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dob), nino = " ")
+
+  val inValidTerminationLCWLCWRALiabilityRequest: JsValue =
+    uclPayload("LCW/LCWRA/ABC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
+
+  val inValidTerminationUCLiabilityRequest: JsValue =
+    uclPayload("UC/ABC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
 
   val getInvalidAuthToken: String = "Invalid token"
   val getNoAuthToken: String      = ""
