@@ -28,16 +28,70 @@ class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with Te
 
     val cases = Seq(
       (
-        "UCL_TC_001_0.7: Termination Invalid LCW/LCWRA details",
-        inValidTerminationLCWLCWRALiabilityRequest,
+        "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type LCW/LCWRA with Terminate action",
+        invalidTerminationLCWLCWRARequest,
         "400.1",
         "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
       ),
       (
-        "UCL_TC_001_0.8: Termination Invalid UC details",
-        inValidTerminationUCLiabilityRequest,
+        "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type UC  with Terminate action",
+        invalidTerminationUCRequest,
         "400.1",
         "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+      ),
+      (
+        "UCL_Terminate_TC_002_0.2: Invalid Credit Action universalCreditAction",
+        invalidTerminationActionRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: universalCreditAction"
+      ),
+      (
+        "UCL_Terminate_TC_002_0.3: Invalid Start Date with Terminate action",
+        invalidTerminateStartDate,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+      ),
+      (
+        "UCL_Terminate_TC_002_0.4: Invalid End Date with Terminate action",
+        invalidTerminateEndDate,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+      ),
+      (
+        "UCL_Terminate_TC_002_0.5: Invalid NINO with Terminate action",
+        invalidNINOTerminationRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber"
+      ),
+      (
+        "UCL_Terminate_TC_003_0.1: Empty Credit Record Type with Terminate action",
+        emptyCreditRecordTypeTerminateRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+      ),
+      (
+        "UCL_Terminate_TC_003_0.2: Empty Credit Action with Terminate action",
+        emptyCreditActionTerminationRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: universalCreditAction"
+      ),
+      (
+        "UCL_Terminate_TC_003_0.3: Empty Start Date with Terminate action",
+        emptyStartDateTerminationRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+      ),
+      (
+        "UCL_Terminate_TC_003_0.4: Empty NINO with Terminate action",
+        emptyNINOTerminationRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber"
+      ),
+      (
+        "UCL_Terminate_TC_003_0.5: Empty End Date with Terminate action",
+        emptyEndDateTerminationRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
       )
     )
 
@@ -45,7 +99,6 @@ class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with Te
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
-
         val response = apiService.postNotificationWithValidToken(validHeaders, payload)
 
         Then("400 Bad Request should be returned")
