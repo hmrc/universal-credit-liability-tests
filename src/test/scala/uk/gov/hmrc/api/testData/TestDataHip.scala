@@ -77,16 +77,23 @@ trait TestDataHip {
     )
 
   // ---- Valid payloads ----
-  val validHipUcLiabilityRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
 
-  val validInsertLCWLCWRAHipRequest: JsValue =
+  val validInsertLCWLCWRAWithoutEndDateHipRequest: JsValue =
     hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob))
 
   val validInsertLCWLCWRAWithEndDateHipRequest: JsValue =
     hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob), endDate = Some(liabilityEndDate))
 
-  val validHipUcTerminationRequest: JsValue =
+  val validInsertUCWithOutEndDateHipRequest: JsValue =
+    hipUcLiabilityPayload("UC", liabilityStartDate, dateOfBirth = Some(dob))
+
+  val validInsertUCWithEndDateHipRequest: JsValue =
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
+
+  val validHipLCWLCWRATerminationRequest: JsValue =
+    hipUcTerminationPayload("LCW/LCWRA", liabilityStartDate, liabilityEndDate)
+
+  val validHipUCTerminationRequest: JsValue =
     hipUcTerminationPayload("UC", liabilityStartDate, liabilityEndDate)
 
   // ---- Invalid UC Liability payloads ----

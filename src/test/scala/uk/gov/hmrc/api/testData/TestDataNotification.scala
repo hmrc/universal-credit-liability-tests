@@ -128,11 +128,38 @@ trait TestDataNotification {
 
   // ---- Invalid Terminate payloads ----
 
-  val inValidTerminationLCWLCWRALiabilityRequest: JsValue =
+  val invalidTerminationLCWLCWRARequest: JsValue =
     uclPayload("LCW/LCWRA/ABC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
 
-  val inValidTerminationUCLiabilityRequest: JsValue =
+  val invalidTerminationUCRequest: JsValue =
     uclPayload("UC/ABC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
+
+  val invalidTerminationActionRequest: JsValue =
+    uclPayload("LCW/LCWRA", "ABC", terminateStartDate, endDate = Some(terminateEndDate))
+
+  val invalidTerminateStartDate: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "202-08-19", endDate = Some("2020-08-20"))
+
+  val invalidTerminateEndDate: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "2028-08-19", endDate = Some("2020-08-35"))
+
+  val invalidNINOTerminationRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "5443456545 ")
+
+  val emptyCreditRecordTypeTerminateRequest: JsValue =
+    uclPayload(" ", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
+
+  val emptyCreditActionTerminationRequest: JsValue =
+    uclPayload("LCW/LCWRA", " ", terminateStartDate, endDate = Some(terminateEndDate))
+
+  val emptyStartDateTerminationRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", " ", endDate = Some(terminateEndDate))
+
+  val emptyNINOTerminationRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = " ")
+
+  val emptyEndDateTerminationRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(" "))
 
   val getInvalidAuthToken: String = "Invalid token"
   val getNoAuthToken: String      = ""
