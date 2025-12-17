@@ -27,8 +27,9 @@ import scala.concurrent.duration.*
 
 class ApiService extends HttpClient {
 
-  val host: String = TestEnvironment.url("ucl")
-  val authHelper   = new AuthHelper
+  val host: String    = TestEnvironment.url("ucl")
+  val hipHost: String = TestEnvironment.url("hip")
+  val authHelper      = new AuthHelper
 
   def postNotificationWithValidToken(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
 
@@ -37,12 +38,53 @@ class ApiService extends HttpClient {
   }
 
   def makeRequest(headers: Seq[(String, String)], requestBody: JsValue, token: String): StandaloneWSResponse = {
-    val url: String = s"$host/notification"
+    val url: String                       = s"$host/notification"
+    val authHeader: Seq[(String, String)] =
+      Option(token)
+        .map(_.trim)
+        .filter(_.nonEmpty)
+        .map(t => Seq("authorization" -> t))
+        .getOrElse(Seq.empty)
+
     Await.result(
       post(
         url,
         requestBody.toString,
-        headers :+ ("authorization" -> s"$token")
+        headers ++ authHeader
+      ),
+      10.seconds
+    )
+  }
+
+  def postHipUcLiability(
+    headers: Seq[(String, String)],
+    nino: String,
+    requestBody: JsValue
+  ): StandaloneWSResponse = {
+    val url: String = s"$hipHost/person/$nino/liability/universal-credit"
+    Await.result(
+      post(
+        url,
+        requestBody.toString,
+        headers
+      ),
+      10.seconds
+    )
+  }
+
+  def postHipUcTermination(
+    headers: Seq[(String, String)],
+    nino: String,
+    requestBody: JsValue
+  ): StandaloneWSResponse = {
+
+    val url: String = s"$hipHost/person/$nino/liability/universal-credit/termination"
+
+    Await.result(
+      post(
+        url,
+        requestBody.toString,
+        headers
       ),
       10.seconds
     )

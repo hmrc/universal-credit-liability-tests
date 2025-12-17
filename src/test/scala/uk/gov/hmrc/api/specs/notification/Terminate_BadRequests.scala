@@ -20,34 +20,38 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.TestDataFile
+import uk.gov.hmrc.api.testData.TestDataNotification
 
-class ErrorValidation_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataFile {
+class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("403 Forbidden scenarios") {
+  Feature("400 Bad Request scenarios for Terminate Record Type") {
 
     val cases = Seq(
       (
-        "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
-        invalidHeaders,
-        validInsertUCLiabilityRequest,
-        "403.22",
-        "Forbidden"
+        "UCL_TC_001_0.7: Termination Invalid LCW/LCWRA details",
+        inValidTerminationLCWLCWRALiabilityRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+      ),
+      (
+        "UCL_TC_001_0.8: Termination Invalid UC details",
+        inValidTerminationUCLiabilityRequest,
+        "400.1",
+        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, payload, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response =
-          apiService.postNotificationWithValidToken(headers, payload)
+        val response = apiService.postNotificationWithValidToken(validHeaders, payload)
 
-        Then("403 Forbidden should be returned")
-        assert(response.status == Status.FORBIDDEN)
+        Then("400 Bad Request should be returned")
+        assert(response.status == Status.BAD_REQUEST)
 
-        And("Response body should contain correct error details")
+        Then("Response body should contain correct error details")
         val actualJson = Json.parse(response.body)
         val actualCode = (actualJson \ "code").as[String]
         val actualMsg  = (actualJson \ "message").as[String]

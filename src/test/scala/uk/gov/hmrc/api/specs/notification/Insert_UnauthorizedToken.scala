@@ -16,23 +16,38 @@
 
 package uk.gov.hmrc.api.specs.notification
 
-import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
+import play.api.libs.json.Json
 import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.TestDataFile
+import uk.gov.hmrc.api.testData.TestDataNotification
 
-class ErrorValidation_UnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with TestDataFile {
+class Insert_UnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("401 Unauthorized Token scenarios") {
 
-    val cases: Seq[(String, () => String)] = Seq(
-      ("UCL_TC_001_0.1: Invalid Token", () => getInvalidAuthToken),
-      ("UCL_TC_001_0.2: Empty Token", () => getNoAuthToken),
-      ("UCL_TC_001_0.3: Expired Token", () => getExpiredAuthToken)
+    val cases = Seq(
+      (
+        "UCL_TC_001_0.1: Invalid Token",
+        () => getInvalidAuthToken,
+        "INVALID_CREDENTIALS",
+        "Invalid bearer token"
+      ),
+      (
+        "UCL_TC_001_0.2: Empty Token",
+        () => getNoAuthToken,
+        "MISSING_CREDENTIALS",
+        "Bearer token not supplied"
+      ),
+      (
+        "UCL_TC_001_0.3: Expired Token",
+        () => getExpiredAuthToken,
+        "INVALID_CREDENTIALS",
+        "Invalid bearer token"
+      )
     )
 
-    cases.foreach { case (scenarioName, tokenFn) =>
+    cases.foreach { case (scenarioName, tokenFn, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("An invalid/empty/expired token is sent")
@@ -41,7 +56,15 @@ class ErrorValidation_UnauthorizedToken extends BaseSpec with GuiceOneServerPerS
           apiService.makeRequest(validHeaders, validInsertLCWLCWRALiabilityRequest, tokenFn())
 
         Then("401 Unauthorized received")
-        response.status mustBe Status.UNAUTHORIZED
+        assert(response.status == Status.UNAUTHORIZED)
+
+        Then("Response body should contain correct error details")
+        val actualJson = Json.parse(response.body)
+        val actualCode = (actualJson \ "code").as[String]
+        val actualMsg  = (actualJson \ "message").as[String]
+
+        assert(actualCode == expCode)
+        assert(actualMsg == expMessage)
       }
     }
   }

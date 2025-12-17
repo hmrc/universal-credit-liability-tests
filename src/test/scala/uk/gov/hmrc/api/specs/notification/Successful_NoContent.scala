@@ -22,7 +22,7 @@ import play.api.http.Status
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class Successful_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataFile {
+class Successful_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("204 No Content scenarios") {
 
