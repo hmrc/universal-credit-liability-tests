@@ -161,6 +161,113 @@ trait TestDataNotification {
   val emptyEndDateTerminationRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(" "))
 
+  // ------Insert Unprocessable entity -------
+
+  val conflictingInsertLiabilityRequest: JsValue =
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "AA052345")
+
+  val startDateBefore16thBirthdayInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"), nino = "AA103456")
+
+  val startDateAfterStatePensionAgeInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", startDate = "2023-04-05", dateOfBirth = Some("1957-04-14"), nino = "AA049220")
+
+  val startDateAfterDeathInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2009-10-10"), nino = "AA075519")
+
+  val startAndEndDateAfterDeathInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA015530")
+
+  val endDateAfterStatePensionAgeInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2025-04-15"), nino = "AA022694")
+
+  val endDateAfterDeathInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "AA033294")
+
+  val notWithinUCPeriodInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA083557")
+
+  val lcwLcwrOverrideInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA092767")
+
+  val notMatchingLiabilityInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA061521")
+
+  val startDateBefore29042013InsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", startDate = "2013-04-28", dateOfBirth = Some(dob), nino = "AA113456")
+
+  val endDateBeforeStartDateInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", "2013-04-29", dateOfBirth = Some(dob), nino = "AA123456")
+
+  val pseudoAccountInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA133456")
+
+  val nonLiveAccountInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA143456")
+
+  val accountTransferredIsleOfManInsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA153456")
+
+  val startDateAfterDeath2InsertRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AA163456")
+
+  // ------Terminate Unprocessable entity -------
+
+  val conflictingTerminateLiabilityRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "AA057680")
+
+  val startDateBefore16thBirthdayTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "2023-04-05", endDate = Some("2025-01-04"), nino = "AA103456")
+
+  val startDateAfterStatePensionAgeTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "2025-04-15", endDate = Some("2025-01-04"), nino = "AA049220")
+
+  val startDateAfterDeathTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "AA075519")
+
+  val startAndEndDateAfterDeathTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "AA015530")
+
+  val endDateAfterStatePensionAgeTerminateRequest: JsValue =
+    uclPayload(
+      "LCW/LCWRA",
+      "Terminate",
+      "2025-04-15",
+      endDate = Some("2025-04-20"),
+      dateOfBirth = Some("1957-04-14"),
+      nino = "AA023456"
+    )
+
+  val endDateAfterDeathTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA031456")
+
+  val notWithinUCPeriodTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "2015-08-19", endDate = Some(terminateEndDate), nino = "AA083456")
+
+  val lcwlcwraOverrideTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA093456")
+
+  val noMatchingLiabilityTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA063456")
+
+  val startDateBefore29042013TerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA113456")
+
+  val endDateBeforeStartDateTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", "2013-04-29", endDate = Some("2013-04-28"), nino = "AA123456")
+
+  val pseudoAccountTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA133456")
+
+  val nonLiveAccountTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA143456")
+
+  val accountTransferredIsleOfManTerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA153456")
+
+  val startDateAfterDeath2TerminateRequest: JsValue =
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "AA163456")
+
   val getInvalidAuthToken: String = "Invalid token"
   val getNoAuthToken: String      = ""
   val getExpiredAuthToken: String =
