@@ -1,0 +1,28 @@
+meta {
+  name: 422 - StartDateBefore16thBirthday with Insert request - LCW/LCWRA
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
+  gov-uk-originator-id: ""
+}
+
+body:json {
+  {
+      "nationalInsuranceNumber": "{{nino}}",
+      "universalCreditRecordType": "LCW/LCWRA",
+      "universalCreditAction": "Insert",
+      "dateOfBirth"": "2009-10-10",
+      "liabilityStartDate": "2023-04-05"
+    }
+  }
