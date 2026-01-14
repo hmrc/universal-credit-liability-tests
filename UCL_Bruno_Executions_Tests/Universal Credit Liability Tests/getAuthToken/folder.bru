@@ -1,0 +1,14 @@
+meta {
+  name: getAuthToken
+  seq: 5
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'Local') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  }
+  
+}

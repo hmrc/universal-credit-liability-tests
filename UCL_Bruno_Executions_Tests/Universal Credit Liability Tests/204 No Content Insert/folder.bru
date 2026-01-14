@@ -1,0 +1,11 @@
+meta {
+  name: 204 No Content Insert
+  seq: 6
+}
+
+script:pre-request {
+  if (['qa', 'local'].includes(bru.getEnvVar("ENVIRONMENT"))) {
+    bru.setEnvVar("nino", "AA003456");
+  }
+  
+}

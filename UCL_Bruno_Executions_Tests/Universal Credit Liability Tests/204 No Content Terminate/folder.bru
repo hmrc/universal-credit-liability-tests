@@ -1,0 +1,14 @@
+meta {
+  name: 204 No Content Terminate
+  seq: 7
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'LOCAL') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  }
+  
+}
