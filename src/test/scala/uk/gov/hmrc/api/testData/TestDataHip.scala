@@ -229,6 +229,9 @@ trait TestDataHip {
   val invalidCreditRecordTypeTTTRequest: JsValue =
     hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
 
+  val invalidCreditRecordTypeTTTHIPRequest: JsValue =
+    hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+
   val emptyCreditRecordTypeRequest: JsValue =
     hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
 
@@ -238,31 +241,43 @@ trait TestDataHip {
   val emptyCreditActionTypeRequest: JsValue =
     hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
 
-  val emptyDOBActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some(""), endDate = Some("2025-08-20"))
-
-  val invalidDOBActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2030-10-10"), endDate = Some("2025-08-20"))
-
-  val missingDOBActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("UC", "2025-08-19", endDate = Some("2025-08-20"))
-
+  val emptyCreditRecordTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+  
   val invalidStartDateAfterEndDateActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-20"))
+
+  val invalidStartDateAfterEndDateActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-20"))
 
   val invalidStartDateInFebActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-02-30", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
+  val invalidStartDateInFebActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-02-30", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
   val invalidStartDateInvalidMonthActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-13-01", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
+  val invalidStartDateInvalidMonthActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-13-01", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
   val invalidStartDateMonthZeroActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-00-01", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
+  val invalidStartDateMonthZeroActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-00-01", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
   val invalidStartDateDayZeroActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-09-00", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
+  val invalidStartDateDayZeroActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-09-00", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
   val invalidStartDateDayAprilActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2028-04-31", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
+  val invalidStartDateDayAprilActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-04-31", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
   val invalidStartDateFormatIssueActionTypeRequest: JsValue =
@@ -271,52 +286,101 @@ trait TestDataHip {
   val invalidStartDateWrongFormatActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "11-05-2025", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
+  val invalidStartDateWrongFormatActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "11-05-2025", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
   val invalidStartDateZeroActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "0000-00-00", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
+  val invalidStartDateZeroActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "0000-00-00", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
   val invalidStartDateEmptyActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
+  val invalidStartDateEmptyActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
   val invalidStartDateMissingActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
+
+  val invalidStartDateMissingActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "", dateOfBirth = Some("2002-10-10"), endDate = Some("2030-08-20"))
 
   val invalidEndDateAfterEndDateActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-18"))
 
+  val invalidEndDateAfterEndDateActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-18"))
+
   val invalidEndDateNotLeapYearActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2027-02-29"))
+
+  val invalidEndDateNotLeapYearActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2027-02-29"))
 
   val invalidEndDateInvalidDayFebActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-02-30"))
 
+  val invalidEndDateInvalidDayFebActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-02-30"))
+
   val invalidEndDateInvalidMonthActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-15-18"))
+
+  val invalidEndDateInvalidMonthActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-15-18"))
 
   val invalidEndDateMonthZeroActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-00-18"))
 
+  val invalidEndDateMonthZeroActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-00-18"))
+
   val invalidEndDateDayZeroActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-11-00"))
+
+  val invalidEndDateDayZeroActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-11-00"))
 
   val invalidEndDateDayAprilActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-04-31"))
 
+  val invalidEndDateDayAprilActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-04-31"))
+
   val invalidEndDateFormatIssueActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-4-20"))
+
+  val invalidEndDateFormatIssueActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2026-4-20"))
 
   val invalidEndDateWrongFormatActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("18-04-2027"))
 
+  val invalidEndDateWrongFormatActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("18-04-2027"))
+
   val invalidEndDateZeroActionTypeRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("0000-00-00"))
+
+  val invalidEndDateZeroActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("0000-00-00"))
 
   val invalidEndDateEmptyActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some(""))
 
+  val invalidEndDateEmptyActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some(""))
+
   val invalidEndDateMissingActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"))
 
-  // ------Invalid Forbidden------
+  val invalidEndDateMissingActionTypeHIPRequest: JsValue =
+    hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"))
+
+
+  // ------Forbidden------
 
   val validUCLiabilityRequest: JsValue =
     hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob))
