@@ -15,6 +15,7 @@
  */
 
 package uk.gov.hmrc.api.specs.hip
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
 import play.api.libs.json.{JsArray, JsValue, Json}
@@ -383,27 +384,28 @@ class Create_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         assert(response.status == Status.BAD_REQUEST, s"Expected 400, got ${response.status}. Body: ${response.body}")
 
         And(s"The response should match the ${scenario.expectedOrigin} error format")
-        val json         = Json.parse(response.body)
-        val actualOrigin = (json \ "origin").as[String]
+        val json = Json.parse(response.body)
 
-        actualOrigin shouldBe scenario.expectedOrigin
+        val actualOrigin = (json \ "origin").asOpt[String]
 
-        // 4. Conditional Logic based on Origin
-        if (actualOrigin == "HoD") {
+        actualOrigin mustBe Option(scenario.expectedOrigin)
 
-          val failures     = (json \ "response" \ "failures").as[JsArray]
-          val firstFailure = failures.value.head
+        if (actualOrigin.contains("HoD")) {
 
-          (firstFailure \ "code").as[String]   shouldBe scenario.expectedCodeOrType
-          (firstFailure \ "reason").as[String] shouldBe scenario.expectedReason
+          val failure = (json \ "response" \ "failures").as[JsArray]
+          failure.value should have size 1
+          val firstFailure = failure.value.head
+
+          (firstFailure \ "code").as[String] mustBe scenario.expectedCodeOrType
+          (firstFailure \ "reason").as[String] mustBe scenario.expectedReason
 
         } else {
 
-          val failures     = (json \ "response").as[JsArray]
-          val firstFailure = failures.value.head
+          val failure      = (json \ "response").as[JsArray]
+          val firstFailure = failure.value.head
 
-          (firstFailure \ "type").as[String]   shouldBe scenario.expectedCodeOrType
-          (firstFailure \ "reason").as[String] shouldBe scenario.expectedReason
+          (firstFailure \ "type").as[String] mustBe scenario.expectedCodeOrType
+          (firstFailure \ "reason").as[String] mustBe scenario.expectedReason
         }
       }
     }
