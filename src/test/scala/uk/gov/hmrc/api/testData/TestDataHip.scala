@@ -243,7 +243,7 @@ trait TestDataHip {
 
   val emptyCreditRecordTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
-  
+
   val invalidStartDateAfterEndDateActionTypeRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-20"))
 
@@ -378,7 +378,6 @@ trait TestDataHip {
 
   val invalidEndDateMissingActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2025-08-19", dateOfBirth = Some("2002-10-10"))
-
 
   // ------Forbidden------
 

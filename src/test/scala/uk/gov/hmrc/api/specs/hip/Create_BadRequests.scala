@@ -17,20 +17,19 @@
 package uk.gov.hmrc.api.specs.hip
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import play.api.libs.json.{JsArray,  JsValue, Json}
+import play.api.libs.json.{JsArray, JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
 class Create_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-
-case class BadRequestScenario(
-                               description: String,
-                               payload: JsValue,
-                               expectedOrigin: String,
-                               expectedCodeOrType: String,
-                               expectedReason: String
-                             )
+  case class BadRequestScenario(
+    description: String,
+    payload: JsValue,
+    expectedOrigin: String,
+    expectedCodeOrType: String,
+    expectedReason: String
+  )
 
   Feature("400 Bad Request scenarios (Unified HIP & HoD)") {
 
@@ -49,7 +48,6 @@ case class BadRequestScenario(
         expectedCodeOrType = "Type of Failure",
         expectedReason = "Reason for Failure"
       ),
-
       BadRequestScenario(
         description = "UC_TC_007_0.2: Empty Credit Record Type (HoD)",
         payload = emptyCreditRecordTypeRequest,
@@ -371,12 +369,11 @@ case class BadRequestScenario(
         expectedOrigin = "HIP",
         expectedCodeOrType = "Type of Failure",
         expectedReason = "Reason for Failure"
-      ),
+      )
     )
 
-
-        scenarios.foreach { scenario =>
-        Scenario(scenario.description) {
+    scenarios.foreach { scenario =>
+      Scenario(scenario.description) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
@@ -386,7 +383,7 @@ case class BadRequestScenario(
         assert(response.status == Status.BAD_REQUEST, s"Expected 400, got ${response.status}. Body: ${response.body}")
 
         And(s"The response should match the ${scenario.expectedOrigin} error format")
-        val json = Json.parse(response.body)
+        val json         = Json.parse(response.body)
         val actualOrigin = (json \ "origin").as[String]
 
         actualOrigin shouldBe scenario.expectedOrigin
@@ -394,18 +391,18 @@ case class BadRequestScenario(
         // 4. Conditional Logic based on Origin
         if (actualOrigin == "HoD") {
 
-          val failures = (json \ "response" \ "failures").as[JsArray]
+          val failures     = (json \ "response" \ "failures").as[JsArray]
           val firstFailure = failures.value.head
 
-          (firstFailure \ "code").as[String] shouldBe scenario.expectedCodeOrType
+          (firstFailure \ "code").as[String]   shouldBe scenario.expectedCodeOrType
           (firstFailure \ "reason").as[String] shouldBe scenario.expectedReason
 
         } else {
 
-          val failures = (json \ "response").as[JsArray]
+          val failures     = (json \ "response").as[JsArray]
           val firstFailure = failures.value.head
 
-          (firstFailure \ "type").as[String] shouldBe scenario.expectedCodeOrType
+          (firstFailure \ "type").as[String]   shouldBe scenario.expectedCodeOrType
           (firstFailure \ "reason").as[String] shouldBe scenario.expectedReason
         }
       }
