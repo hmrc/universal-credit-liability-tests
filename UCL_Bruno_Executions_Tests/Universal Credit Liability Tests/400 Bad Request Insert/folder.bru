@@ -1,6 +1,6 @@
 meta {
   name: 400 Bad Request Insert
-  seq: 8
+  seq: 7
 }
 
 script:pre-request {
@@ -9,7 +9,7 @@ script:pre-request {
   
     const nino = helpers.randomNino();
     bru.setEnvVar("nino", nino);
-  
+
     const invalidRndNino = helpers.invalidNino;
     bru.setEnvVar("invalidNino", invalidRndNino);
   }
