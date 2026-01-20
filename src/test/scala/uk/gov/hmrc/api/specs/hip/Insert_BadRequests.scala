@@ -24,9 +24,9 @@ import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Create_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("400 Bad Request scenarios for HIP Create UC Liability") {
+  Feature("BadRequest (400) scenarios for HIP Create UC Liability") {
 
     val cases: Seq[(String, JsValue, String, String, String)] = Seq(
       (
