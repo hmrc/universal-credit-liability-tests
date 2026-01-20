@@ -18,15 +18,15 @@ package uk.gov.hmrc.api.specs.hip
 
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.{TestDataHip, TestDataNotification}
 
-class Create_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("403 Forbidden scenarios") {
+  Feature("Forbidden (403) scenarios for HIP") {
 
-    val cases = Seq(
+    val cases: Seq[(String, Seq[(String, String)], JsValue, String, String)] = Seq(
       (
         "UC_TC_016: Invalid Headers details - UC",
         invalidHeaders,
@@ -41,14 +41,13 @@ class Create_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDat
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response =
-          apiService.postHipUcLiability(invalidHeaders, randomNino, validUCLiabilityRequest)
+        val hipResponse = apiService.postHipUcLiability(invalidHeaders, randomNino, validUCLiabilityRequest)
 
         Then("403 Forbidden should be returned")
-        assert(response.status == Status.FORBIDDEN)
+        assert(hipResponse.status == Status.FORBIDDEN)
 
         And("Response body should contain correct error details")
-        val actualJson = Json.parse(response.body)
+        val actualJson = Json.parse(hipResponse.body)
         val actualCode = (actualJson \ "code").as[String]
         val actualMsg  = (actualJson \ "reason").as[String]
 
