@@ -22,7 +22,7 @@ import uk.gov.hmrc.api.specs.BaseSpec
 import play.api.libs.json.{JsArray, JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class TerminateHip_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("422 Terminate Unprocessable Entity scenarios") {
 
