@@ -51,7 +51,7 @@ trait TestDataHip {
   private def hipUcLiabilityPayload(
     recordType: String,
     startDate: String,
-    endDate: Option[String] = None,
+    endDate: String,
     dateOfBirth: Option[String] = None
   ): JsObject = {
     val baseDetails = Json.obj(
@@ -67,7 +67,7 @@ trait TestDataHip {
     )
   }
 
-  private def hipUcTerminationPayload(recordType: String, startDate: String, endDate: Option[String] = None): JsObject =
+  private def hipUcTerminationPayload(recordType: String, startDate: String, endDate: String): JsObject =
     Json.obj(
       "ucLiabilityTerminationDetails" -> Json.obj(
         "universalCreditRecordType" -> recordType,
@@ -91,10 +91,10 @@ trait TestDataHip {
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
 
   val validHipLCWLCWRATerminationRequest: JsValue =
-    hipUcTerminationPayload("LCW/LCWRA", liabilityStartDate, endDate = Some(liabilityEndDate))
+    hipUcTerminationPayload("LCW/LCWRA", liabilityStartDate, liabilityEndDate)
 
   val validHipUCTerminationRequest: JsValue =
-    hipUcTerminationPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate))
+    hipUcTerminationPayload("UC", liabilityStartDate, liabilityEndDate)
 
   // ---- Invalid UC Liability payloads ----
   val invalidHipRecordTypeLiabilityRequest: JsValue =
@@ -111,13 +111,13 @@ trait TestDataHip {
 
   // ---- Invalid Termination payloads ----
   val invalidHipRecordTypeTerminationRequest: JsValue =
-    hipUcTerminationPayload("UC/ABC", liabilityStartDate, endDate = Some(liabilityEndDate))
+    hipUcTerminationPayload("UC/ABC", liabilityStartDate, liabilityEndDate)
 
   val invalidHipStartDateTerminationRequest: JsValue =
-    hipUcTerminationPayload("UC", "2015-88-19", endDate = Some(liabilityEndDate))
+    hipUcTerminationPayload("UC", "2015-88-19", liabilityEndDate)
 
   val invalidHipEndDateTerminationRequest: JsValue =
-    hipUcTerminationPayload("UC", liabilityStartDate, endDate = Some("2025-99-04"))
+    hipUcTerminationPayload("UC", liabilityStartDate, "2055-99-04")
 
   // -----Insert Unprocessable Entity------
 
