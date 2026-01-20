@@ -21,28 +21,45 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import java.util.UUID
 import scala.util.Random
 
-trait TestDataHip {
+trait TestDataHip extends BaseTestData {
 
-  val randomNino: String = "AE%06d".format(Random.nextInt(999999))
-
-  val originatorId: String  = UUID.randomUUID().toString
-  val correlationId: String = UUID.randomUUID().toString
-
-  val validHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> "application/json",
-      "correlationId"        -> correlationId,
-      "gov-uk-originator-id" -> originatorId
-    )
-
+  // FIXME: use invalid - this matches the headersWithoutGovUkOriginatorId
   val invalidHeaders: Seq[(String, String)] =
     Seq(
-      "Content-Type"  -> "application/json",
+      "Content-Type"  -> jsonContentType,
       "correlationId" -> correlationId
     )
 
+  // TODO: unused - remove(?)
   val validHeadersWithOriginator: Seq[(String, String)] =
-    validHeaders :+ ("gov-uk-originator-id" -> originatorId)
+    validHeaders :+ ("gov-uk-originator-id" -> govUkOriginatorId)
+
+  val headersWithoutCorrelationId: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> jsonContentType,
+      "gov-uk-originator-id" -> govUkOriginatorId
+    )
+
+  val headersWithoutGovUkOriginatorId: Seq[(String, String)] =
+    Seq(
+      "Content-Type"  -> jsonContentType,
+      "correlationId" -> correlationId
+    )
+
+  // TODO: do we need this one?
+  val headersWithInvalidCorrelationId: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> jsonContentType,
+      "correlationId"        -> "", // FIXME: would that be a correlation Id?
+      "gov-uk-originator-id" -> govUkOriginatorId
+    )
+
+  val headersWithInvalidGovUkOriginatorId: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> jsonContentType,
+      "correlationId"        -> correlationId,
+      "gov-uk-originator-id" -> "INVALID_GOV_UK_ORIGINATOR_ID"
+    )
 
   def removeHeader(headers: Seq[(String, String)], key: String): Seq[(String, String)] =
     headers.filterNot(_._1.equalsIgnoreCase(key))
@@ -50,7 +67,7 @@ trait TestDataHip {
   def overrideHeader(headers: Seq[(String, String)], key: String, value: String): Seq[(String, String)] =
     removeHeader(headers, key) :+ (key -> value)
 
-  private val dob                = "2002-10-10"
+  private val dateOfBirth        = "2002-10-10"
   private val liabilityStartDate = "2015-08-19"
   private val liabilityEndDate   = "2025-01-04"
 
@@ -66,10 +83,10 @@ trait TestDataHip {
       "liabilityEndDate"          -> endDate
     )
 
-    val dobObj = dateOfBirth.fold(Json.obj())(d => Json.obj("dateOfBirth" -> d))
+    val dateOfBirthObj = dateOfBirth.fold(Json.obj())(d => Json.obj("dateOfBirth" -> d))
 
     Json.obj(
-      "universalCreditLiabilityDetails" -> (baseDetails ++ dobObj)
+      "universalCreditLiabilityDetails" -> (baseDetails ++ dateOfBirthObj)
     )
   }
 
@@ -84,17 +101,23 @@ trait TestDataHip {
 
   // ---- Valid payloads ----
 
+  // FIXME go through payloads and fix issues (duplication/missing etc)
   val validInsertLCWLCWRAWithoutEndDateHipRequest: JsValue =
-    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dateOfBirth))
 
   val validInsertLCWLCWRAWithEndDateHipRequest: JsValue =
-    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob), endDate = Some(liabilityEndDate))
+    hipUcLiabilityPayload(
+      "LCW/LCWRA",
+      liabilityStartDate,
+      dateOfBirth = Some(dateOfBirth),
+      endDate = Some(liabilityEndDate)
+    )
 
   val validInsertUCWithOutEndDateHipRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, dateOfBirth = Some(dateOfBirth))
 
   val validInsertUCWithEndDateHipRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dateOfBirth))
 
   val validHipLCWLCWRATerminationRequest: JsValue =
     hipUcTerminationPayload("LCW/LCWRA", liabilityStartDate, liabilityEndDate)
@@ -104,16 +127,21 @@ trait TestDataHip {
 
   // ---- Invalid UC Liability payloads ----
   val invalidHipRecordTypeLiabilityRequest: JsValue =
-    hipUcLiabilityPayload("UC/ABC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload(
+      "UC/ABC",
+      liabilityStartDate,
+      endDate = Some(liabilityEndDate),
+      dateOfBirth = Some(dateOfBirth)
+    )
 
   val invalidHipDateOfBirthLiabilityRequest: JsValue =
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some(liabilityEndDate), dateOfBirth = Some("20022-10-10"))
 
   val invalidHipStartDateLiabilityRequest: JsValue =
-    hipUcLiabilityPayload("UC", "2015-88-19", endDate = Some(liabilityEndDate), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", "2015-88-19", endDate = Some(liabilityEndDate), dateOfBirth = Some(dateOfBirth))
 
   val invalidHipEndDateLiabilityRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-99-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-99-04"), dateOfBirth = Some(dateOfBirth))
 
   // ---- Invalid Termination payloads ----
   val invalidHipRecordTypeTerminationRequest: JsValue =
@@ -128,7 +156,7 @@ trait TestDataHip {
   // -----Insert Unprocessable Entity------
 
   val conflictingInsertLiabilityHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val startDateBefore16thBirthdayInsertHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"))
@@ -137,43 +165,43 @@ trait TestDataHip {
     hipUcLiabilityPayload("UC", startDate = "2025-04-15", dateOfBirth = Some("1957-04-14"))
 
   val startDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val startAndEndDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val endDateAfterStatePensionAgeInsertHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some("1957-04-14"))
 
   val endDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val notWithinUCPeriodInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val lcwLcwrOverrideInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val notMatchingLiabilityInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val startDateBefore29042013InsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", startDate = "2013-04-28", endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", startDate = "2013-04-28", endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val endDateBeforeStartDateInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val pseudoAccountInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val nonLiveAccountInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val accountTransferredIsleOfManInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val startDateAfterDeath2InsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   // -----Terminate Unprocessable Entity------
 
@@ -227,25 +255,30 @@ trait TestDataHip {
 
   // ---- Invalid payloads ----
   val invalidCreditRecordTypeTTTRequest: JsValue =
-    hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val invalidCreditRecordTypeTTTHIPRequest: JsValue =
-    hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("TTT", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val emptyCreditRecordTypeRequest: JsValue =
-    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val invalidCreditActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("Dummy", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("Dummy", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val emptyCreditActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val emptyCreditRecordTypeHIPRequest: JsValue =
-    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dob), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload("", "2025-08-19", dateOfBirth = Some(dateOfBirth), endDate = Some("2025-08-20"))
 
   val invalidStartDateAfterEndDateActionTypeRequest: JsValue =
-    hipUcLiabilityPayload("UC", "2028-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-20"))
+    hipUcLiabilityPayload(
+      "UC",
+      startDate = "2028-08-19",
+      dateOfBirth = Some("2002-10-10"),
+      endDate = Some("2025-08-20")
+    )
 
   val invalidStartDateAfterEndDateActionTypeHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", "2028-08-19", dateOfBirth = Some("2002-10-10"), endDate = Some("2025-08-20"))
@@ -382,6 +415,6 @@ trait TestDataHip {
   // ------Forbidden------
 
   val validUCLiabilityRequest: JsValue =
-    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dob))
+    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dateOfBirth))
 
 }

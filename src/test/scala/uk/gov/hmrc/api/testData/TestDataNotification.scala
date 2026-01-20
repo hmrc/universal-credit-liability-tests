@@ -21,39 +21,27 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import java.util.UUID
 import scala.util.Random
 
-trait TestDataNotification {
-
-  val randomNino: String = "AE%06d".format(Random.nextInt(999999))
-
-  val originatorId: String  = UUID.randomUUID().toString
-  val correlationId: String = UUID.randomUUID().toString
-
-  val validHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> "application/json",
-      "correlationId"        -> correlationId,
-      "gov-uk-originator-id" -> originatorId
-    )
+trait TestDataNotification extends BaseTestData {
 
   val invalidHeaders: Seq[(String, String)] =
     Seq(
-      "Content-Type"  -> "application/json",
+      "Content-Type"  -> jsonContentType,
       "correlationId" -> correlationId
     )
 
   val invalidCorrelationIdHeaders: Seq[(String, String)] =
     Seq(
-      "Content-Type"         -> "application/json",
+      "Content-Type"         -> jsonContentType,
       "correlationId"        -> "XYZ-ABCS-3e8dae97-b586-4cef-8511-68ac12da9028",
-      "gov-uk-originator-id" -> originatorId
+      "gov-uk-originator-id" -> govUkOriginatorId
     )
   val missingCorrelationIdHeaders: Seq[(String, String)] =
     Seq(
-      "Content-Type"         -> "application/json",
-      "gov-uk-originator-id" -> originatorId
+      "Content-Type"         -> jsonContentType,
+      "gov-uk-originator-id" -> govUkOriginatorId
     )
 
-  private val dob                = "2002-10-10"
+  private val dateOfBirth        = "2002-10-10"
   private val insertStartDate    = "2025-08-19"
   private val terminateStartDate = "2015-08-19"
   private val terminateEndDate   = "2025-01-04"
@@ -81,10 +69,10 @@ trait TestDataNotification {
 
   // ---- Valid payloads ----
   val validInsertLCWLCWRALiabilityRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob))
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))
 
   val validInsertUCLiabilityRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob))
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))
 
   val validTerminationLCWLCWRALiabilityRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
@@ -94,37 +82,37 @@ trait TestDataNotification {
 
   // ---- Invalid Insert payloads ----
   val invalidInsertLCWLCWRALiabilityRequest: JsValue =
-    uclPayload("LCW/LCWRA/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dob))
+    uclPayload("LCW/LCWRA/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
 
   val invalidInsertUCLiabilityRequest: JsValue =
-    uclPayload("UC/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dob))
+    uclPayload("UC/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
 
   val invalidInsertCreditActionRequest: JsValue =
-    uclPayload("UC", "insert", terminateStartDate, dateOfBirth = Some(dob))
+    uclPayload("UC", "insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
 
   val invalidInsertDateOfBirthRequest: JsValue =
     uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some("202-10-10"))
 
   val invalidInsertStartDateRequest: JsValue =
-    uclPayload("UC", "Insert", "20288-08-19", dateOfBirth = Some(dob))
+    uclPayload("UC", "Insert", "20288-08-19", dateOfBirth = Some(dateOfBirth))
 
   val invalidInsertNINORequest: JsValue =
-    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dob), nino = "347654")
+    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dateOfBirth), nino = "347654")
 
   val emptyInsertCreditRecordTypeRequest: JsValue =
-    uclPayload("", "Insert", insertStartDate, dateOfBirth = Some(dob))
+    uclPayload("", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))
 
   val emptyInsertCreditActionRequest: JsValue =
-    uclPayload("LCW/LCWRA", "", insertStartDate, dateOfBirth = Some(dob))
+    uclPayload("LCW/LCWRA", "", insertStartDate, dateOfBirth = Some(dateOfBirth))
 
   val emptyInsertDateOfBirthRequest: JsValue =
     uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(""))
 
   val emptyInsertStartDateRequest: JsValue =
-    uclPayload("UC", "Insert", "", dateOfBirth = Some(dob))
+    uclPayload("UC", "Insert", "", dateOfBirth = Some(dateOfBirth))
 
   val emptyInsertNINORequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "")
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth), nino = "")
 
   // ---- Invalid Terminate payloads ----
 
@@ -210,6 +198,7 @@ trait TestDataNotification {
 
   val startDateAfterDeath2InsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AB150123")
+
 
   // ------Terminate Unprocessable entity -------
 
