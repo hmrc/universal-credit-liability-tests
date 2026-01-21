@@ -125,15 +125,10 @@ trait TestDataHip {
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
 
   val startDateBefore16thBirthdayInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload(
-      "UC",
-      startDate = "2023-04-05 ",
-      endDate = Some("2025-01-04"),
-      dateOfBirth = Some("2009-10-10")
-    )
+    hipUcLiabilityPayload("UC", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"))
 
   val startDateAfterStatePensionAgeInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", startDate = "2025-04-15", endDate = Some(""), dateOfBirth = Some("1957-04-14"))
+    hipUcLiabilityPayload("UC", startDate = "2025-04-15", dateOfBirth = Some("1957-04-14"))
 
   val startDateAfterDeathInsertHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dob))
@@ -221,6 +216,6 @@ trait TestDataHip {
   val accountTransferredIsleOfManTerminateHIPRequest: JsValue =
     hipUcTerminationPayload("LCW/LCWRA", liabilityStartDate, endDate = "2025-01-04")
 
-  val endDateMissingTerminateHIPRequest: JsValue =
-    hipUcTerminationPayload("UC", liabilityStartDate, endDate = "")
+  val startDateAfterDeath2TerminateHIPRequest: JsValue =
+    hipUcTerminationPayload("UC", liabilityStartDate, endDate = "2025-01-04")
 }

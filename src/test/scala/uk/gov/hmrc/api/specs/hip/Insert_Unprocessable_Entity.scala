@@ -26,9 +26,10 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
 
   Feature("422 Insert Unprocessable Entity scenarios") {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue, String, String)] = Seq(
+    val cases: Seq[(String, String, Seq[(String, String)], JsValue, String, String)] = Seq(
       (
         "UC_TC_032: ConflictLiability with Insert request",
+        "AA051234",
         validHeaders,
         conflictingInsertLiabilityHIPRequest,
         "55038",
@@ -36,6 +37,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_026: Start date before 16th Birthday with insert request",
+        "AA100000",
         validHeaders,
         startDateBefore16thBirthdayInsertHIPRequest,
         "65026",
@@ -43,6 +45,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UCL_TC_027: Start date after state pension age with insert request",
+        "AA040000",
         validHeaders,
         startDateAfterStatePensionAgeInsertHIPRequest,
         "55029",
@@ -50,6 +53,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_028: Start date After Death with insert request",
+        "AA070000",
         validHeaders,
         startDateAfterDeathInsertHIPRequest,
         "64996",
@@ -57,6 +61,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_030: Start date and End date after death with insert request",
+        "AA010000",
         validHeaders,
         startAndEndDateAfterDeathInsertHIPRequest,
         "55006",
@@ -64,6 +69,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_029: End date after State pension age with insert request",
+        "AA020000",
         validHeaders,
         endDateAfterStatePensionAgeInsertHIPRequest,
         "55008",
@@ -71,6 +77,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_031: End date after death with insert request",
+        "AA030000",
         validHeaders,
         endDateAfterDeathInsertHIPRequest,
         "55027",
@@ -78,6 +85,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_033: Not Within UC Period with Insert request",
+        "AA080000",
         validHeaders,
         notWithinUCPeriodInsertHIPRequest,
         "64997",
@@ -85,6 +93,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_034: LCWLCWRA Override with Insert request",
+        "AA090000",
         validHeaders,
         lcwLcwrOverrideInsertHIPRequest,
         "64998",
@@ -92,6 +101,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_035: NoMatchingLiability with Insert request",
+        "AA060000",
         validHeaders,
         notMatchingLiabilityInsertHIPRequest,
         "55039",
@@ -99,6 +109,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_017: StartDateBefore29042013 with Insert request",
+        "AA110000",
         validHeaders,
         startDateBefore29042013InsertHIPRequest,
         "65536",
@@ -106,6 +117,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_018: EndDateBeforeStartDate with Insert request",
+        "AA120000",
         validHeaders,
         endDateBeforeStartDateInsertHIPRequest,
         "65537",
@@ -113,6 +125,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_023: PseudoAccount with Insert request",
+        "AA130000",
         validHeaders,
         pseudoAccountInsertHIPRequest,
         "65541",
@@ -120,6 +133,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_024: NonLiveAccount with Insert request",
+        "AA140000",
         validHeaders,
         nonLiveAccountInsertHIPRequest,
         "65542",
@@ -127,6 +141,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_025: AccountTransferredIsleOfMan with Insert request",
+        "AA150000",
         validHeaders,
         accountTransferredIsleOfManInsertHIPRequest,
         "65543",
@@ -134,18 +149,19 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_028: StartDateAfterDeath2 with Insert request",
+        "AA160000",
         validHeaders,
         startDateAfterDeath2InsertHIPRequest,
         "99999",
         "Start Date after Death"
       )
     )
-    cases.foreach { case (scenarioName, headers, payload, expCode, expReason) =>
+    cases.foreach { case (scenarioName, nino, headers, payload, expCode, expReason) =>
       Scenario(s"$scenarioName: Should return 422 with code $expCode") {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postHipUcLiability(headers, randomNino, requestBody = payload)
+        val response = apiService.postHipUcLiability(headers, nino = nino, requestBody = payload)
 
         Then("422 Unprocessable Entity should be returned")
         assert(

@@ -26,9 +26,10 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
 
   Feature("422 Terminate Unprocessable Entity scenarios") {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue, String, String)] = Seq(
+    val cases: Seq[(String, String, Seq[(String, String)], JsValue, String, String)] = Seq(
       (
         "UC_TC_045: ConflictLiability with terminate request",
+        "AA050000",
         validHeaders,
         conflictingTerminateLiabilityHIPRequest,
         "55038",
@@ -36,6 +37,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_039: Start date before 16th Birthday with terminate request",
+        "AA100000",
         validHeaders,
         startDateBefore16thBirthdayTerminateHIPRequest,
         "65026",
@@ -43,6 +45,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UCL_TC_040: Start date after state pension age with terminate request",
+        "AA040000",
         validHeaders,
         startDateAfterStatePensionAgeTerminateHIPRequest,
         "55029",
@@ -50,6 +53,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_041: Start date After Death with terminate request",
+        "AA070000",
         validHeaders,
         startDateAfterDeathTerminateHIPRequest,
         "64996",
@@ -57,6 +61,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_043: Start date and End date after death with terminate request",
+        "AA010000",
         validHeaders,
         startAndEndDateAfterDeathTerminateHIPRequest,
         "55006",
@@ -64,6 +69,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_042: End date after State pension age with terminate request",
+        "AA020000",
         validHeaders,
         endDateAfterStatePensionAgeTerminateHIPRequest,
         "55008",
@@ -71,6 +77,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_044: End date after death with terminate request",
+        "AA030000",
         validHeaders,
         endDateAfterDeathTerminateHIPRequest,
         "55027",
@@ -78,6 +85,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_046: Not Within UC Period with terminate request",
+        "AA080000",
         validHeaders,
         notWithinUCPeriodTerminateHIPRequest,
         "64997",
@@ -85,6 +93,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_047: LCWLCWRA Override with terminate request",
+        "AA090000",
         validHeaders,
         lcwLcwrOverrideTerminateHIPRequest,
         "64998",
@@ -92,6 +101,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_048: NoMatchingLiability with terminate request",
+        "AA060000",
         validHeaders,
         notMatchingLiabilityTerminateHIPRequest,
         "55039",
@@ -99,6 +109,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_049: StartDateBefore29042013 with terminate request",
+        "AA110000",
         validHeaders,
         startDateBefore29042013TerminateHIPRequest,
         "65536",
@@ -106,6 +117,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_050: EndDateBeforeStartDate with terminate request",
+        "AA120000",
         validHeaders,
         endDateBeforeStartDateTerminateHIPRequest,
         "65537",
@@ -113,6 +125,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_036: PseudoAccount with terminate request",
+        "AA130000",
         validHeaders,
         pseudoAccountTerminateHIPRequest,
         "65541",
@@ -120,6 +133,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_037: NonLiveAccount with terminate request",
+        "AA140000",
         validHeaders,
         nonLiveAccountTerminateHIPRequest,
         "65542",
@@ -127,25 +141,27 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_038: AccountTransferredIsleOfMan with terminate request",
+        "AA150000",
         validHeaders,
         accountTransferredIsleOfManTerminateHIPRequest,
         "65543",
         "The NINO input matches an account that has been transferred to the Isle of Man"
       ),
       (
-        "UC_TC_051: End date missing with terminate request",
+        "UC_TC_028: StartDateAfterDeath2 with Insert request",
+        "AA160000",
         validHeaders,
-        endDateMissingTerminateHIPRequest,
-        "65538",
-        "End date missing but the input was a Termination"
+        startDateAfterDeath2TerminateHIPRequest,
+        "99999",
+        "Start Date after Death"
       )
     )
-    cases.foreach { case (scenarioName, headers, payload, expCode, expReason) =>
+    cases.foreach { case (scenarioName, nino, headers, payload, expCode, expReason) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postHipUcTermination(headers, randomNino, payload)
+        val response = apiService.postHipUcTermination(headers, nino = nino, payload)
 
         Then("422 Unprocessable Entity should be returned")
         assert(
