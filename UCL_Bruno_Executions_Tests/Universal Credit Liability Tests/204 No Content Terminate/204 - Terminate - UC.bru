@@ -27,6 +27,6 @@ body:json {
   }
 }
 
-vars:pre-request {
-  Nino: AE674774
+assert {
+  res.status: eq 204
 }

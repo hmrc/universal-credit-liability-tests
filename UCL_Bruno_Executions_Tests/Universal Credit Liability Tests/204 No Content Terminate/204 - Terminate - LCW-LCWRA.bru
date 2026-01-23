@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE757467",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2015-08-19",
@@ -27,6 +27,6 @@ body:json {
   }
 }
 
-vars:pre-request {
-  nino: AE757467
+assert {
+  res.status: eq 204
 }

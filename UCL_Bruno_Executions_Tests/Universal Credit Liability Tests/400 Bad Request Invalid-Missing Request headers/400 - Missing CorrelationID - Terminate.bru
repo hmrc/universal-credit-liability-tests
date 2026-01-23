@@ -1,7 +1,7 @@
 meta {
-  name: FAILED - 403 - Invalid gov-uk-originator-id from Header Terminate
+  name: 400 - Missing CorrelationID - Terminate
   type: http
-  seq: 1
+  seq: 4
 }
 
 post {
@@ -14,7 +14,6 @@ headers {
   Authorization: {{authorization}}
   Content-Type: application/json
   gov-uk-originator-id: ""
-  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
 }
 
 body:json {
@@ -25,4 +24,8 @@ body:json {
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2025-01-04"
   }
+}
+
+assert {
+  res.status: eq 400
 }

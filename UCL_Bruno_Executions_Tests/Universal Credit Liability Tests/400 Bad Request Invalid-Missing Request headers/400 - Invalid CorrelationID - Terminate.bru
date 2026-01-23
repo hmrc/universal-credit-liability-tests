@@ -1,7 +1,7 @@
 meta {
-  name: FAILED - 403 - Invalid gov-uk-originator-id from Header
+  name: 400 - Invalid CorrelationID - Terminate
   type: http
-  seq: 1
+  seq: 3
 }
 
 post {
@@ -13,16 +13,20 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
+  correlationId: XYZ-ABCS-3e8dae97-b586-4cef-8511-68ac12da9028
   gov-uk-originator-id: ""
-  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
 }
 
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
+}
+
+assert {
+  res.status: eq 400
 }
