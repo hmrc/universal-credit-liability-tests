@@ -19,10 +19,14 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE674774",
     "universalCreditRecordType": "UC",
     "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
+    "liabilityStartDate": "2015-08-19",
     "liabilityEndDate": "2025-01-04"
   }
+}
+
+vars:pre-request {
+  Nino: AE674774
 }

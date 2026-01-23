@@ -1,7 +1,7 @@
 meta {
-  name: 204 - Insert - LCW-LCWRA
+  name: 422 - Start date after StatePensionAge and error code 55029
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
@@ -23,10 +23,11 @@ body:json {
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2025-08-19"
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
 }
 
 vars:pre-request {
-  nino: AE988764
+  nino: AA040000
 }
