@@ -1,7 +1,7 @@
 meta {
-  name: 422 - Not Within UC period and error code 64997
+  name: 403 - gov-uk-originator-id invalid characters
   type: http
-  seq: 8
+  seq: 4
 }
 
 post {
@@ -14,13 +14,13 @@ headers {
   Authorization: {{authorization}}
   Content-Type: application/json
   correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
-  gov-uk-originator-id: ""
+  gov-uk-originator-id: $&@
 }
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE008000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "UC",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
     "liabilityStartDate": "2025-08-19"
@@ -28,5 +28,5 @@ body:json {
 }
 
 assert {
-  res.status: eq 422
+  res.status: eq 403
 }

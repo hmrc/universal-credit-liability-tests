@@ -1,7 +1,7 @@
 meta {
-  name: 422 - Not Within UC period and error code 64997
+  name: 500 - internal Server Error Terminate
   type: http
-  seq: 8
+  seq: 2
 }
 
 post {
@@ -19,14 +19,14 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE008000",
+    "nationalInsuranceNumber": "AE500000",
     "universalCreditRecordType": "LCW/LCWRA",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
 }
 
 assert {
-  res.status: eq 422
+  res.status: eq 500
 }
