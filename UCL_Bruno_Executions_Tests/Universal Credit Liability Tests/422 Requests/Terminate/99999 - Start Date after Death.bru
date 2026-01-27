@@ -1,0 +1,36 @@
+meta {
+  name: 99999 - Start Date after Death
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: 3e8dae97-b586-4cef-8511-68ac12da9028
+  gov-uk-originator-id: DWP-UC-6
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "BE016000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
+  }
+}
+
+vars:pre-request {
+  nino: AA160000
+}
+
+assert {
+  res.status: eq 422
+}

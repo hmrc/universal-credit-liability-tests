@@ -1,6 +1,6 @@
 meta {
-  name: 400 Requests
-  seq: 6
+  name: 403 Requests
+  seq: 8
 }
 
 auth {
@@ -8,14 +8,11 @@ auth {
 }
 
 script:pre-request {
-  if (bru.getEnvVar("ENVIRONMENT") === 'local') {
+  if (bru.getEnvVar("ENVIRONMENT") === 'LOCAL') {
     const helpers = require('./_lib/helpers');
   
     const nino = helpers.randomNino();
     bru.setEnvVar("nino", nino);
-  
-    const invalidRndNino = helpers.invalidNino;
-    bru.setEnvVar("invalidNino", invalidRndNino);
   }
   
 }
