@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '65537'
+  res.body.message: eq 'End date before start date'
 }

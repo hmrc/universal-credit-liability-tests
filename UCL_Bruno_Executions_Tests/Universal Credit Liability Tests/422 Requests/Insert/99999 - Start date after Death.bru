@@ -1,7 +1,7 @@
 meta {
-  name: 65543 - Account Transferred IsleOfMan
+  name: 99999 - Start Date after Death
   type: http
-  seq: 15
+  seq: 16
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE015000",
+    "nationalInsuranceNumber": "BE016000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '99999'
+  res.body.message: eq 'Start Date after Death'
 }

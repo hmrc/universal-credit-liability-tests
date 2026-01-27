@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '55039'
+  res.body.message: eq 'NO corresponding liability found'
 }

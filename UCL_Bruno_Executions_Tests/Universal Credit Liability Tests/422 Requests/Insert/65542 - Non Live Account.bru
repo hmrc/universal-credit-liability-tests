@@ -1,5 +1,5 @@
 meta {
-  name: 65542 - Non Live Account
+  name: 65542 - The NINO input matches a non-live account
   type: http
   seq: 14
 }
@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '65542'
+  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
 }

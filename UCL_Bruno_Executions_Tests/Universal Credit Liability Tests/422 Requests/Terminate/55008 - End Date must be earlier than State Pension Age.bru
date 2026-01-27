@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '55008'
+  res.body.message: eq 'End Date must be earlier than State Pension Age'
 }

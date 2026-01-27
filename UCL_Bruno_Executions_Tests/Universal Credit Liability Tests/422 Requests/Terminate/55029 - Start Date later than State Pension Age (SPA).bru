@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '55029'
+  res.body.message: eq 'Start Date later than SPA'
 }

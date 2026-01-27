@@ -27,10 +27,8 @@ body:json {
   }
 }
 
-vars:pre-request {
-  nino: AA070000
-}
-
 assert {
   res.status: eq 422
+  res.body.code: eq '64996'
+  res.body.message: eq 'Start Date is not before date of death'
 }

@@ -26,3 +26,9 @@ body:json {
     "liabilityStartDate": "2025-08-19"
   }
 }
+
+assert {
+  res.status: eq 422
+  res.body.code: eq '55027'
+  res.body.message: eq 'End Date later than Date of Death'
+}

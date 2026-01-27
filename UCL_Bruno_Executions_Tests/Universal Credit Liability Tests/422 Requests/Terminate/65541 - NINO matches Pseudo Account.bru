@@ -27,10 +27,8 @@ body:json {
   }
 }
 
-vars:pre-request {
-  nino: AA130000
-}
-
 assert {
   res.status: eq 422
+  res.body.code: eq '65541'
+  res.body.message: eq 'The NINO input matches a Pseudo Account'
 }

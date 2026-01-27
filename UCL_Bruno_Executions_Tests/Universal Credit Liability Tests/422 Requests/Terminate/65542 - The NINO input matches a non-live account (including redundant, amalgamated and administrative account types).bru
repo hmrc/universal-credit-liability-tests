@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '65542'
+  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
 }

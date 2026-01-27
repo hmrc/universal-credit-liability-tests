@@ -27,10 +27,8 @@ body:json {
   }
 }
 
-vars:pre-request {
-  nino: AA060000
-}
-
 assert {
   res.status: eq 422
+  res.body.code: eq '55039'
+  res.body.message: eq 'NO corresponding liability found'
 }

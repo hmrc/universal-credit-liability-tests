@@ -1,7 +1,7 @@
 meta {
-  name: 99999 - Start date after Death2
+  name: 65543 - The NINO input matches an account that has been transferred to the Isle of Man
   type: http
-  seq: 16
+  seq: 15
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE016000",
+    "nationalInsuranceNumber": "BE015000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '65543'
+  res.body.message: eq 'The NINO input matches an account that has been transferred to the Isle of Man'
 }

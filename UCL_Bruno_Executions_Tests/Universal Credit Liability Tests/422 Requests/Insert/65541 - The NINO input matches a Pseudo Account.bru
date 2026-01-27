@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body.code: eq '65541'
+  res.body.message: eq 'The NINO input matches a Pseudo Account'
 }
