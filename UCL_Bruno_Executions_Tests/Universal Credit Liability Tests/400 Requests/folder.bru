@@ -1,0 +1,20 @@
+meta {
+  name: 400 Requests
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'local') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  
+    const invalidRndNino = helpers.invalidNino;
+    bru.setEnvVar("invalidNino", invalidRndNino);
+  }
+  
+}
