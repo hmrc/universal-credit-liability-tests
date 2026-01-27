@@ -1,0 +1,17 @@
+meta {
+  name: 400 Bad Request Insert
+  seq: 2
+}
+
+script:pre-request {
+  if (bru.getEnvVar("ENVIRONMENT") === 'local') {
+    const helpers = require('./_lib/helpers');
+  
+    const nino = helpers.randomNino();
+    bru.setEnvVar("nino", nino);
+  
+    const invalidRndNino = helpers.invalidNino;
+    bru.setEnvVar("invalidNino", invalidRndNino);
+  }
+  
+}
