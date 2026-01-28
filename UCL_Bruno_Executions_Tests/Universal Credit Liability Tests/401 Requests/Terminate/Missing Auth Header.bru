@@ -28,6 +28,7 @@ body:json {
 
 assert {
   res.status: eq 401
+  res.body: isJson
   res.body.code: eq 'MISSING_CREDENTIALS'
   res.body.message: eq 'Bearer token not supplied'
 }
