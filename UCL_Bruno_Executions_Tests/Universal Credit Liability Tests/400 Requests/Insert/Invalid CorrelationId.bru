@@ -1,7 +1,7 @@
 meta {
-  name: 400 - Missing CorrelationID - Terminate
+  name: Invalid CorrelationId
   type: http
-  seq: 4
+  seq: 1
 }
 
 post {
@@ -13,6 +13,7 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
+  correlationId: XYZ-ABCS-3e8dae97-b586-4cef-8511-68ac12da9028
   gov-uk-originator-id: DWP-UC-6
 }
 
@@ -20,9 +21,9 @@ body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
