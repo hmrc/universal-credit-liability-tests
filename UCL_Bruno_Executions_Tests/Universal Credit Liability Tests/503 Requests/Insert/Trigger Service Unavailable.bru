@@ -29,4 +29,7 @@ body:json {
 
 assert {
   res.status: eq 503
+  res.body: isJson
+  res.body.code: eq 'SERVER_ERROR'
+  res.body.message: eq 'The 'misc/universal-credit/liability' API is currently unavailable'
 }
