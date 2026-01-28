@@ -1,7 +1,7 @@
 meta {
-  name: 55038 - A conflicting or identical Liability is already recorded
+  name: 64996 - Start Date not before date of death
   type: http
-  seq: 5
+  seq: 7
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE005000",
+    "nationalInsuranceNumber": "BE007000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -29,6 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
-  res.body.code: eq '55038'
-  res.body.message: eq 'A conflicting or identical Liability is already recorded'
+  res.body.code: eq '64996'
+  res.body.message: eq 'Start Date is not before date of death'
 }

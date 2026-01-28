@@ -1,7 +1,7 @@
 meta {
-  name: 64996 - Start Date is not before date of death
+  name: 64998 - LCW/LCWRA Override not within LCW/LCWRA period
   type: http
-  seq: 7
+  seq: 9
 }
 
 post {
@@ -19,16 +19,16 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE007000",
+    "nationalInsuranceNumber": "BE009000",
     "universalCreditRecordType": "LCW/LCWRA",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
 }
 
 assert {
   res.status: eq 422
-  res.body.code: eq '64996'
-  res.body.message: eq 'Start Date is not before date of death'
+  res.body.code: eq '64998'
+  res.body.message: eq 'LCW/LCWRA Override not within a period of LCW/LCWRA'
 }

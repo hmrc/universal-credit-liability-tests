@@ -1,7 +1,7 @@
 meta {
-  name: 64998 - LCW/LCWRA Override not within a period of LCW/LCWRA
+  name: 55039 - No corresponding liability found
   type: http
-  seq: 9
+  seq: 6
 }
 
 post {
@@ -19,16 +19,16 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE009000",
+    "nationalInsuranceNumber": "BE006000",
     "universalCreditRecordType": "LCW/LCWRA",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
 assert {
   res.status: eq 422
-  res.body.code: eq '64998'
-  res.body.message: eq 'LCW/LCWRA Override not within a period of LCW/LCWRA'
+  res.body.code: eq '55039'
+  res.body.message: eq 'NO corresponding liability found'
 }

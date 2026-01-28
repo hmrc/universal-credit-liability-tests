@@ -1,7 +1,7 @@
 meta {
-  name: 64996 - Start Date is not before date of death
+  name: 65542 - NINO matches non-live account
   type: http
-  seq: 7
+  seq: 14
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE007000",
+    "nationalInsuranceNumber": "BE014000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -29,6 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
-  res.body.code: eq '64996'
-  res.body.message: eq 'Start Date is not before date of death'
+  res.body.code: eq '65542'
+  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
 }

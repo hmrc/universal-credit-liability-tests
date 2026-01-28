@@ -1,7 +1,7 @@
 meta {
-  name: 65541 - The NINO input matches a Pseudo Account
+  name: 65542 - NINO matches non-live account
   type: http
-  seq: 13
+  seq: 14
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE013000",
+    "nationalInsuranceNumber": "BE014000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
@@ -29,6 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
-  res.body.code: eq '65541'
-  res.body.message: eq 'The NINO input matches a Pseudo Account'
+  res.body.code: eq '65542'
+  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
 }

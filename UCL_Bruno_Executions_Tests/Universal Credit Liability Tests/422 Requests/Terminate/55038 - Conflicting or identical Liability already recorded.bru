@@ -1,7 +1,7 @@
 meta {
-  name: 65542 - The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)
+  name: 55038 - Conflicting or identical Liability already recorded
   type: http
-  seq: 14
+  seq: 5
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE014000",
+    "nationalInsuranceNumber": "BE005000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -29,6 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
-  res.body.code: eq '65542'
-  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
+  res.body.code: eq '55038'
+  res.body.message: eq 'A conflicting or identical Liability is already recorded'
 }

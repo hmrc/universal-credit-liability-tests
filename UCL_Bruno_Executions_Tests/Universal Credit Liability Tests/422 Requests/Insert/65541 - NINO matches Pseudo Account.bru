@@ -1,7 +1,7 @@
 meta {
-  name: 65543 - NINO matches account transferred to Isle of Man
+  name: 65541 - NINO matches Pseudo Account
   type: http
-  seq: 15
+  seq: 13
 }
 
 post {
@@ -19,7 +19,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE015000",
+    "nationalInsuranceNumber": "BE013000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
@@ -29,6 +29,6 @@ body:json {
 
 assert {
   res.status: eq 422
-  res.body.code: eq '65543'
-  res.body.message: eq 'The NINO input matches an account that has been transferred to the Isle of Man'
+  res.body.code: eq '65541'
+  res.body.message: eq 'The NINO input matches a Pseudo Account'
 }
