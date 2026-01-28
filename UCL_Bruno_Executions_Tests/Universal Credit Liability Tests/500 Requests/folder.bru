@@ -3,6 +3,11 @@ meta {
   seq: 11
 }
 
-auth {
-  mode: inherit
+script:pre-request {
+  if (['local', 'development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
+    const helpers = require('./_lib/helpers');
+
+    const govUkOriginatorId = helpers.randomGovUkOriginatorId();
+    bru.setEnvVar("govUkOriginatorId", govUkOriginatorId);
+  }
 }
