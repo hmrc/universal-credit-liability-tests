@@ -29,6 +29,7 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body: isJson
   res.body.code: eq '55038'
   res.body.message: eq 'A conflicting or identical Liability is already recorded'
 }

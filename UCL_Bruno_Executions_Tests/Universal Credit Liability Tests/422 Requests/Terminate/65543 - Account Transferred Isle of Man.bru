@@ -29,6 +29,7 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body: isJson
   res.body.code: eq '65543'
   res.body.message: eq 'The NINO input matches an account that has been transferred to the Isle of Man'
 }

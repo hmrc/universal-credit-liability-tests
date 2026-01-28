@@ -29,6 +29,7 @@ body:json {
 
 assert {
   res.status: eq 422
+  res.body: isJson
   res.body.code: eq '64996'
   res.body.message: eq 'Start Date is not before date of death'
 }
