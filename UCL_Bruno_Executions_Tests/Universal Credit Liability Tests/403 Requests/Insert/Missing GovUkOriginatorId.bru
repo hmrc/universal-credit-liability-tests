@@ -1,5 +1,5 @@
 meta {
-  name: Invalid GovUkOriginatorId
+  name: Missing GovUkOriginatorId
   type: http
   seq: 2
 }
@@ -14,12 +14,11 @@ headers {
   Authorization: {{authorization}}
   Content-Type: application/json
   correlationId: {{$randomUUID}}
-  gov-uk-originator-id: QQ
 }
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE403000",
     "universalCreditRecordType": "UC",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
@@ -28,5 +27,7 @@ body:json {
 }
 
 assert {
-  res.status: eq 400
+  res.status: eq 403
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
 }

@@ -7,12 +7,9 @@ const randomNino = () => {
   return `AA${number}`;
 }
 
-const randomUniversalCreditRecordType = () => {
-  return getRandomElement(['UC', 'LCW/LCWRA']);
-}
-
-const randomUniversalCreditAction = () => {
-  return getRandomElement(['Insert', 'Terminate']);
+const randomInvalidNino = () => {
+  const number = `${Math.floor(Math.random() * 10000000)}`.padStart(8, '0');
+  return `ZZ${number}`;
 }
 
 const randomGovUkOriginatorId = () => {
@@ -23,12 +20,18 @@ const randomGovUkOriginatorId = () => {
       .join('');
 }
 
-const invalidNino = 'QQ1234567890';
+const randomUniversalCreditRecordType = () => {
+  return getRandomElement(['UC', 'LCW/LCWRA']);
+}
+
+const randomUniversalCreditAction = () => {
+  return getRandomElement(['Insert', 'Terminate']);
+}
 
 module.exports = {
   randomNino,
+  randomInvalidNino,
   randomGovUkOriginatorId,
   randomUniversalCreditRecordType,
-  randomUniversalCreditAction,
-  invalidNino
+  randomUniversalCreditAction
 };

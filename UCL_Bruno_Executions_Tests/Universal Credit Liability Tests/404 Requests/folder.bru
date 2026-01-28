@@ -6,11 +6,11 @@ meta {
 script:pre-request {
   if (['local', 'development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
     const helpers = require('./_lib/helpers');
-
-    const nino = helpers.randomNino();
-    bru.setEnvVar("nino", nino);
-
-    const govUkOriginatorId = helpers.randomGovUkOriginatorId();
-    bru.setEnvVar("govUkOriginatorId", govUkOriginatorId);
+  
+    const randomNino = helpers.randomNino();
+    bru.setEnvVar("nino", randomNino);
+  
+    const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
+    bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
   }
 }

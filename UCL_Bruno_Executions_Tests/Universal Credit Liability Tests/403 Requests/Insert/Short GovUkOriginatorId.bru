@@ -1,7 +1,7 @@
 meta {
-  name: Missing Token
+  name: Short GovUkOriginatorId
   type: http
-  seq: 3
+  seq: 4
 }
 
 post {
@@ -11,9 +11,10 @@ post {
 }
 
 headers {
+  Authorization: {{authorization}}
   Content-Type: application/json
   correlationId: {{$randomUUID}}
-  gov-uk-originator-id: {{govUkOriginatorId}}
+  gov-uk-originator-id: QQ
 }
 
 body:json {
@@ -27,7 +28,7 @@ body:json {
 }
 
 assert {
-  res.status: eq 401
-  res.body.code: eq 'MISSING_CREDENTIALS'
-  res.body.message: eq 'Bearer token not supplied'
+  res.status: eq 403
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
 }

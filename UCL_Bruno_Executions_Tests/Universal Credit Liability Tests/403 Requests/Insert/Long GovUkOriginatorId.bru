@@ -1,7 +1,7 @@
 meta {
-  name: Invalid GovUkOriginatorId
+  name: Long GovUkOriginatorId
   type: http
-  seq: 1
+  seq: 3
 }
 
 post {
@@ -14,19 +14,21 @@ headers {
   Authorization: {{authorization}}
   Content-Type: application/json
   correlationId: {{$randomUUID}}
-  gov-uk-originator-id: QQ
+  gov-uk-originator-id: gov-uk-originator-id-longer-than-40-characters
 }
 
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
 assert {
-  res.status: eq 400
+  res.status: eq 403
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
 }

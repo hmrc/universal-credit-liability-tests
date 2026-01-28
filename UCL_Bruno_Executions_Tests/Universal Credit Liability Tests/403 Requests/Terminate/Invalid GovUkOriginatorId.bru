@@ -1,7 +1,7 @@
 meta {
-  name: Invalid gov-uk-originator-id
+  name: Invalid GovUkOriginatorId
   type: http
-  seq: 11
+  seq: 1
 }
 
 post {
@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 403
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
 }

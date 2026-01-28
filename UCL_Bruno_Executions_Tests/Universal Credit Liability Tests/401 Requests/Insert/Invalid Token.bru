@@ -11,7 +11,7 @@ post {
 }
 
 headers {
-  Authorization: {{authorization}+c}
+  Authorization: INVALID_AUTHORIZATION_TOKEN
   Content-Type: application/json
   correlationId: {{$randomUUID}}
   gov-uk-originator-id: {{govUkOriginatorId}}

@@ -7,8 +7,8 @@ script:pre-request {
   if (bru.getEnvVar("ENVIRONMENT") === 'Local') {
     const helpers = require('./_lib/helpers');
   
-    const nino = helpers.randomNino();
-    bru.setEnvVar("nino", nino);
+    const randomNino = helpers.randomNino();
+    bru.setEnvVar("nino", randomNino);
   }
   
 }
