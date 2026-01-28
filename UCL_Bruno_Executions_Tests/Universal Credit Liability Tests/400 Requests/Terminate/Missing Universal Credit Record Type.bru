@@ -1,7 +1,7 @@
 meta {
   name: Missing Universal Credit Record Type
   type: http
-  seq: 2
+  seq: 7
 }
 
 post {
@@ -20,7 +20,6 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2025-01-04"
