@@ -13,7 +13,7 @@ post {
 headers {
   Content-Type: application/json
   correlationId: {{$randomUUID}}
-  gov-uk-originator-id: ""
+  gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
 body:json {
@@ -28,4 +28,6 @@ body:json {
 
 assert {
   res.status: eq 401
+  res.body.code: eq 'MISSING_CREDENTIALS'
+  res.body.message: eq 'Bearer token not supplied'
 }

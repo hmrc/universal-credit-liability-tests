@@ -14,7 +14,7 @@ headers {
   Authorization: {{authorization}+c}
   Content-Type: application/json
   correlationId: {{$randomUUID}}
-  gov-uk-originator-id: DWP-UC-6
+  gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
 body:json {
@@ -29,4 +29,6 @@ body:json {
 
 assert {
   res.status: eq 401
+  res.body.code: eq 'INVALID_CREDENTIALS'
+  res.body.message: eq 'Invalid bearer token'
 }
