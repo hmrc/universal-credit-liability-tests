@@ -29,6 +29,7 @@ body:json {
 
 assert {
   res.status: eq 403
+  res.body: isJson
   res.body.code: eq '403.2'
   res.body.message: eq 'Forbidden'
 }
