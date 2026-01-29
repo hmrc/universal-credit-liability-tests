@@ -1,7 +1,7 @@
 meta {
-  name: Missing Liability End date
+  name: Trigger BadRequest
   type: http
-  seq: 12
+  seq: 11
 }
 
 post {
@@ -19,9 +19,10 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE400000",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Terminate",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-10-10",
     "liabilityStartDate": "2024-08-19"
   }
 }
@@ -30,5 +31,5 @@ assert {
   res.status: eq 400
   res.body: isJson
   res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityEndDate'
+  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: correlationId'
 }

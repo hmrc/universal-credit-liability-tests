@@ -1,7 +1,7 @@
 meta {
-  name: Missing Liability End date
+  name: Trigger Forbidden
   type: http
-  seq: 12
+  seq: 5
 }
 
 post {
@@ -19,16 +19,17 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE403000",
     "universalCreditRecordType": "UC",
     "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2024-08-19"
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
 }
 
 assert {
-  res.status: eq 400
+  res.status: eq 403
   res.body: isJson
-  res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityEndDate'
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
 }

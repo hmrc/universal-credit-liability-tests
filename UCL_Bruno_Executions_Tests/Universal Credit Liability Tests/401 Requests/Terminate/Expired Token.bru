@@ -20,22 +20,21 @@ body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2025-01-04"
   }
 }
 
 script:pre-request {
-  await bru.runRequest('Auth/Local - Expired Token');
-
   const token = bru.getVar('expiredToken');
+
   if (!token) {
-    throw new Error("No token found after running Setup.");
+    throw new Error("No token found. Please run the 'Setup - Get Expired Token' request first.");
   }
 
-  const delay = new Promise(resolve => setTimeout(resolve, 2000));
-  await delay;
+  console.log("Waiting 2 seconds for token to expire...");
+  await new Promise(r => setTimeout(r, 2000));
 
   req.setHeader('Authorization', token);
 }
