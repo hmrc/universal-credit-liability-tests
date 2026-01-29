@@ -1,7 +1,7 @@
 meta {
-  name: Trigger Service Unavailable
+  name: Trigger NotFound
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -19,8 +19,8 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "AE503000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "nationalInsuranceNumber": "AE404000",
+    "universalCreditRecordType": "UC",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
     "liabilityStartDate": "2025-08-19"
@@ -28,8 +28,6 @@ body:json {
 }
 
 assert {
-  res.status: eq 503
-  res.body: isJson
-  res.body.code: eq 'SERVER_ERROR'
-  res.body.message: eq 'The 'misc/universal-credit/liability' API is currently unavailable'
+  res.status: eq 404
+  res.body: isEmpty
 }

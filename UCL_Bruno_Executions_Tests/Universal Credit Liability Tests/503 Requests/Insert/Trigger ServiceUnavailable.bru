@@ -1,11 +1,11 @@
 meta {
-  name: Invalid Endpoint
+  name: Trigger ServiceUnavailable
   type: http
   seq: 1
 }
 
 post {
-  url: {{api-host}}/notification/invalid-insertion-url
+  url: {{api-host}}/notification
   body: json
   auth: none
 }
@@ -19,8 +19,8 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "UC",
+    "nationalInsuranceNumber": "AE503000",
+    "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-10-10",
     "liabilityStartDate": "2025-08-19"
@@ -28,6 +28,8 @@ body:json {
 }
 
 assert {
-  res.status: eq 404
-  res.body: isEmpty
+  res.status: eq 503
+  res.body: isJson
+  res.body.code: eq 'SERVER_ERROR'
+  res.body.message: eq 'The 'misc/universal-credit/liability' API is currently unavailable'
 }

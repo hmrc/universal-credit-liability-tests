@@ -29,7 +29,5 @@ body:json {
 
 assert {
   res.status: eq 404
-  res.body.statusCode: eq 404
-  res.body.message: eq 'URI not found'
-  res.body.requested: eq '/notification/invalid-termination-url'
+  res.body: isEmpty
 }
