@@ -1,7 +1,10 @@
 meta {
-  name: LCW/LCWRA
+  name: Valid LCW/LCWRA
   type: http
-  seq: 4
+  seq: 2
+  tags: [
+    DOWNSTREAM
+  ]
 }
 
 post {
@@ -21,9 +24,9 @@ body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "LCW/LCWRA",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2026-06-30"
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 

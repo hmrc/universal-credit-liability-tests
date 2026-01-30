@@ -1,7 +1,10 @@
 meta {
-  name: UC
+  name: Valid UC
   type: http
   seq: 1
+  tags: [
+    DOWNSTREAM
+  ]
 }
 
 post {
@@ -21,9 +24,9 @@ body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-04-27",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
