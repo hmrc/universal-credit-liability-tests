@@ -2,6 +2,9 @@ meta {
   name: 55008 - End Date must be earlier than State Pension Age
   type: http
   seq: 2
+  tags: [
+    DOWNSTREAM
+  ]
 }
 
 post {
@@ -22,7 +25,7 @@ body:json {
     "nationalInsuranceNumber": "BE002000",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
+    "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
   }
 }
