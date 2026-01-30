@@ -1,7 +1,10 @@
 meta {
-  name: Trigger BadRequest
+  name: Trigger HIP BadRequest
   type: http
-  seq: 13
+  seq: 2
+  tags: [
+    HIP
+  ]
 }
 
 post {
@@ -20,16 +23,19 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "AE400000",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
 assert {
-  res.status: eq 400
-  res.body: isJson
-  res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityEndDate'
+  res.status: eq 500
+  res.body: isEmpty
+}
+
+docs {
+  The AE400000 NINO triggers a 400 at the HIP/Stub level.
+  And the API controller maps this downstream error to a 500 InternalServerError.
 }

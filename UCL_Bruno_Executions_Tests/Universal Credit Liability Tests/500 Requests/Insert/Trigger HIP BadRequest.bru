@@ -1,7 +1,10 @@
 meta {
-  name: Trigger BadRequest
+  name: Trigger HIP BadRequest
   type: http
-  seq: 14
+  seq: 2
+  tags: [
+    DOWNSTREAM
+  ]
 }
 
 post {
@@ -20,7 +23,7 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "AE400000",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
@@ -30,4 +33,9 @@ body:json {
 assert {
   res.status: eq 500
   res.body: isEmpty
+}
+
+docs {
+  The AE400000 NINO triggers a 400 at the HIP/Stub level.
+  And the API controller maps this downstream error to a 500 InternalServerError.
 }

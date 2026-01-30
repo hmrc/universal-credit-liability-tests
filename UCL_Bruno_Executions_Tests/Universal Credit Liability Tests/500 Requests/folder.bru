@@ -9,5 +9,8 @@ script:pre-request {
 
     const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
     bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
+
+    const randomUniversalCreditRecordType = helpers.randomUniversalCreditRecordType();
+    bru.setEnvVar("universalCreditRecordType", randomUniversalCreditRecordType);
   }
 }

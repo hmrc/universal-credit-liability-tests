@@ -2,6 +2,9 @@ meta {
   name: Trigger InternalServerError
   type: http
   seq: 1
+  tags: [
+    DOWNSTREAM
+  ]
 }
 
 post {
@@ -20,10 +23,10 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "AE500000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
