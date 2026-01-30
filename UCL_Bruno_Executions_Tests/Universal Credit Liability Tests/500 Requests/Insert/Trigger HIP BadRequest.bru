@@ -1,7 +1,7 @@
 meta {
   name: Trigger BadRequest
   type: http
-  seq: 6
+  seq: 14
 }
 
 post {
@@ -21,15 +21,13 @@ body:json {
   {
     "nationalInsuranceNumber": "AE400000",
     "universalCreditRecordType": "UC",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2024-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
 assert {
-  res.status: eq 400
-  res.body: isJson
-  res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityEndDate'
+  res.status: eq 500
+  res.body: isEmpty
 }
