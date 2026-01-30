@@ -2,6 +2,9 @@ meta {
   name: Invalid Liability Start Date
   type: http
   seq: 6
+  tags: [
+    API
+  ]
 }
 
 post {
@@ -22,7 +25,7 @@ body:json {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
-    "dateOfBirth": "2025-10-10",
+    "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "INVALID_LIABILITY_START_DATE"
   }
 }

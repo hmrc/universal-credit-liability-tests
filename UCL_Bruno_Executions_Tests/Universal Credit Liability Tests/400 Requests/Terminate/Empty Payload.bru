@@ -1,7 +1,7 @@
 meta {
-  name: Missing National Insurance Number
+  name: Empty Payload
   type: http
-  seq: 8
+  seq: 13
   tags: [
     API
   ]
@@ -21,17 +21,12 @@ headers {
 }
 
 body:json {
-  {
-    "universalCreditRecordType": "UC",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2026-06-30"
-  }
+  {}
 }
 
 assert {
   res.status: eq 400
   res.body: isJson
   res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber'
+  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: universalCreditAction'
 }

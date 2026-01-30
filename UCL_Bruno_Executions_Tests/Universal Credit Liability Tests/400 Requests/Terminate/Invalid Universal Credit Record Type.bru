@@ -2,6 +2,9 @@ meta {
   name: Invalid Universal Credit Record Type
   type: http
   seq: 3
+  tags: [
+    API
+  ]
 }
 
 post {
@@ -22,8 +25,8 @@ body:json {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "INVALID_UNIVERSAL_CREDIT_RECORD_TYPE",
     "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2024-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
   }
 }
 

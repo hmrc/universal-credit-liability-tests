@@ -2,6 +2,9 @@ meta {
   name: Invalid Universal Credit Action
   type: http
   seq: 4
+  tags: [
+    API
+  ]
 }
 
 post {
@@ -22,8 +25,8 @@ body:json {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "INVALID_UNIVERSAL_CREDIT_ACTION",
-    "dateOfBirth": "2002-10-10",
-    "liabilityStartDate": "2024-08-19"
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
