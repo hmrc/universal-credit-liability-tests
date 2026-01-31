@@ -2,6 +2,9 @@ meta {
   name: Expired Token
   type: http
   seq: 3
+  tags: [
+    AUTH
+  ]
 }
 
 post {
@@ -12,35 +15,33 @@ post {
 
 headers {
   Content-Type: application/json
-  correlationId: {{$randomUUID}}
+  correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "liabilityEndDate": "2026-06-30"
   }
-}
-
-script:pre-request {
-  const token = bru.getVar('expiredToken');
-
-  if (!token) {
-    throw new Error("No token found. Please run the 'Setup - Get Expired Token' request first.");
-  }
-
-  console.log("Waiting 2 seconds for token to expire...");
-  await new Promise(r => setTimeout(r, 2000));
-
-  req.setHeader('Authorization', token);
 }
 
 assert {
   res.status: eq 401
+  res.headers.correlationid: {{correlationId}}
   res.body.code: eq 'UNAUTHORIZED'
   res.body.message: eq 'Session record not found'
+}
+
+script:pre-request {
+  const token = bru.getVar('expiredToken');
+  
+  if (!token) {
+    throw new Error("⚠️ Prerequisite Missing: Manually run 'Local - Expired Token' first.");
+  }
+  
+  req.setHeader('Authorization', token);
 }

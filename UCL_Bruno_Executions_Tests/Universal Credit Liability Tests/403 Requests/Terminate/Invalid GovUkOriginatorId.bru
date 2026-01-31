@@ -13,8 +13,8 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
-  correlationId: {{$randomUUID}}
-  gov-uk-originator-id: $&@
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: 1nV@L!d-0r!g!n4t0r-1D
 }
 
 body:json {
@@ -23,12 +23,13 @@ body:json {
     "universalCreditRecordType": "UC",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2025-01-04"
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
 assert {
   res.status: eq 403
+  res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '403.2'
   res.body.message: eq 'Forbidden'

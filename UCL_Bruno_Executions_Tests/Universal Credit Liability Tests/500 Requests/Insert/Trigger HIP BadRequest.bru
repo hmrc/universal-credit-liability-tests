@@ -16,7 +16,7 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
-  correlationId: {{$randomUUID}}
+  correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
@@ -32,6 +32,7 @@ body:json {
 
 assert {
   res.status: eq 500
+  res.headers.correlationid: {{correlationId}}
   res.body: isEmpty
 }
 

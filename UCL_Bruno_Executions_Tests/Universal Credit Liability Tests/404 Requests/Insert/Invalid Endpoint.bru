@@ -2,6 +2,9 @@ meta {
   name: Invalid Endpoint
   type: http
   seq: 1
+  tags: [
+    API
+  ]
 }
 
 post {
@@ -13,21 +16,22 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
-  correlationId: {{$randomUUID}}
+  correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-10-10",
+    "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
   }
 }
 
 assert {
   res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
   res.body: isEmpty
 }

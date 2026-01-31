@@ -1,8 +1,9 @@
 meta {
-  name: Unexpected Parameters
+  name: Trigger HIP Unauthorized
   type: http
-  seq: 15
+  seq: 3
   tags: [
+    AUTH
     DOWNSTREAM
   ]
 }
@@ -22,24 +23,21 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "{{nino}}",
+    "nationalInsuranceNumber": "AE401000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2026-06-30",
-    "extraField1": "Extra Field 1",
-    "extraField2": "Extra Field 2"
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
 assert {
-  res.status: eq 204
-  res.headers.correlationid: eq {{correlationId}}
+  res.status: eq 500
+  res.headers.correlationid: {{correlationId}}
   res.body: isEmpty
 }
 
-tests {
-  test("⚠️ API currently returns 204 for payload with extra parameters", function() {
-    expect(res.getStatus()).to.equal(204);
-  });
+docs {
+  The AE401000 NINO triggers a 401 at the HIP/Stub level.
+  And the API controller maps this downstream error to a 500 InternalServerError.
 }

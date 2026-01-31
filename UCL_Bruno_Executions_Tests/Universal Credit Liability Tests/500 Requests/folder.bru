@@ -2,15 +2,3 @@ meta {
   name: 500 Requests
   seq: 11
 }
-
-script:pre-request {
-  if (['local', 'development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
-    const helpers = require('./_lib/helpers');
-
-    const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
-    bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
-
-    const randomUniversalCreditRecordType = helpers.randomUniversalCreditRecordType();
-    bru.setEnvVar("universalCreditRecordType", randomUniversalCreditRecordType);
-  }
-}

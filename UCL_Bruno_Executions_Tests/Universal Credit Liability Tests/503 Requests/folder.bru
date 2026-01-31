@@ -2,12 +2,3 @@ meta {
   name: 503 Requests
   seq: 12
 }
-
-script:pre-request {
-  if (['local', 'development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
-    const helpers = require('./_lib/helpers');
-
-    const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
-    bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
-  }
-}

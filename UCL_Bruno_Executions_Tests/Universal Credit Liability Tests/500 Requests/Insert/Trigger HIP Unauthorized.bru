@@ -1,8 +1,9 @@
 meta {
-  name: 99999 - Start Date after Death
+  name: Trigger HIP Unauthorized
   type: http
-  seq: 16
+  seq: 3
   tags: [
+    AUTH
     DOWNSTREAM
   ]
 }
@@ -22,8 +23,8 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BE016000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "nationalInsuranceNumber": "AE401000",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
@@ -31,9 +32,12 @@ body:json {
 }
 
 assert {
-  res.status: eq 422
-  res.headers.correlationid: eq {{correlationId}}
-  res.body: isJson
-  res.body.code: eq '99999'
-  res.body.message: eq 'Start Date after Death'
+  res.status: eq 500
+  res.headers.correlationid: {{correlationId}}
+  res.body: isEmpty
+}
+
+docs {
+  The AE401000 NINO triggers a 401 at the HIP/Stub level.
+  And the API controller maps this downstream error to a 500 InternalServerError.
 }

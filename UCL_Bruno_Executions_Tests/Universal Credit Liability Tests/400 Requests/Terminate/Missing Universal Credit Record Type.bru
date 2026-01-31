@@ -16,7 +16,7 @@ post {
 headers {
   Authorization: {{authorization}}
   Content-Type: application/json
-  correlationId: {{$randomUUID}}
+  correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
 }
 
@@ -31,6 +31,7 @@ body:json {
 
 assert {
   res.status: eq 400
+  res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '400.1'
   res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType'
