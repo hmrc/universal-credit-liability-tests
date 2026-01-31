@@ -1,0 +1,57 @@
+script:pre-request {
+  if (['local', 'development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
+    const helpers = require('./_lib/helpers');
+
+    const randomNino = helpers.randomNino();
+    bru.setEnvVar("nino", randomNino);
+
+    const randomInvalidNino = helpers.randomInvalidNino();
+    bru.setEnvVar("invalidNino", randomInvalidNino);
+
+    const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
+    bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
+
+    const randomUniversalCreditRecordType = helpers.randomUniversalCreditRecordType();
+    bru.setEnvVar("universalCreditRecordType", randomUniversalCreditRecordType);
+  }
+
+  bru.setVar('correlationId', bru.interpolate('{{$guid}}'));
+}
+
+
+docs {
+  This collection validates the [universal-credit-liability-api](https://github.com/hmrc/universal-credit-liability-api) logic and its downstream integration.
+
+  ## Setup
+
+  Before running the collection, you must obtain a bearer token:
+  
+  1. Select the target **Environment** (Local, Development, QA, External Test)
+  2. Run the matching Auth request.
+
+  ## Tags
+
+  The requests are tagged as:
+  
+  - `API`: requests that only hit the `universal-credit-liability-api`
+  - `DOWNSTREAM`: requests that hit the downstream `universal-credit-liability-stubs` or HIP (depending on the Environment)
+
+  ## Running Tests
+
+  ### GUI
+
+  1. Right click on a folder
+  2. Click "Filter requests with tags"
+  3. Click in the "Included tags" input field and select `API` or `DOWNSTREAM`
+  4. Click "Run collection"
+
+  ### CLI
+
+  Install the [Bruno CLI](https://docs.usebruno.com/bru-cli/installation), and then use:
+
+  - `bru run`: run all requests
+  - `bru run --tag API`: run only API-tagged requests
+  - `bru run --tag DOWNSTREAM`: run only DOWNSTREAM-tagged requests
+
+}
+

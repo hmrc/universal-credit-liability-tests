@@ -1,0 +1,39 @@
+meta {
+  name: Invalid Liability End date
+  type: http
+  seq: 6
+  tags: [
+    API
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "INVALID_LIABILITY_END_DATE"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '400.1'
+  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityEndDate'
+}

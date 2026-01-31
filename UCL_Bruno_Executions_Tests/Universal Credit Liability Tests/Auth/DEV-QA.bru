@@ -1,7 +1,7 @@
 meta {
   name: DEV/QA
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
@@ -21,19 +21,15 @@ body:form-urlencoded {
 }
 
 script:pre-request {
-  if (!['qa', 'development'].includes(bru.getEnvVar("ENVIRONMENT") )) {
+  if (!['development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT") )) {
     throw new Error('Environment must be set to QA');
   }
   
   const TOTP = require("totp-generator").TOTP;
-  
   const totpSecret = bru.getEnvVar("TOTP_SECRET");
-  
   const { otp } = TOTP.generate(totpSecret , { digits: 8, algorithm: "SHA-512" });
   
   bru.setEnvVar("totp", otp);
-  
-  
 }
 
 script:post-response {
@@ -43,5 +39,4 @@ script:post-response {
   } else {
       throw new Error('Authentication failed');
   }
-  
 }

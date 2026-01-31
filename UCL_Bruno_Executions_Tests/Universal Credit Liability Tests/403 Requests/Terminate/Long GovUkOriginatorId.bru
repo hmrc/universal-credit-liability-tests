@@ -1,0 +1,36 @@
+meta {
+  name: Long GovUkOriginatorId
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: gov-uk-originator-id-longer-than-40-characters
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
+}

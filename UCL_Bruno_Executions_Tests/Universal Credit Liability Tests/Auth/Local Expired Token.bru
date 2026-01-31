@@ -1,13 +1,13 @@
 meta {
-  name: Local
+  name: Local - Expired Token
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
   url: http://localhost:8585/application/session/login
   body: json
-  auth: inherit
+  auth: none
 }
 
 body:json {
@@ -17,7 +17,7 @@ body:json {
     "applicationId": "{{$guid}}",
     "applicationName": "Local test client app",
     "enrolments": [],
-    "ttl": 5000
+    "ttl": 1  // Setting an expired token
   }
 }
 
@@ -30,8 +30,8 @@ script:pre-request {
 script:post-response {
   if (res.status === 201) {
     const authToken = res.getHeader('authorization');
-    bru.setEnvVar('authorization', authToken);
+    bru.setVar('expiredToken', authToken);
   } else {
-      throw new Error('Authentication failed');
+    throw new Error('Failed to generate expired token');
   }
 }
