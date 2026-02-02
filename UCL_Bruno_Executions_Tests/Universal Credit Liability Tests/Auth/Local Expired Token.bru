@@ -30,7 +30,7 @@ script:pre-request {
 script:post-response {
   if (res.status === 201) {
     const authToken = res.getHeader('authorization');
-    bru.setVar('expiredToken', authToken);
+    bru.setEnvVar('expiredToken', authToken);
   } else {
     throw new Error('Failed to generate expired token');
   }

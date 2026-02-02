@@ -1,6 +1,6 @@
 meta {
   name: getAuthToken
-  seq: 4
+  seq: 3
 }
 
 script:pre-request {
@@ -10,5 +10,5 @@ script:pre-request {
     const randomNino = helpers.randomNino();
     bru.setEnvVar("nino", randomNino);
   }
-  
+
 }

@@ -21,14 +21,25 @@ body:form-urlencoded {
 }
 
 script:pre-request {
-  if (!['development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT") )) {
-    throw new Error('Environment must be set to QA');
+  if (!['development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
+    throw new Error('Environment must be set to Dev or QA');
   }
-  
-  const TOTP = require("totp-generator").TOTP;
+
+  let TOTP;
+  try {
+    TOTP = require("totp-generator").TOTP;
+  } catch (e) {
+    throw new Error("Missing dependency: Run 'npm install totp-generator' in the collection folder. See README for details.");
+  }
+
   const totpSecret = bru.getEnvVar("TOTP_SECRET");
+
+  if (!totpSecret) {
+    throw new Error("TOTP_SECRET not set in environment variables");
+  }
+
   const { otp } = TOTP.generate(totpSecret , { digits: 8, algorithm: "SHA-512" });
-  
+
   bru.setEnvVar("totp", otp);
 }
 
@@ -37,6 +48,6 @@ script:post-response {
     const authToken = `Bearer ${res.body.access_token}`;
     bru.setEnvVar('authorization', authToken);
   } else {
-      throw new Error('Authentication failed');
+    throw new Error('Authentication failed: ' + res.status);
   }
 }
