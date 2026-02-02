@@ -29,7 +29,7 @@ script:pre-request {
   try {
     TOTP = require("totp-generator").TOTP;
   } catch (e) {
-    throw new Error("Missing dependency: Run 'npm install totp-generator' in the collection folder. See README for details.");
+    throw new Error("Missing dependency: totp-generator\nRun 'npm install' in the collection folder. See README for details.");
   }
 
   const totpSecret = bru.getEnvVar("TOTP_SECRET");
