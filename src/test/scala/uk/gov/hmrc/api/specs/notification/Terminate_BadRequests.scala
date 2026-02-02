@@ -31,67 +31,67 @@ class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with Te
         "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type LCW/LCWRA with Terminate action",
         invalidTerminationLCWLCWRARequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+        constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type UC  with Terminate action",
         invalidTerminationUCRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+        constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_002_0.2: Invalid Credit Action universalCreditAction",
         invalidTerminationActionRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditAction"
+        constraintViolation("universalCreditAction")
       ),
       (
         "UCL_Terminate_TC_002_0.3: Invalid Start Date with Terminate action",
         invalidTerminateStartDate,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_Terminate_TC_002_0.4: Invalid End Date with Terminate action",
         invalidTerminateEndDate,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UCL_Terminate_TC_002_0.5: Invalid NINO with Terminate action",
         invalidNINOTerminationRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber"
+        constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_Terminate_TC_003_0.1: Empty Credit Record Type with Terminate action",
         emptyCreditRecordTypeTerminateRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+        constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_003_0.2: Empty Credit Action with Terminate action",
         emptyCreditActionTerminationRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditAction"
+        constraintViolation("universalCreditAction")
       ),
       (
         "UCL_Terminate_TC_003_0.3: Empty Start Date with Terminate action",
         emptyStartDateTerminationRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_Terminate_TC_003_0.4: Empty NINO with Terminate action",
         emptyNINOTerminationRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber"
+        constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_Terminate_TC_003_0.5: Empty End Date with Terminate action",
         emptyEndDateTerminationRequest,
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       )
     )
 

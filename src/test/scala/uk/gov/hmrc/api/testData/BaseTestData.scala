@@ -38,4 +38,10 @@ trait BaseTestData {
       "gov-uk-originator-id" -> govUkOriginatorId
     )
 
+  // Types
+
+  type Reason = String
+
+  def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
+
 }

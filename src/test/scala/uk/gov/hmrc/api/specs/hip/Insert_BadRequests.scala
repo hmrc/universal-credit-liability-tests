@@ -35,7 +35,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+        constraintViolation("universalCreditRecordType")
       ),
       (
         "UC_TC_007_0.2: Empty Credit Record Type (HoD)",
@@ -43,7 +43,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: universalCreditRecordType"
+        constraintViolation("universalCreditRecordType")
       ),
       (
         "UC_TC_010_0.1: Invalid Start Date - Start date is after End date (Value 2028-08-19)",
@@ -51,7 +51,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         "BA010000",
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.2: Invalid Start Date - Invalid day in Fab (Value 2028-02-30)",
@@ -59,7 +59,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.3: Invalid Start Date - Invalid Month (Value 2028-13-01)",
@@ -67,7 +67,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.4: Invalid Start Date - Month can't be 00 (Value 2028-00-11)",
@@ -75,7 +75,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.5: Invalid Start Date - Day can't be 00 (Value 2028-02-00)",
@@ -83,7 +83,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.6: Invalid Start Date - More than 30 days, ex: April (Value 2028-04-31)",
@@ -91,7 +91,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.7: Invalid Start Date - Wrong Format (Value 11-05-2025)",
@@ -99,7 +99,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.8: Invalid Start Date - Zero date (Value 0000-00-00)",
@@ -107,7 +107,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.9: Invalid Start Date - Empty Start Date ()",
@@ -115,7 +115,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.10: Invalid Start Date - Missing Start date ()",
@@ -123,7 +123,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityStartDate"
+        constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_011_0.01: Invalid End Date - End date is before Start date (Value 2028-08-18)",
@@ -131,7 +131,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         "BA020000",
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Not Leap Year (Value 2027-02-29))",
@@ -139,7 +139,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid day in Feb(Value 2026-02-30)",
@@ -147,7 +147,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid Month (Value 2026-15-18)",
@@ -155,7 +155,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Month can't be 00 (Value 2026-00-11)",
@@ -163,7 +163,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Day can't be 00 (Value 2026-02-00)",
@@ -171,7 +171,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - More than 30 days, ex: April (Value 2028-04-31)",
@@ -179,7 +179,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Format issue - YYYY-M-DD (Value 2028-9-11)",
@@ -187,7 +187,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Wrong Format - DD-MM-YYYY(Value 11-05-2025)",
@@ -195,7 +195,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Zero date (Value 0000-00-00)",
@@ -203,7 +203,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Empty Start Date ()",
@@ -211,7 +211,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         randomNino,
         "HoD",
         "400.1",
-        "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+        constraintViolation("liabilityEndDate")
       )
       // FIXME: this is failing - investigate
       // (
@@ -220,7 +220,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
       //  randomNino,
       //  "HoD",
       //  "400.1",
-      //  "Constraint Violation - Invalid/Missing input parameter: liabilityEndDate"
+      //  constraintViolation("liabilityEndDate")
       // ),
       // TODO: implement these scenarios
       //  (
