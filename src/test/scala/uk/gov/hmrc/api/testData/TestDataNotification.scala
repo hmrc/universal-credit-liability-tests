@@ -79,6 +79,13 @@ trait TestDataNotification {
     base ++ dobObj ++ endObj
   }
 
+  def randomTestNino: String = {
+    val prefixes = Seq("AA", "AE", "BE")
+    val prefix = prefixes(scala.util.Random.nextInt(prefixes.length))
+    val number = 100000 + scala.util.Random.nextInt(900000)
+    s"$prefix$number"
+  }
+
   // ---- Valid payloads ----
   val validInsertLCWLCWRALiabilityRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob))
@@ -164,7 +171,7 @@ trait TestDataNotification {
   // ------Insert Unprocessable entity -------
 
   val conflictingInsertLiabilityRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "BE005123")
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "randomTestNino")
 
   val startDateBefore16thBirthdayInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"), nino = "BE010123")
