@@ -4,8 +4,11 @@ lazy val root = (project in file("."))
     version := "0.1.0",
     scalaVersion := "3.3.7",
     libraryDependencies ++= Dependencies.test,
+    semanticdbEnabled := true,
     (Compile / compile) := ((Compile / compile) dependsOn (
       Compile / scalafmtSbtCheck,
       Compile / scalafmtCheckAll
     )).value
   )
+
+addCommandAlias("lintCode", "; scalafmtAll; scalafmtSbt; scalafixAll")

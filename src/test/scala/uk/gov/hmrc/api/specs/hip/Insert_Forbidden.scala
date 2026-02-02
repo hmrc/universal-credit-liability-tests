@@ -20,7 +20,7 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.{TestDataHip, TestDataNotification}
+import uk.gov.hmrc.api.testData.TestDataHip
 
 class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
@@ -36,7 +36,7 @@ class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDat
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, _, _, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")

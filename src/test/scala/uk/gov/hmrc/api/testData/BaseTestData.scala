@@ -33,8 +33,8 @@ trait BaseTestData {
   // TODO: need to add `Authorization -> basicAuth,`
   val validHeaders: Seq[(String, String)] =
     Seq(
-      "Content-Type" -> jsonContentType,
-      "correlationId" -> correlationId,
+      "Content-Type"         -> jsonContentType,
+      "correlationId"        -> correlationId,
       "gov-uk-originator-id" -> govUkOriginatorId
     )
 
