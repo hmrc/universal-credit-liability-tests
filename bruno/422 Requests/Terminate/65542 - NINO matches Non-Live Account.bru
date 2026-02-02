@@ -1,0 +1,39 @@
+meta {
+  name: 65542 - NINO matches non-live account
+  type: http
+  seq: 14
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "BE014000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '65542'
+  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
+}

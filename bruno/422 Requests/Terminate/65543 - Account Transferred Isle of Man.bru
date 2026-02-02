@@ -1,0 +1,39 @@
+meta {
+  name: 65543 - NINO matches account transferred to Isle of Man
+  type: http
+  seq: 15
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "BE015000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '65543'
+  res.body.message: eq 'The NINO input matches an account that has been transferred to the Isle of Man'
+}

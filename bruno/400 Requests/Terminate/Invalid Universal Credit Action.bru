@@ -1,0 +1,39 @@
+meta {
+  name: Invalid Universal Credit Action
+  type: http
+  seq: 4
+  tags: [
+    API
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "INVALID_UNIVERSAL_CREDIT_ACTION",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '400.1'
+  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: universalCreditAction'
+}

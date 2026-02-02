@@ -1,0 +1,39 @@
+meta {
+  name: Invalid Liability Start Date
+  type: http
+  seq: 6
+  tags: [
+    API
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "INVALID_LIABILITY_START_DATE"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '400.1'
+  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityStartDate'
+}

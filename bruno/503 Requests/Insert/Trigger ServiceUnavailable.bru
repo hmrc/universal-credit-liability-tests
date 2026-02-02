@@ -1,0 +1,38 @@
+meta {
+  name: Trigger ServiceUnavailable
+  type: http
+  seq: 1
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "AE503000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 503
+  res.body: isJson
+  res.body.code: eq 'SERVER_ERROR'
+  res.body.message: eq 'The 'misc/universal-credit/liability' API is currently unavailable'
+}

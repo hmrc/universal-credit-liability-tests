@@ -1,0 +1,39 @@
+meta {
+  name: 64998 - LCW/LCWRA Override not within LCW/LCWRA period
+  type: http
+  seq: 9
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "BE009000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '64998'
+  res.body.message: eq 'LCW/LCWRA Override not within a period of LCW/LCWRA'
+}

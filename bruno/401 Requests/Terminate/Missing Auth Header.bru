@@ -1,0 +1,38 @@
+meta {
+  name: Missing Authorization Header
+  type: http
+  seq: 1
+  tags: [
+    AUTH
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq 'MISSING_CREDENTIALS'
+  res.body.message: eq 'Bearer token not supplied'
+}

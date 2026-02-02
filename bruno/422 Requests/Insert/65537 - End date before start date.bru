@@ -1,0 +1,39 @@
+meta {
+  name: 65537 - End date before start date
+  type: http
+  seq: 12
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "BE012000",
+    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '65537'
+  res.body.message: eq 'End date before start date'
+}
