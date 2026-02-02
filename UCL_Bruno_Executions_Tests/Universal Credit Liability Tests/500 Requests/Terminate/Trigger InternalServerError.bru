@@ -32,7 +32,7 @@ body:json {
 
 assert {
   res.status: eq 500
-  res.headers.correlationid: {{correlationId}}
+  res.headers.correlationid: eq {{correlationId}}
   res.body: isEmpty
 }
 

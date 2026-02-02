@@ -31,7 +31,7 @@ body:json {
 
 assert {
   res.status: eq 401
-  res.headers.correlationid: {{correlationId}}
+  res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq 'MISSING_CREDENTIALS'
   res.body.message: eq 'Bearer token not supplied'

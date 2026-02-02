@@ -14,6 +14,7 @@ post {
 }
 
 headers {
+  Authorization: {{expiredToken}}
   Content-Type: application/json
   correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
@@ -29,19 +30,21 @@ body:json {
   }
 }
 
-assert {
-  res.status: eq 401
-  res.headers.correlationid: {{correlationId}}
-  res.body.code: eq 'UNAUTHORIZED'
-  res.body.message: eq 'Session record not found'
+script:pre-request {
+  const expiredToken = bru.getEnvVar('expiredToken');
+
+  if (!expiredToken) {
+    throw new Error("Prerequisite Missing: Run 'Auth/Local - Expired Token' first.");
+  }
+
+  // Synchronous blocking delay - wait for token to expire
+  const start = Date.now();
+  while (Date.now() - start < 2000) {}
 }
 
-script:pre-request {
-  const token = bru.getVar('expiredToken');
-  
-  if (!token) {
-    throw new Error("⚠️ Prerequisite Missing: Manually run 'Local - Expired Token' first.");
-  }
-  
-  req.setHeader('Authorization', token);
+assert {
+  res.status: eq 401
+  res.headers.correlationid: eq {{correlationId}}
+  res.body.code: eq 'UNAUTHORIZED'
+  res.body.message: eq 'Session record not found'
 }

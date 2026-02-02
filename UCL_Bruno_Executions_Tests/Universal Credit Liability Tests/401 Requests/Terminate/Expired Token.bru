@@ -14,6 +14,7 @@ post {
 }
 
 headers {
+  Authorization: {{expiredToken}}
   Content-Type: application/json
   correlationId: {{correlationId}}
   gov-uk-originator-id: {{govUkOriginatorId}}
@@ -31,14 +32,16 @@ body:json {
 
 assert {
   res.status: eq 401
-  res.headers.correlationid: {{correlationId}}
+  res.headers.correlationid: eq {{correlationId}}
   res.body.code: eq 'UNAUTHORIZED'
   res.body.message: eq 'Session record not found'
 }
 
 script:pre-request {
-  const token = bru.getVar('expiredToken');
-  
+  const token = bru.getEnvVar('expiredToken');
+
+  console.log('expiredToken:', token);
+
   if (!token) {
     throw new Error("⚠️ Prerequisite Missing: Manually run 'Local - Expired Token' first.");
   }
