@@ -38,7 +38,7 @@ script:pre-request {
     throw new Error("TOTP_SECRET not set in environment variables");
   }
 
-  const { otp } = TOTP.generate(totpSecret , { digits: 8, algorithm: "SHA-512" });
+  const { otp } = await TOTP.generate(totpSecret, { digits: 8, algorithm: "SHA-512" });
 
   bru.setEnvVar("totp", otp);
 }
