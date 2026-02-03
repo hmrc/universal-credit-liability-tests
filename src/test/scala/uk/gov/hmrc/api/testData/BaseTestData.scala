@@ -48,7 +48,7 @@ trait BaseTestData {
     s"$generatePrefix$digits"
   }
 
-  def getRandomUniversalCreditAction: String = {
+  def randomUniversalCreditAction: String = {
     val actions: List[String] = List("Insert", "Terminate")
     Random.shuffle(actions).head
   }
@@ -86,6 +86,14 @@ trait BaseTestData {
     "correlationId"        -> "INVALID",
     "gov-uk-originator-id" -> "!NV@L!D"
   )
+
+  // TODO: need to add `Authorization -> basicAuth,`
+  val validHeaders: Seq[(String, String)] =
+    Seq(
+      "Content-Type"         -> jsonContentType,
+      "correlationId"        -> randomCorrelationId,
+      "gov-uk-originator-id" -> randomGovUkOriginatorId
+    )
 
   def removeHeader(headers: Seq[(String, String)], key: String): Seq[(String, String)] =
     headers.filterNot(_._1.equalsIgnoreCase(key))
@@ -193,14 +201,6 @@ trait BaseTestData {
   def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
 
   // -------------------
-
-  // TODO: need to add `Authorization -> basicAuth,`
-  val validHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "correlationId"        -> randomCorrelationId,
-      "gov-uk-originator-id" -> randomGovUkOriginatorId
-    )
 
   val dateOfBirth: String        = "2002-04-27"
   val liabilityStartDate: String = "2025-08-19"

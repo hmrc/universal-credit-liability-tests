@@ -23,6 +23,20 @@ import scala.util.Random
 
 trait TestDataNotification extends BaseTestData {
 
+  def notificationPayload(
+    nino: String = randomNino,
+    recordType: String = randomUniversalCreditRecordType,
+    recordAction: String = randomUniversalCreditAction,
+    dateOfBirth: String = "2002-04-27",
+    startDate: String = "2025-08-19"
+  ): JsObject = Json.obj(
+    "nationalInsuranceNumber"   -> nino,
+    "universalCreditRecordType" -> recordType,
+    "universalCreditAction"     -> recordAction,
+    "dateOfBirth"               -> dateOfBirth,
+    "liabilityStartDate"        -> startDate
+  )
+
   def insertPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
@@ -82,40 +96,6 @@ trait TestDataNotification extends BaseTestData {
 
   val validTerminationUCLiabilityRequest: JsValue =
     uclPayload("UC", "Terminate", terminateStartDate, endDate = Some(terminateEndDate))
-
-  // ---- Invalid Insert payloads ----
-  val invalidInsertLCWLCWRALiabilityRequest: JsValue =
-    uclPayload("LCW/LCWRA/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
-
-  val invalidInsertUCLiabilityRequest: JsValue =
-    uclPayload("UC/ABC", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
-
-  val invalidInsertCreditActionRequest: JsValue =
-    uclPayload("UC", "insert", terminateStartDate, dateOfBirth = Some(dateOfBirth))
-
-  val invalidInsertDateOfBirthRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some("202-10-10"))
-
-  val invalidInsertStartDateRequest: JsValue =
-    uclPayload("UC", "Insert", "20288-08-19", dateOfBirth = Some(dateOfBirth))
-
-  val invalidInsertNINORequest: JsValue =
-    uclPayload("UC", "Insert", "2025-08-19", dateOfBirth = Some(dateOfBirth), nino = "347654")
-
-  val emptyInsertCreditRecordTypeRequest: JsValue =
-    uclPayload("", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))
-
-  val emptyInsertCreditActionRequest: JsValue =
-    uclPayload("LCW/LCWRA", "", insertStartDate, dateOfBirth = Some(dateOfBirth))
-
-  val emptyInsertDateOfBirthRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(""))
-
-  val emptyInsertStartDateRequest: JsValue =
-    uclPayload("UC", "Insert", "", dateOfBirth = Some(dateOfBirth))
-
-  val emptyInsertNINORequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth), nino = "")
 
   // ---- Invalid Terminate payloads ----
 

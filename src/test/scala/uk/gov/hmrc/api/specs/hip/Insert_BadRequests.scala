@@ -33,161 +33,161 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         "UC_TC_007_0.1: Invalid Credit Record Type",
         invalidCreditRecordTypeTTTRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UC_TC_007_0.2: Empty Credit Record Type",
         emptyCreditRecordTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UC_TC_010_0.1: Invalid Start Date - Start date is after End date (Value 2028-08-19)",
         invalidStartDateAfterEndDateActionTypeRequest,
         "BA010000",
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.2: Invalid Start Date - Invalid day in Fab (Value 2028-02-30)",
         invalidStartDateInFebActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.3: Invalid Start Date - Invalid Month (Value 2028-13-01)",
         invalidStartDateInvalidMonthActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.4: Invalid Start Date - Month can't be 00 (Value 2028-00-11)",
         invalidStartDateMonthZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.5: Invalid Start Date - Day can't be 00 (Value 2028-02-00)",
         invalidStartDateDayZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.6: Invalid Start Date - More than 30 days, ex: April (Value 2028-04-31)",
         invalidStartDateDayAprilActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.7: Invalid Start Date - Wrong Format (Value 11-05-2025)",
         invalidStartDateWrongFormatActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.8: Invalid Start Date - Zero date (Value 0000-00-00)",
         invalidStartDateZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.9: Invalid Start Date - Empty Start Date ()",
         invalidStartDateEmptyActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_010_0.10: Invalid Start Date - Missing Start date ()",
         invalidStartDateMissingActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UC_TC_011_0.01: Invalid End Date - End date is before Start date (Value 2028-08-18)",
         invalidEndDateAfterEndDateActionTypeRequest,
         "BA020000",
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Not Leap Year (Value 2027-02-29))",
         invalidEndDateNotLeapYearActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid day in Feb(Value 2026-02-30)",
         invalidEndDateInvalidDayFebActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid Month (Value 2026-15-18)",
         invalidEndDateInvalidMonthActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Month can't be 00 (Value 2026-00-11)",
         invalidEndDateMonthZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Day can't be 00 (Value 2026-02-00)",
         invalidEndDateDayZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - More than 30 days, ex: April (Value 2028-04-31)",
         invalidEndDateDayAprilActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Format issue - YYYY-M-DD (Value 2028-9-11)",
         invalidEndDateFormatIssueActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Wrong Format - DD-MM-YYYY(Value 11-05-2025)",
         invalidEndDateWrongFormatActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Zero date (Value 0000-00-00)",
         invalidEndDateZeroActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Empty Start Date ()",
         invalidEndDateEmptyActionTypeRequest,
         randomNino,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       )
       // FIXME: this is failing - investigate
@@ -195,7 +195,7 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
       //  "UC_TC_011_0.03: Invalid End Date - Missing end date",
       //  invalidEndDateMissingActionTypeRequest,
       //  randomNino,
-      //  "400.1",
+      //  InvalidInput,
       //  constraintViolation("liabilityEndDate")
       // ),
       // TODO: implement these scenarios
@@ -232,7 +232,6 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         val actualFailures = (actualJson \ "response" \ "failures").as[JsArray]
         val firstFailure   = actualFailures.value.head
 
-        // (actualJson \ "origin").as[String] mustBe origin
         (firstFailure \ "code").as[String] mustBe expectedCode
         (firstFailure \ "reason").as[String] mustBe expectedReason
       }

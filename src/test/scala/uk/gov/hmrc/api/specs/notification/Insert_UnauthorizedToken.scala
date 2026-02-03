@@ -52,8 +52,7 @@ class Insert_UnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with
         Given("The Universal Credit API is up and running")
         When("An invalid/empty/expired token is sent")
 
-        val response =
-          apiService.makeRequest(validHeaders, validInsertLCWLCWRALiabilityRequest, tokenFn())
+        val response = apiService.makeRequest(validHeaders, validInsertLCWLCWRALiabilityRequest, tokenFn())
 
         Then("401 Unauthorized received")
         assert(response.status == Status.UNAUTHORIZED)
