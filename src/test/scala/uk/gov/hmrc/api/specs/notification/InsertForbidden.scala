@@ -18,31 +18,53 @@ package uk.gov.hmrc.api.specs.notification
 
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("403 Forbidden scenarios") {
 
-    val cases = Seq(
+    val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
+//      (
+//        "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
+//        invalidHeaders,
+//        validInsertUCLiabilityRequest
+//      ),
+//      (
+//        "???: Invalid GovUkOriginatorId (Special Chars)",
+//        invalidHeaders,
+//        validInsertUCLiabilityRequest
+//      ),
       (
-        "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
-        invalidHeaders,
-        validInsertUCLiabilityRequest,
-        ForbiddenCode,
-        "Forbidden"
+        "???: Missing GovUkOriginatorId",
+        headersMissingGovUkOriginatorId,
+        validInsertUCLiabilityRequest
       )
+//      (
+//        "???: Invalid GovUkOriginatorId (Long)",
+//        headersInvalidLongOriginatorId,
+//        validInsertUCLiabilityRequest
+//      ),
+//      (
+//        "???: Invalid GovUkOriginatorId (Short)",
+//        headersInvalidShortOriginatorId,
+//        validInsertUCLiabilityRequest
+//      ),
+//      (
+//        "???: Trigger Forbidden",
+//        invalidHeaders,
+//        validInsertUCLiabilityRequest
+//      )
     )
 
-    cases.foreach { case (scenarioName, headers, payload, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, headers, payload) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response =
-          apiService.postNotificationWithValidToken(headers, payload)
+        val response = apiService.postNotificationWithValidToken(headers, payload)
 
         Then("403 Forbidden should be returned")
         assert(response.status == Status.FORBIDDEN)
@@ -52,8 +74,8 @@ class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDat
         val actualCode = (actualJson \ "code").as[String]
         val actualMsg  = (actualJson \ "message").as[String]
 
-        assert(actualCode == expCode)
-        assert(actualMsg == expMessage)
+        assert(actualCode == ForbiddenCode)
+        assert(actualMsg == "Forbidden") // FIXME
       }
     }
   }

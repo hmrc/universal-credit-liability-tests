@@ -23,7 +23,7 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("400 Bad Request scenarios for Insert Record Type") {
 

@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class Insert_UnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class InsertUnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("401 Unauthorized Token scenarios") {
 

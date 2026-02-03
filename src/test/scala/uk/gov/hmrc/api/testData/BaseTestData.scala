@@ -111,7 +111,7 @@ trait BaseTestData {
   def headersMissingCorrelationId: Seq[(String, String)] =
     removeHeader(baseHeaders, "correlationId")
 
-  def headersWithoutGovUkOriginatorId: Seq[(String, String)] =
+  def headersMissingGovUkOriginatorId: Seq[(String, String)] =
     removeHeader(baseHeaders, "gov-uk-originator-id")
 
   // Headers with invalid values

@@ -22,7 +22,7 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class TerminateBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("400 Bad Request scenarios for Terminate Record Type") {
 

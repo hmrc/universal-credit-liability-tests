@@ -24,4 +24,5 @@ import uk.gov.hmrc.api.service.ApiService
 trait BaseSpec extends AnyFeatureSpec with GivenWhenThen with Matchers {
 
   val apiService = new ApiService
+
 }
