@@ -26,9 +26,9 @@ class Terminate_NoContent extends BaseSpec with GuiceOneServerPerSuite with Test
 
   Feature("204 No Content HIP Terminate scenarios") {
 
-    Scenario("UC_TC_004: Terminate action for Record Type- LCW-LCWRA") {
+    Scenario("UC_TC_004: Terminate action for Record Type- LCW/LCWRA") {
       Given("The HIP API is up and running")
-      When("A request is sent to Terminate LCW-LCWRA liability")
+      When("A request is sent to Terminate LCW/LCWRA liability")
 
       val response = apiService.postHipUcTermination(validHeaders, randomNino, validHipLCWLCWRATerminationRequest)
       Then("204 No Content should be returned")

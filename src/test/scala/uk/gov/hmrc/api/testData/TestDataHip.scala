@@ -23,54 +23,6 @@ import scala.util.Random
 
 trait TestDataHip extends BaseTestData {
 
-  // FIXME: use invalid - this matches the headersWithoutGovUkOriginatorId
-  val invalidHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"  -> jsonContentType,
-      "correlationId" -> correlationId
-    )
-
-  // TODO: unused - remove(?)
-  val validHeadersWithOriginator: Seq[(String, String)] =
-    validHeaders :+ ("gov-uk-originator-id" -> govUkOriginatorId)
-
-  val headersWithoutCorrelationId: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "gov-uk-originator-id" -> govUkOriginatorId
-    )
-
-  val headersWithoutGovUkOriginatorId: Seq[(String, String)] =
-    Seq(
-      "Content-Type"  -> jsonContentType,
-      "correlationId" -> correlationId
-    )
-
-  // TODO: do we need this one?
-  val headersWithInvalidCorrelationId: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "correlationId"        -> "", // FIXME: would that be a correlation Id?
-      "gov-uk-originator-id" -> govUkOriginatorId
-    )
-
-  val headersWithInvalidGovUkOriginatorId: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "correlationId"        -> correlationId,
-      "gov-uk-originator-id" -> "INVALID_GOV_UK_ORIGINATOR_ID"
-    )
-
-  def removeHeader(headers: Seq[(String, String)], key: String): Seq[(String, String)] =
-    headers.filterNot(_._1.equalsIgnoreCase(key))
-
-  def overrideHeader(headers: Seq[(String, String)], key: String, value: String): Seq[(String, String)] =
-    removeHeader(headers, key) :+ (key -> value)
-
-  private val dateOfBirth        = "2002-10-10"
-  private val liabilityStartDate = "2015-08-19"
-  private val liabilityEndDate   = "2025-01-04"
-
   private def hipUcLiabilityPayload(
     recordType: String,
     startDate: String,
@@ -124,6 +76,8 @@ trait TestDataHip extends BaseTestData {
 
   val validHipUCTerminationRequest: JsValue =
     hipUcTerminationPayload("UC", liabilityStartDate, liabilityEndDate)
+
+  //
 
   // ---- Invalid UC Liability payloads ----
   val invalidHipRecordTypeLiabilityRequest: JsValue =

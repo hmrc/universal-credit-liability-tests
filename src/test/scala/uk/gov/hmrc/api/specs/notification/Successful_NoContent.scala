@@ -27,10 +27,10 @@ class Successful_NoContent extends BaseSpec with GuiceOneServerPerSuite with Tes
   Feature("204 No Content scenarios") {
 
     val cases = Seq(
-      ("UCL_TC_001_0.1: Valid Credit Record type LCW-LCWRA with Insert action", validInsertLCWLCWRALiabilityRequest),
+      ("UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Insert action", validInsertLCWLCWRALiabilityRequest),
       ("UCL_TC_001_0.2: Valid Credit Record type UC with Insert action", validInsertUCLiabilityRequest),
       (
-        "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW-LCWRA with Terminate action",
+        "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Terminate action",
         validTerminationLCWLCWRALiabilityRequest
       ),
       (

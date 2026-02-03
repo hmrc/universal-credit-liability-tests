@@ -31,91 +31,91 @@ class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestD
         "UCL_TC_001_0.5: Insert Invalid LCW/LCWRA details",
         validHeaders,
         invalidInsertLCWLCWRALiabilityRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_TC_001_0.6: Insert Invalid UC details",
         validHeaders,
         invalidInsertUCLiabilityRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_TC_002_0.3: Invalid Credit Action",
         validHeaders,
         invalidInsertCreditActionRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditAction")
       ),
       (
         "UCL_TC_002_0.4: Invalid Date of Birth with Insert action",
         validHeaders,
         invalidInsertDateOfBirthRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("dateOfBirth")
       ),
       (
         "UCL_TC_002_0.5: Invalid Start Date with Insert action",
         validHeaders,
         invalidInsertStartDateRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_TC_002_0.6: Invalid NINO with Insert action",
         validHeaders,
         invalidInsertNINORequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_TC_003_0.1: Empty Credit Record Type with Insert action",
         validHeaders,
         emptyInsertCreditRecordTypeRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_TC_003_0.2: Empty Credit Action with Insert action",
         validHeaders,
         emptyInsertCreditActionRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditAction")
       ),
       (
         "UCL_TC_003_0.3: Empty Date of Birth with Insert action",
         validHeaders,
         emptyInsertDateOfBirthRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("dateOfBirth")
       ),
       (
         "UCL_TC_003_0.4:Empty Start Date with Insert action ",
         validHeaders,
         emptyInsertStartDateRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_TC_003_0.5: Empty NINO with Insert action",
         validHeaders,
         emptyInsertNINORequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_TC_005_0.1: Invalid Parameters: correlation ID",
-        invalidCorrelationIdHeaders,
+        headersInvalidCorrelationId,
         validInsertUCLiabilityRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("correlationId")
       ),
       (
         "UCL_TC_005_0.2: Empty or Missing Parameters: correlation ID field",
-        missingCorrelationIdHeaders,
+        headersMissingCorrelationId,
         validInsertUCLiabilityRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("correlationId")
       )
     )

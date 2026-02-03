@@ -23,30 +23,33 @@ import scala.util.Random
 
 trait TestDataNotification extends BaseTestData {
 
-  val invalidHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"  -> jsonContentType,
-      "correlationId" -> correlationId
-    )
+  def insertPayload(
+    nino: String = randomNino,
+    recordType: String = randomUniversalCreditRecordType,
+    dateOfBirth: String = "2002-04-27",
+    startDate: String = "2025-08-19"
+  ): JsObject = Json.obj(
+    "nationalInsuranceNumber"   -> nino,
+    "universalCreditRecordType" -> recordType,
+    "universalCreditAction"     -> "Insert",
+    "dateOfBirth"               -> dateOfBirth,
+    "liabilityStartDate"        -> startDate
+  )
 
-  val invalidCorrelationIdHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "correlationId"        -> "XYZ-ABCS-3e8dae97-b586-4cef-8511-68ac12da9028",
-      "gov-uk-originator-id" -> govUkOriginatorId
-    )
-  val missingCorrelationIdHeaders: Seq[(String, String)] =
-    Seq(
-      "Content-Type"         -> jsonContentType,
-      "gov-uk-originator-id" -> govUkOriginatorId
-    )
+  def terminatePayload(
+    nino: String = randomNino,
+    recordType: String = randomUniversalCreditRecordType,
+    startDate: String = "2025-08-19",
+    endDate: String = "2026-06-30"
+  ): JsObject = Json.obj(
+    "nationalInsuranceNumber"   -> nino,
+    "universalCreditRecordType" -> recordType,
+    "universalCreditAction"     -> "Terminate",
+    "liabilityStartDate"        -> startDate,
+    "liabilityEndDate"          -> endDate
+  )
 
-  private val dateOfBirth        = "2002-10-10"
-  private val insertStartDate    = "2025-08-19"
-  private val terminateStartDate = "2015-08-19"
-  private val terminateEndDate   = "2025-01-04"
-
-  private def uclPayload(
+  def uclPayload(
     recordType: String,
     action: String,
     startDate: String,

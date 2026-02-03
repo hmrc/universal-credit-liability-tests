@@ -18,7 +18,7 @@ package uk.gov.hmrc.api.specs.notification
 
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
@@ -26,71 +26,71 @@ class Terminate_BadRequests extends BaseSpec with GuiceOneServerPerSuite with Te
 
   Feature("400 Bad Request scenarios for Terminate Record Type") {
 
-    val cases = Seq(
+    val cases: Seq[(String, JsValue, ErrorCode, Reason)] = Seq(
       (
         "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type LCW/LCWRA with Terminate action",
         invalidTerminationLCWLCWRARequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_002_0.1: Invalid Credit Record Type UC  with Terminate action",
         invalidTerminationUCRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_002_0.2: Invalid Credit Action universalCreditAction",
         invalidTerminationActionRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditAction")
       ),
       (
         "UCL_Terminate_TC_002_0.3: Invalid Start Date with Terminate action",
         invalidTerminateStartDate,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_Terminate_TC_002_0.4: Invalid End Date with Terminate action",
         invalidTerminateEndDate,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UCL_Terminate_TC_002_0.5: Invalid NINO with Terminate action",
         invalidNINOTerminationRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_Terminate_TC_003_0.1: Empty Credit Record Type with Terminate action",
         emptyCreditRecordTypeTerminateRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditRecordType")
       ),
       (
         "UCL_Terminate_TC_003_0.2: Empty Credit Action with Terminate action",
         emptyCreditActionTerminationRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("universalCreditAction")
       ),
       (
         "UCL_Terminate_TC_003_0.3: Empty Start Date with Terminate action",
         emptyStartDateTerminationRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityStartDate")
       ),
       (
         "UCL_Terminate_TC_003_0.4: Empty NINO with Terminate action",
         emptyNINOTerminationRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "UCL_Terminate_TC_003_0.5: Empty End Date with Terminate action",
         emptyEndDateTerminationRequest,
-        "400.1",
+        InvalidInput,
         constraintViolation("liabilityEndDate")
       )
     )

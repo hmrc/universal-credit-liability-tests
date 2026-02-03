@@ -31,7 +31,7 @@ class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDat
         "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
         invalidHeaders,
         validInsertUCLiabilityRequest,
-        "403.2",
+        ForbiddenCode,
         "Forbidden"
       )
     )
