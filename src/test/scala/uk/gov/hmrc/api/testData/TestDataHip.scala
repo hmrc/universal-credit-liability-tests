@@ -25,7 +25,7 @@ trait TestDataHip {
 
   val randomNino: String = "AE%06d".format(Random.nextInt(999999))
 
-  val originatorId: String  = ""
+  val originatorId: String  = UUID.randomUUID().toString
   val correlationId: String = UUID.randomUUID().toString
 
   val validHeaders: Seq[(String, String)] =
