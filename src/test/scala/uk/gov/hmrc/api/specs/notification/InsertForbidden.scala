@@ -25,7 +25,7 @@ import uk.gov.hmrc.api.testData.TestDataNotification
 
 class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("403 Forbidden scenarios") {
+  Feature("403 Forbidden scenarios for 'Insert' record type") {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
       (
