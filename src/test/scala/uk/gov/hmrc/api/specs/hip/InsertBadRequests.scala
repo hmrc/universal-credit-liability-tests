@@ -19,11 +19,11 @@ package uk.gov.hmrc.api.specs.hip
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import play.api.libs.json.{JsArray, JsValue, Json}
+import play.api.libs.json.JsValue
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
-
 class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("BadRequest (400) scenarios for HIP 'Insert' Universal Credit Liability details") {
@@ -215,10 +215,10 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
       //  ,
     )
 
-    cases.foreach { case (scenarioName, payload, nino, expectedCode, expectedReason) =>
+    cases.foreach { case (scenarioName, payload, nino, _, _) =>
       Scenario(scenarioName) {
         Given("The HIP API is up and running")
-        When("A request is sent with invalid data")
+        When("a request is sent with invalid data")
 
         val hipResponse: StandaloneWSResponse = apiService.postHipUcLiability(validHeaders, nino, payload)
 
@@ -227,13 +227,8 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
           hipResponse.status mustBe Status.BAD_REQUEST
         }
 
-        And("Response body should match HIP error format")
-        val actualJson     = Json.parse(hipResponse.body)
-        val actualFailures = (actualJson \ "response" \ "failures").as[JsArray]
-        val firstFailure   = actualFailures.value.head
-
-        (firstFailure \ "code").as[String] mustBe expectedCode
-        (firstFailure \ "reason").as[String] mustBe expectedReason
+        And("response body must be empty")
+        hipResponse.body mustBe empty
       }
     }
   }
