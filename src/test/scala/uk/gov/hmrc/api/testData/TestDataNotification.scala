@@ -79,8 +79,6 @@ trait TestDataNotification {
     base ++ dobObj ++ endObj
   }
 
-  
-
   // ---- Valid payloads ----
   val validInsertLCWLCWRALiabilityRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob))
