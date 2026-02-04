@@ -166,7 +166,7 @@ trait TestDataNotification {
   // ------Insert Unprocessable entity -------
 
   val conflictingInsertLiabilityRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "GE100196")
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "GE100123")
 
   val startDateBefore16thBirthdayInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"), nino = "HC210123")
