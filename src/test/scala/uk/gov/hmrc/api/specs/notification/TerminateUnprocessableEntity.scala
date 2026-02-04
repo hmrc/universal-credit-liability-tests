@@ -54,7 +54,7 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
         Given("The Universal Credit API is up and running")
         When("A notification request is sent")
 
-        val payload = terminatePayload(ninoWithPrefix(ninoPrefix))
+        val payload = terminateNotificationPayload(ninoWithPrefix(ninoPrefix))
         apiService.postNotification(validHeaders, payload)
       }
     }

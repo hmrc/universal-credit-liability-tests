@@ -24,7 +24,7 @@ import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Insert_BadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("BadRequest (400) scenarios for HIP 'Insert' Universal Credit Liability details") {
 

@@ -22,7 +22,7 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Insert_Forbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("Forbidden (403) scenarios for HIP") {
 

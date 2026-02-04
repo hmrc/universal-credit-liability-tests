@@ -28,6 +28,72 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
   Feature("400 Bad Request scenarios for Insert Record Type") {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue, Reason)] = Seq(
+      (
+        "UCL_TC_???: Invalid header: correlationID",
+        headersInvalidCorrelationId,
+        insertNotificationPayload(),
+        constraintViolation("correlationId")
+      ),
+      (
+        "UCL_TC_???: Invalid parameter: nationalInsuranceNumber",
+        validHeaders,
+        insertNotificationPayload(nino = "INVALID"),
+        constraintViolation("nationalInsuranceNumber")
+      ),
+      (
+        "UCL_TC_???: Invalid parameter: universalCreditRecordType",
+        validHeaders,
+        insertNotificationPayload(recordType = "INVALID"),
+        constraintViolation("universalCreditRecordType")
+      ),
+      (
+        "UCL_TC_???: Invalid parameter: universalCreditAction",
+        validHeaders,
+        notificationPayload(recordAction = "INVALID"),
+        constraintViolation("universalCreditAction")
+      ),
+      (
+        "UCL_TC_???: Invalid parameter: dateOfBirth",
+        validHeaders,
+        insertNotificationPayload(dateOfBirth = "INVALID"),
+        constraintViolation("dateOfBirth")
+      ),
+      (
+        "UCL_TC_005_0.2: Missing header: correlationId",
+        headersMissingCorrelationId,
+        insertNotificationPayload(),
+        constraintViolation("correlationId")
+      ),
+      (
+        "UCL_TC_???: Missing parameter: nationalInsuranceNumber",
+        validHeaders,
+        insertNotificationPayloadMissing("nationalInsuranceNumber"),
+        constraintViolation("nationalInsuranceNumber")
+      ),
+      (
+        "UCL_TC_???: Missing parameter: universalCreditRecordType",
+        validHeaders,
+        insertNotificationPayloadMissing("universalCreditRecordType"),
+        constraintViolation("universalCreditRecordType")
+      ),
+      (
+        "UCL_TC_???: Missing parameter: universalCreditAction",
+        validHeaders,
+        insertNotificationPayloadMissing("universalCreditAction"),
+        constraintViolation("universalCreditAction")
+      ),
+      (
+        "UCL_TC_???: Missing parameter: dateOfBirth",
+        validHeaders,
+        insertNotificationPayloadMissing("dateOfBirth"),
+        constraintViolation("dateOfBirth")
+      ),
+      (
+        "UCL_TC_???: Missing parameter: liabilityStartDate",
+        validHeaders,
+        insertNotificationPayloadMissing("liabilityStartDate"),
+        constraintViolation("liabilityStartDate")
+      )
 //      (
 //        "UCL_TC_001_0.5: Insert Invalid LCW/LCWRA details",
 //        validHeaders,
@@ -94,18 +160,6 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
 //        insertPayload(nino = ""),
 //        constraintViolation("nationalInsuranceNumber")
 //      ),
-      (
-        "UCL_TC_005_0.1: Invalid Parameters: correlation ID",
-        headersInvalidCorrelationId,
-        insertPayload(),
-        constraintViolation("correlationId")
-      ),
-      (
-        "UCL_TC_005_0.2: Empty or Missing Parameters: correlation ID field",
-        headersMissingCorrelationId,
-        insertPayload(),
-        constraintViolation("correlationId")
-      )
     )
 
     cases.foreach { case (scenarioName, headers, payload, reason) =>
@@ -121,12 +175,10 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         }
 
         And("Response body should contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        val actualCode   = (responseBody \ "code").as[String]
-        val actualMsg    = (responseBody \ "message").as[String]
+        val responseBody: JsValue = Json.parse(apiResponse.body)
 
-        assert(actualCode == InvalidInput)
-        assert(actualMsg == reason)
+        (responseBody \ "code").as[String] mustBe InvalidInput
+        (responseBody \ "message").as[String] mustBe reason
       }
     }
   }

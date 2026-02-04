@@ -17,8 +17,6 @@
 package uk.gov.hmrc.api.specs.notification
 
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
-import play.api.libs.json.Json
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 

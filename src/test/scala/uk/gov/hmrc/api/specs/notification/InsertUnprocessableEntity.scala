@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.api.specs.notification
 
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.UNPROCESSABLE_ENTITY
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
@@ -130,18 +131,18 @@ class InsertUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite wit
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postNotification(validHeaders, payload)
+        val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("422 Unprocessable entity should be returned")
-        assert(response.status == Status.UNPROCESSABLE_ENTITY)
+        withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
+          apiResponse.status mustBe UNPROCESSABLE_ENTITY
+        }
 
         And("Response body should contain correct error details")
-        val actualJson = Json.parse(response.body)
-        val actualCode = (actualJson \ "code").as[String]
-        val actualMsg  = (actualJson \ "message").as[String]
+        val responseBody: JsValue = Json.parse(apiResponse.body)
 
-        assert(actualCode == expCode)
-        assert(actualMsg == expMessage)
+        (responseBody \ "code").as[String] mustBe expCode
+        (responseBody \ "message").as[String] mustBe expMessage
       }
     }
   }

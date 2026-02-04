@@ -37,7 +37,7 @@ trait TestDataNotification extends BaseTestData {
     "liabilityStartDate"        -> startDate
   )
 
-  def insertPayload(
+  def insertNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     dateOfBirth: String = "2002-04-27",
@@ -50,7 +50,7 @@ trait TestDataNotification extends BaseTestData {
     "liabilityStartDate"        -> startDate
   )
 
-  def terminatePayload(
+  def terminateNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     startDate: String = "2025-08-19",
@@ -63,6 +63,16 @@ trait TestDataNotification extends BaseTestData {
     "liabilityEndDate"          -> endDate
   )
 
+  def notificationPayloadMissing(parameterName: String): JsObject = {
+    val result = notificationPayload() - parameterName
+    println(parameterName)
+    println(result)
+    result
+  }
+
+  def insertNotificationPayloadMissing(parameterName: String): JsObject = notificationPayload() - parameterName
+
+  // FIXME: replace with notificationPayload
   def uclPayload(
     recordType: String,
     action: String,

@@ -22,7 +22,7 @@ import play.api.http.Status
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Insert_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class InsertNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("204 No Content HIP Insert scenarios") {
 
