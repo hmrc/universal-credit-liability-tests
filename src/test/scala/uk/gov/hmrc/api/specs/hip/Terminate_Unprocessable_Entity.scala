@@ -69,7 +69,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_042: End date after State pension age with terminate request",
-        "EZ200000",
+        "EZ200123",
         validHeaders,
         endDateAfterStatePensionAgeTerminateHIPRequest,
         "55008",
@@ -85,7 +85,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_046: Not Within UC Period with terminate request",
-        "HS260000",
+        "HS260123",
         validHeaders,
         notWithinUCPeriodTerminateHIPRequest,
         "64997",
@@ -149,7 +149,7 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       ),
       (
         "UC_TC_028: StartDateAfterDeath2 with Insert request",
-        "AB150000",
+        "AB150123",
         validHeaders,
         startDateAfterDeath2TerminateHIPRequest,
         "99999",

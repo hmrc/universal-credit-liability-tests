@@ -29,7 +29,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
     val cases: Seq[(String, String, Seq[(String, String)], JsValue, String, String)] = Seq(
       (
         "UC_TC_032: ConflictLiability with Insert request",
-        "GE100000",
+        "GE100123",
         validHeaders,
         conflictingInsertLiabilityHIPRequest,
         "55038",
@@ -69,7 +69,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_029: End date after State pension age with insert request",
-        "EZ200000",
+        "EZ200123",
         validHeaders,
         endDateAfterStatePensionAgeInsertHIPRequest,
         "55008",
@@ -77,7 +77,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_031: End date after death with insert request",
-        "BK190000",
+        "BK190123",
         validHeaders,
         endDateAfterDeathInsertHIPRequest,
         "55027",
@@ -117,7 +117,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_018: EndDateBeforeStartDate with Insert request",
-        "HT230000",
+        "HT230123",
         validHeaders,
         endDateBeforeStartDateInsertHIPRequest,
         "65537",
@@ -125,7 +125,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_023: PseudoAccount with Insert request",
-        "BX100000",
+        "BX100123",
         validHeaders,
         pseudoAccountInsertHIPRequest,
         "65541",
@@ -149,7 +149,7 @@ class Insert_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite w
       ),
       (
         "UC_TC_028: StartDateAfterDeath2 with Insert request",
-        "AB150000",
+        "AB150123",
         validHeaders,
         startDateAfterDeath2InsertHIPRequest,
         "99999",

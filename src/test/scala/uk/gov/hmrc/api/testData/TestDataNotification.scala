@@ -179,13 +179,13 @@ trait TestDataNotification {
     uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "BW130123")
 
   val endDateAfterStatePensionAgeInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2025-04-15"), nino = "EZ200500")
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2025-04-15"), nino = "EZ200123")
 
   val endDateAfterDeathInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "BK190123")
 
   val notWithinUCPeriodInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "HS260000")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "HS260123")
 
   val lcwLcwrOverrideInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "CE150123")
@@ -194,7 +194,7 @@ trait TestDataNotification {
     uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "GP050123")
 
   val startDateBefore29042013InsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", startDate = "2013-04-28", dateOfBirth = Some(dob), nino = "GX240000")
+    uclPayload("LCW/LCWRA", "Insert", startDate = "2013-04-28", dateOfBirth = Some(dob), nino = "GX240123")
 
   val endDateBeforeStartDateInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", "2013-04-29", dateOfBirth = Some(dob), nino = "HT230123")
@@ -217,10 +217,10 @@ trait TestDataNotification {
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "GE100123")
 
   val startDateBefore16thBirthdayTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", "2023-04-05", endDate = Some("2025-01-04"), nino = "HC210000")
+    uclPayload("LCW/LCWRA", "Terminate", "2023-04-05", endDate = Some("2025-01-04"), nino = "HC210123")
 
   val startDateAfterStatePensionAgeTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", "2025-04-15", endDate = Some("2025-01-04"), nino = "ET060000")
+    uclPayload("LCW/LCWRA", "Terminate", "2025-04-15", endDate = Some("2025-01-04"), nino = "ET0600123")
 
   val startDateAfterDeathTerminateRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "EK310123")
@@ -229,7 +229,7 @@ trait TestDataNotification {
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some("2025-01-04"), nino = "BW130123")
 
   val endDateAfterStatePensionAgeTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", "2025-04-15", endDate = Some("2025-04-20"), nino = "EZ200500")
+    uclPayload("LCW/LCWRA", "Terminate", "2025-04-15", endDate = Some("2025-04-20"), nino = "EZ200123")
 
   val endDateAfterDeathTerminateRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "BK190123")
@@ -238,22 +238,22 @@ trait TestDataNotification {
     uclPayload("LCW/LCWRA", "Terminate", "2015-08-19", endDate = Some(terminateEndDate), nino = "HS260123")
 
   val lcwlcwraOverrideTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "CE150000")
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "CE150123")
 
   val noMatchingLiabilityTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "GP050456")
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "GP050123")
 
   val startDateBefore29042013TerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "GX240000")
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "GX240123")
 
   val endDateBeforeStartDateTerminateRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", "2013-04-29", endDate = Some("2013-04-28"), nino = "HT230123")
 
   val pseudoAccountTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "BX100000")
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "BX100123")
 
   val nonLiveAccountTerminateRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "HZ310000")
+    uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "HZ310123")
 
   val accountTransferredIsleOfManTerminateRequest: JsValue =
     uclPayload("LCW/LCWRA", "Terminate", terminateStartDate, endDate = Some(terminateEndDate), nino = "BZ230123")
