@@ -30,7 +30,7 @@ object HttpClient {
   private val wsClient: StandaloneAhcWSClient = StandaloneAhcWSClient()
   private val timeout: FiniteDuration         = 10.seconds
 
-  def post(url: String, body: String, headers: Seq[(String, String)]): StandaloneWSResponse =
+  def post(url: String, headers: Seq[(String, String)], body: String): StandaloneWSResponse =
     Await.result(
       wsClient
         .url(url)
