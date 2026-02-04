@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.api.specs.notification
 
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
@@ -27,36 +28,26 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
   Feature("403 Forbidden scenarios") {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
-//      (
-//        "UCL_TC_001_0.9: Insert Invalid Headers details - UC",
-//        invalidHeaders,
-//        validInsertUCLiabilityRequest
-//      ),
-//      (
-//        "???: Invalid GovUkOriginatorId (Special Chars)",
-//        invalidHeaders,
-//        validInsertUCLiabilityRequest
-//      ),
+      (
+        "???: Invalid GovUkOriginatorId (Special Chars)",
+        headersInvalidCharsOriginatorId,
+        validInsertUCLiabilityRequest
+      ),
       (
         "???: Missing GovUkOriginatorId",
         headersMissingGovUkOriginatorId,
         validInsertUCLiabilityRequest
+      ),
+      (
+        "???: Invalid GovUkOriginatorId (Long)",
+        headersInvalidLongOriginatorId,
+        validInsertUCLiabilityRequest
+      ),
+      (
+        "???: Invalid GovUkOriginatorId (Short)",
+        headersInvalidShortOriginatorId,
+        validInsertUCLiabilityRequest
       )
-//      (
-//        "???: Invalid GovUkOriginatorId (Long)",
-//        headersInvalidLongOriginatorId,
-//        validInsertUCLiabilityRequest
-//      ),
-//      (
-//        "???: Invalid GovUkOriginatorId (Short)",
-//        headersInvalidShortOriginatorId,
-//        validInsertUCLiabilityRequest
-//      ),
-//      (
-//        "???: Trigger Forbidden",
-//        invalidHeaders,
-//        validInsertUCLiabilityRequest
-//      )
     )
 
     cases.foreach { case (scenarioName, headers, payload) =>
@@ -64,18 +55,18 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postNotificationWithValidToken(headers, payload)
+        val response = apiService.postNotification(headers, payload)
 
         Then("403 Forbidden should be returned")
-        assert(response.status == Status.FORBIDDEN)
+        withClue(s"Status=${response.status}, Body=${response.body}\n") {
+          response.status mustBe FORBIDDEN
+        }
 
         And("Response body should contain correct error details")
-        val actualJson = Json.parse(response.body)
-        val actualCode = (actualJson \ "code").as[String]
-        val actualMsg  = (actualJson \ "message").as[String]
+        val jsonBody: JsValue = Json.parse(response.body)
 
-        assert(actualCode == ForbiddenCode)
-        assert(actualMsg == "Forbidden") // FIXME
+        (jsonBody \ "code").as[String] mustBe ForbiddenCode
+        (jsonBody \ "message").as[String] mustBe "Forbidden"
       }
     }
   }

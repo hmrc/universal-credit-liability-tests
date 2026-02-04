@@ -99,7 +99,7 @@ class TerminateBadRequests extends BaseSpec with GuiceOneServerPerSuite with Tes
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
-        val response = apiService.postNotificationWithValidToken(validHeaders, payload)
+        val response = apiService.postNotification(validHeaders, payload)
 
         Then("400 Bad Request should be returned")
         assert(response.status == Status.BAD_REQUEST)

@@ -28,7 +28,7 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
   //    unprocessableCases.foreach { case (ninoPrefix, (errorCode, _)) =>
   //      Scenario(s"returns 422 with code $errorCode") {
   //        ninoWithPrefix(ninoPrefix)
-  //        val response = apiService.postNotificationWithValidToken(
+  //        val response = apiService.postNotification(
   //          validHeaders,
   //          uclPayload("LCW/LCWRA", "Terminate", "2025-01-04", endDate = Some("2025-01-04"), nino = "AA057680")
   //        )
@@ -55,7 +55,7 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
         When("A notification request is sent")
 
         val payload = terminatePayload(ninoWithPrefix(ninoPrefix))
-        apiService.postNotificationWithValidToken(validHeaders, payload)
+        apiService.postNotification(validHeaders, payload)
       }
     }
   }
@@ -166,7 +166,7 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postNotificationWithValidToken(validHeaders, payload)
+        val response = apiService.postNotification(validHeaders, payload)
 
         Then("422 Unprocessable entity should be returned")
         assert(response.status == Status.UNPROCESSABLE_ENTITY)

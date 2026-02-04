@@ -113,7 +113,7 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val apiResponse = apiService.postNotificationWithValidToken(headers, payload)
+        val apiResponse = apiService.postNotification(headers, payload)
 
         Then("400 Bad Request should be returned")
         withClue(s"Expected 400, got ${apiResponse.status}. Body ${apiResponse.body}\n") {

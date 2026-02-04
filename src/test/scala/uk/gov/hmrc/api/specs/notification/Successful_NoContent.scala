@@ -44,7 +44,7 @@ class Successful_NoContent extends BaseSpec with GuiceOneServerPerSuite with Tes
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postNotificationWithValidToken(validHeaders, req)
+        val response = apiService.postNotification(validHeaders, req)
 
         Then("204 No content should display")
         withClue(s"Status=${response.status}, Body=${response.body}\n") {

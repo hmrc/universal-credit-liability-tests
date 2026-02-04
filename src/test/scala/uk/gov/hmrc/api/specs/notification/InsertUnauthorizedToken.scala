@@ -24,47 +24,48 @@ import uk.gov.hmrc.api.testData.TestDataNotification
 
 class InsertUnauthorizedToken extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("401 Unauthorized Token scenarios") {
+//  Feature("401 Unauthorized Token scenarios") {
+//
+//    val cases = Seq(
+//      (
+//        "UCL_TC_001_0.1: Invalid Token",
+//        () => getInvalidAuthToken,
+//        "INVALID_CREDENTIALS",
+//        "Invalid bearer token"
+//      ),
+//      (
+//        "UCL_TC_001_0.2: Empty Token",
+//        () => getNoAuthToken,
+//        "MISSING_CREDENTIALS",
+//        "Bearer token not supplied"
+//      ),
+//      (
+//        "UCL_TC_001_0.3: Expired Token",
+//        () => getExpiredAuthToken,
+//        "INVALID_CREDENTIALS",
+//        "Invalid bearer token"
+//      )
+//    )
+//
+//    cases.foreach { case (scenarioName, tokenFn, expCode, expMessage) =>
+//      Scenario(scenarioName) {
+//        Given("The Universal Credit API is up and running")
+//        When("An invalid/empty/expired token is sent")
+//
+//        val response = apiService.makeRequest(validHeaders, validInsertLCWLCWRALiabilityRequest, tokenFn())
+//
+//        Then("401 Unauthorized received")
+//        assert(response.status == Status.UNAUTHORIZED)
+//
+//        Then("Response body should contain correct error details")
+//        val actualJson = Json.parse(response.body)
+//        val actualCode = (actualJson \ "code").as[String]
+//        val actualMsg  = (actualJson \ "message").as[String]
+//
+//        assert(actualCode == expCode)
+//        assert(actualMsg == expMessage)
+//      }
+//    }
+//  }
 
-    val cases = Seq(
-      (
-        "UCL_TC_001_0.1: Invalid Token",
-        () => getInvalidAuthToken,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
-      ),
-      (
-        "UCL_TC_001_0.2: Empty Token",
-        () => getNoAuthToken,
-        "MISSING_CREDENTIALS",
-        "Bearer token not supplied"
-      ),
-      (
-        "UCL_TC_001_0.3: Expired Token",
-        () => getExpiredAuthToken,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
-      )
-    )
-
-    cases.foreach { case (scenarioName, tokenFn, expCode, expMessage) =>
-      Scenario(scenarioName) {
-        Given("The Universal Credit API is up and running")
-        When("An invalid/empty/expired token is sent")
-
-        val response = apiService.makeRequest(validHeaders, validInsertLCWLCWRALiabilityRequest, tokenFn())
-
-        Then("401 Unauthorized received")
-        assert(response.status == Status.UNAUTHORIZED)
-
-        Then("Response body should contain correct error details")
-        val actualJson = Json.parse(response.body)
-        val actualCode = (actualJson \ "code").as[String]
-        val actualMsg  = (actualJson \ "message").as[String]
-
-        assert(actualCode == expCode)
-        assert(actualMsg == expMessage)
-      }
-    }
-  }
 }

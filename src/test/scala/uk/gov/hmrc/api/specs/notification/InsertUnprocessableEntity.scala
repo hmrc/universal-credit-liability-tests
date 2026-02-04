@@ -130,7 +130,7 @@ class InsertUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite wit
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postNotificationWithValidToken(validHeaders, payload)
+        val response = apiService.postNotification(validHeaders, payload)
 
         Then("422 Unprocessable entity should be returned")
         assert(response.status == Status.UNPROCESSABLE_ENTITY)

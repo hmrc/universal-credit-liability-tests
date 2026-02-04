@@ -75,7 +75,6 @@ trait BaseTestData {
 
   def baseHeaders: Seq[(String, String)] = Seq(
     "Content-Type"         -> jsonContentType,
-    "Authorization"        -> "Bearer FIXME", // TODO: implement bearer token
     "correlationId"        -> randomCorrelationId,
     "gov-uk-originator-id" -> randomGovUkOriginatorId
   )
@@ -126,6 +125,9 @@ trait BaseTestData {
 
   def headersInvalidShortOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 2)
+
+  def headersInvalidCharsOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "!NV@L!D")
 
   def headersInvalidLongOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 41)
