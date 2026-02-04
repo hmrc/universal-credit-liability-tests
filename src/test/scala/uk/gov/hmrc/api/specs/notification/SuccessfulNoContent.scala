@@ -18,7 +18,8 @@ package uk.gov.hmrc.api.specs.notification
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.NO_CONTENT
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
@@ -27,29 +28,38 @@ class SuccessfulNoContent extends BaseSpec with GuiceOneServerPerSuite with Test
   Feature("204 No Content scenarios") {
 
     val cases = Seq(
-      ("UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Insert action", validInsertLCWLCWRALiabilityRequest),
-      ("UCL_TC_001_0.2: Valid Credit Record type UC with Insert action", validInsertUCLiabilityRequest),
+      (
+        "UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Insert action",
+        insertNotificationPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "UCL_TC_001_0.2: Valid Credit Record type UC with Insert action",
+        insertNotificationPayload(recordType = "UC")
+      ),
       (
         "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Terminate action",
-        validTerminationLCWLCWRALiabilityRequest
+        terminateNotificationPayload(recordType = "LCW/LCWRA")
       ),
       (
         "UCL_Terminate_TC_001_0.2: Valid Credit Record type UC with Terminate action",
-        validTerminationUCLiabilityRequest
+        terminateNotificationPayload(recordType = "UC")
       )
     )
 
-    cases.foreach { case (name, req) =>
-      Scenario(name) {
-        Given("The Universal Credit API is up and running")
-        When("A request is sent")
+    cases.foreach { case (scenarioName, payload) =>
+      Scenario(scenarioName) {
+        Given("the Universal Credit API is up and running")
+        When("a request is sent")
 
-        val response = apiService.postNotification(validHeaders, req)
+        val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("204 NoContent should display")
-        withClue(s"Status=${response.status}, Body=${response.body}\n") {
-          response.status mustBe Status.NO_CONTENT
+        Then("204 NoContent must be returned")
+        withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
+          apiResponse.status mustBe NO_CONTENT
         }
+
+        And("response body must be empty")
+        apiResponse.body mustBe empty
       }
     }
   }
