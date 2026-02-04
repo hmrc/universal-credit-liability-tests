@@ -61,7 +61,7 @@ class ApiService extends HttpClient {
     nino: String,
     requestBody: JsValue
   ): StandaloneWSResponse = {
-    val url: String = s"$hipHost/person/$nino/liability/universal-credit"
+    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit"
     Await.result(
       post(
         url,
@@ -78,7 +78,7 @@ class ApiService extends HttpClient {
     requestBody: JsValue
   ): StandaloneWSResponse = {
 
-    val url: String = s"$hipHost/person/$nino/liability/universal-credit/termination"
+    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
 
     Await.result(
       post(
