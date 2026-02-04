@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.api.specs.hip
 
+import org.scalatest.matchers.must.Matchers.{must, mustBe}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
 import uk.gov.hmrc.api.specs.BaseSpec
@@ -26,11 +27,10 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
 
   Feature("422 Terminate Unprocessable Entity scenarios") {
 
-    val cases: Seq[(String, String, Seq[(String, String)], JsValue, String, String)] = Seq(
+    val cases: Seq[(String, String, JsValue, String, String)] = Seq(
       (
         "UC_TC_045: ConflictLiability with terminate request",
         "GE100123",
-        validHeaders,
         conflictingTerminateLiabilityHIPRequest,
         "55038",
         "A conflicting or identical Liability is already recorded"
@@ -38,7 +38,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_039: Start date before 16th Birthday with terminate request",
         "HC210123",
-        validHeaders,
         startDateBefore16thBirthdayTerminateHIPRequest,
         "65026",
         "Start date must not be before 16th birthday"
@@ -46,7 +45,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UCL_TC_040: Start date after state pension age with terminate request",
         "ET060123",
-        validHeaders,
         startDateAfterStatePensionAgeTerminateHIPRequest,
         "55029",
         "Start Date later than SPA"
@@ -54,7 +52,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_041: Start date After Death with terminate request",
         "EK310123",
-        validHeaders,
         startDateAfterDeathTerminateHIPRequest,
         "64996",
         "Start Date is not before date of death"
@@ -62,7 +59,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_043: Start date and End date after death with terminate request",
         "BW130123",
-        validHeaders,
         startAndEndDateAfterDeathTerminateHIPRequest,
         "55006",
         "Start Date and End Date must be earlier than Date of Death"
@@ -70,7 +66,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_042: End date after State pension age with terminate request",
         "EZ200123",
-        validHeaders,
         endDateAfterStatePensionAgeTerminateHIPRequest,
         "55008",
         "End Date must be earlier than State Pension Age"
@@ -78,7 +73,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_044: End date after death with terminate request",
         "BK190123",
-        validHeaders,
         endDateAfterDeathTerminateHIPRequest,
         "55027",
         "End Date later than Date of Death"
@@ -86,7 +80,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_046: Not Within UC Period with terminate request",
         "HS260123",
-        validHeaders,
         notWithinUCPeriodTerminateHIPRequest,
         "64997",
         "LCW/LCWRA not within a period of UC"
@@ -94,7 +87,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_047: LCWLCWRA Override with terminate request",
         "CE150123",
-        validHeaders,
         lcwLcwrOverrideTerminateHIPRequest,
         "64998",
         "LCW/LCWRA Override not within a period of LCW/LCWRA"
@@ -102,7 +94,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_048: NoMatchingLiability with terminate request",
         "GP050123",
-        validHeaders,
         notMatchingLiabilityTerminateHIPRequest,
         "55039",
         "NO corresponding liability found"
@@ -110,7 +101,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_049: StartDateBefore29042013 with terminate request",
         "GX240123",
-        validHeaders,
         startDateBefore29042013TerminateHIPRequest,
         "65536",
         "Start date before 29/04/2013"
@@ -118,7 +108,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_050: EndDateBeforeStartDate with terminate request",
         "HT230123",
-        validHeaders,
         endDateBeforeStartDateTerminateHIPRequest,
         "65537",
         "End date before start date"
@@ -126,7 +115,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_036: PseudoAccount with terminate request",
         "BX100123",
-        validHeaders,
         pseudoAccountTerminateHIPRequest,
         "65541",
         "The NINO input matches a Pseudo Account"
@@ -134,7 +122,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_037: NonLiveAccount with terminate request",
         "HZ310123",
-        validHeaders,
         nonLiveAccountTerminateHIPRequest,
         "65542",
         "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)"
@@ -142,7 +129,6 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_038: AccountTransferredIsleOfMan with terminate request",
         "BZ230123",
-        validHeaders,
         accountTransferredIsleOfManTerminateHIPRequest,
         "65543",
         "The NINO input matches an account that has been transferred to the Isle of Man"
@@ -150,18 +136,17 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
       (
         "UC_TC_028: StartDateAfterDeath2 with Insert request",
         "AB150123",
-        validHeaders,
         startDateAfterDeath2TerminateHIPRequest,
         "99999",
         "Start Date after Death"
       )
     )
-    cases.foreach { case (scenarioName, nino, headers, payload, expCode, expReason) =>
+    cases.foreach { case (scenarioName, nino, payload, expCode, expReason) =>
       Scenario(scenarioName) {
         Given("The Universal Credit API is up and running")
         When("A request is sent")
 
-        val response = apiService.postHipUcTermination(headers, nino = nino, payload)
+        val response = apiService.postHipUcTermination(validHeaders, nino = nino, payload)
 
         Then("422 Unprocessable Entity should be returned")
         assert(
@@ -177,12 +162,12 @@ class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuit
           .getOrElse(fail(s"Field 'failures' is missing in response. Body: ${response.body}"))
         val failuresList  = failuresArray.value
 
-        failuresList should not be empty
+        failuresList must not be empty
 
         val firstFailure: JsValue = failuresList.head
 
-        assert((firstFailure \ "code").as[String] == expCode)
-        assert((firstFailure \ "reason").as[String] == expReason)
+        (firstFailure \ "code").as[String] mustBe expCode
+        (firstFailure \ "reason").as[String] mustBe expReason
 
       }
     }
