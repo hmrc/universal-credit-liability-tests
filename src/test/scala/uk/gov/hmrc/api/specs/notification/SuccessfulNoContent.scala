@@ -46,7 +46,7 @@ class SuccessfulNoContent extends BaseSpec with GuiceOneServerPerSuite with Test
 
         val response = apiService.postNotification(validHeaders, req)
 
-        Then("204 No content should display")
+        Then("204 NoContent should display")
         withClue(s"Status=${response.status}, Body=${response.body}\n") {
           response.status mustBe Status.NO_CONTENT
         }

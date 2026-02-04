@@ -70,7 +70,11 @@ trait TestDataNotification extends BaseTestData {
     result
   }
 
-  def insertNotificationPayloadMissing(parameterName: String): JsObject = notificationPayload() - parameterName
+  def insertNotificationPayloadMissing(parameterName: String): JsObject =
+    insertNotificationPayload() - parameterName
+
+  def terminateNotificationPayloadMissing(parameterName: String): JsObject =
+    terminateNotificationPayload() - parameterName
 
   // FIXME: replace with notificationPayload
   def uclPayload(

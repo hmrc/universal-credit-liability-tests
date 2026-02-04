@@ -240,7 +240,7 @@ class InsertUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite wit
 
         val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("422 Unprocessable entity should be returned")
+        Then("422 UnprocessableEntity should be returned")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNPROCESSABLE_ENTITY
         }

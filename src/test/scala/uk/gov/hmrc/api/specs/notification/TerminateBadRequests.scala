@@ -101,7 +101,7 @@ class TerminateBadRequests extends BaseSpec with GuiceOneServerPerSuite with Tes
         When("A request is sent")
         val response = apiService.postNotification(validHeaders, payload)
 
-        Then("400 Bad Request should be returned")
+        Then("400 BadRequest should be returned")
         assert(response.status == Status.BAD_REQUEST)
 
         Then("Response body should contain correct error details")

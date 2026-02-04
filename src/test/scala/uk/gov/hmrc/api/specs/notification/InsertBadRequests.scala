@@ -164,17 +164,20 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
 
     cases.foreach { case (scenarioName, headers, payload, reason) =>
       Scenario(scenarioName) {
-        Given("The Universal Credit API is up and running")
-        When("A request is sent")
+        Given("the Universal Credit API is up and running")
+        When("a request is sent")
+
+        println("\nPAYLOAD:")
+        println(payload)
 
         val apiResponse = apiService.postNotification(headers, payload)
 
-        Then("400 Bad Request should be returned")
+        Then("400 BadRequest should be returned")
         withClue(s"Expected 400, got ${apiResponse.status}. Body ${apiResponse.body}\n") {
           apiResponse.status mustBe Status.BAD_REQUEST
         }
 
-        And("Response body should contain correct error details")
+        And("response body should contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
 
         (responseBody \ "code").as[String] mustBe InvalidInput

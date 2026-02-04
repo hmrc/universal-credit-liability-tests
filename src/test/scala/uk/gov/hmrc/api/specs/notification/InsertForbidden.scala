@@ -52,8 +52,8 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
 
     cases.foreach { case (scenarioName, headers, payload) =>
       Scenario(scenarioName) {
-        Given("The Universal Credit API is up and running")
-        When("A request is sent")
+        Given("the Universal Credit API is up and running")
+        When("a request is sent")
 
         val apiResponse = apiService.postNotification(headers, payload)
 
@@ -62,7 +62,7 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
           apiResponse.status mustBe FORBIDDEN
         }
 
-        And("Response body should contain correct error details")
+        And("response body should contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
 
         (responseBody \ "code").as[String] mustBe ForbiddenCode
