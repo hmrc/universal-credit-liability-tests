@@ -137,61 +137,6 @@ trait TestDataHip extends BaseTestData {
   val invalidHipEndDateTerminationRequest: JsValue =
     hipUcTerminationPayload("UC", liabilityStartDate, "2025-99-04")
 
-  // -----Insert Unprocessable Entity------
-
-  val conflictingInsertLiabilityHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val startDateBefore16thBirthdayInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"))
-
-  val startDateAfterStatePensionAgeInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", startDate = "2025-04-15", dateOfBirth = Some("1957-04-14"))
-
-  val startDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val startAndEndDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val endDateAfterStatePensionAgeInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some("1957-04-14"))
-
-  val endDateAfterDeathInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val notWithinUCPeriodInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val lcwLcwrOverrideInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val notMatchingLiabilityInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val startDateBefore29042013InsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", startDate = "2013-04-28", endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val endDateBeforeStartDateInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val pseudoAccountInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val nonLiveAccountInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
-  val accountTransferredIsleOfManInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload(
-      "LCW/LCWRA",
-      liabilityStartDate,
-      endDate = Some("2025-01-04"),
-      dateOfBirth = Some(dateOfBirth)
-    )
-
-  val startDateAfterDeath2InsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
-
   // -----Terminate Unprocessable Entity------
 
   val conflictingTerminateLiabilityHIPRequest: JsValue =
