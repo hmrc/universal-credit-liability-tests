@@ -31,22 +31,22 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
       (
         "???: Invalid GovUkOriginatorId (Special Chars)",
         headersInvalidCharsOriginatorId,
-        validInsertUCLiabilityRequest
+        insertNotificationPayload()
       ),
       (
         "???: Missing GovUkOriginatorId",
         headersMissingGovUkOriginatorId,
-        validInsertUCLiabilityRequest
+        insertNotificationPayload()
       ),
       (
         "???: Invalid GovUkOriginatorId (Long)",
         headersInvalidLongOriginatorId,
-        validInsertUCLiabilityRequest
+        insertNotificationPayload()
       ),
       (
         "???: Invalid GovUkOriginatorId (Short)",
         headersInvalidShortOriginatorId,
-        validInsertUCLiabilityRequest
+        insertNotificationPayload()
       )
     )
 
@@ -62,7 +62,7 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
           apiResponse.status mustBe FORBIDDEN
         }
 
-        And("response body must contain correct error details")
+        And("response body must contain correct error 'code' and 'message'")
         val responseBody: JsValue = Json.parse(apiResponse.body)
 
         (responseBody \ "code").as[String] mustBe ForbiddenCode

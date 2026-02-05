@@ -23,26 +23,18 @@ import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class SuccessfulNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class InsertNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("204 No Content scenarios") {
+  Feature("204 NoContent scenarios") {
 
     val cases = Seq(
       (
-        "UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Insert action",
+        "UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA",
         insertNotificationPayload(recordType = "LCW/LCWRA")
       ),
       (
-        "UCL_TC_001_0.2: Valid Credit Record type UC with Insert action",
+        "UCL_TC_001_0.2: Valid Credit Record type UC",
         insertNotificationPayload(recordType = "UC")
-      ),
-      (
-        "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW/LCWRA with Terminate action",
-        terminateNotificationPayload(recordType = "LCW/LCWRA")
-      ),
-      (
-        "UCL_Terminate_TC_001_0.2: Valid Credit Record type UC with Terminate action",
-        terminateNotificationPayload(recordType = "UC")
       )
     )
 

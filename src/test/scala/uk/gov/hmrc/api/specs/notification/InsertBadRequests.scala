@@ -18,7 +18,7 @@ package uk.gov.hmrc.api.specs.notification
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
@@ -141,7 +141,7 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
 
         Then("400 BadRequest should be returned")
         withClue(s"Expected 400, got ${apiResponse.status}. Body ${apiResponse.body}\n") {
-          apiResponse.status mustBe Status.BAD_REQUEST
+          apiResponse.status mustBe BAD_REQUEST
         }
 
         And("response body should contain correct error details")

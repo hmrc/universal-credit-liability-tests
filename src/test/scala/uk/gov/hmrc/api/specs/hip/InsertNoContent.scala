@@ -18,58 +18,59 @@ package uk.gov.hmrc.api.specs.hip
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.NO_CONTENT
+import play.api.libs.json.JsObject
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
 class InsertNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("204 No Content HIP Insert scenarios") {
+  Feature("204 NoContent HIP Insert scenarios") {
 
-    Scenario("UC_TC_001_0.1: Insert - LCW/LCWRA") {
-      Given("The HIP API is up and running")
-      When("A request is sent to create LCW/LCWRA liability without end date")
+    val cases: Seq[(NinoPrefix, JsObject)] = Seq(
+      (
+        "UC_TC_001_0.1: Insert - LCW/LCWRA",
+        insertHipPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "UC_TC_001_0.2: Insert - LCW/LCWRA with End date",
+        insertHipPayload(recordType = "UC", endDate = Some("2026-06-30"))
+      ),
+      (
+        "UC_TC_001_???: Insert - LCW/LCWRA without End Date",
+        insertHipPayload(recordType = "UC", endDate = None)
+      ),
+      (
+        "UC_TC_003_0.1: Insert - UC",
+        insertHipPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "UC_TC_003_0.2: Insert - UC with End date",
+        insertHipPayload(recordType = "UC")
+      ),
+      (
+        "UC_TC_003_???: Insert - UC without End date",
+        insertHipPayload(recordType = "UC", endDate = None)
+      )
+    )
 
-      val response =
-        apiService.postHipUcLiability(validHeaders, randomNino, validInsertLCWLCWRAWithoutEndDateHipRequest)
-      Then("204 No Content should be returned")
-      withClue(s"Status=${response.status}, Body=${response.body}\n") {
-        response.status mustBe Status.NO_CONTENT
-      }
-    }
+    cases.foreach { case (scenarioName, payload) =>
+      Scenario(scenarioName) {
+        Given("the Universal Credit API is up and running")
+        When("a request is sent")
 
-    Scenario("UC_TC_001_0.2: Insert - LCW/LCWRA with End date") {
-      Given("The HIP API is up and running")
-      When("A request is sent to create LCW/LCWRA liability with end date")
+        val apiResponse = apiService.postHipUcLiability(validHeaders, randomNino, payload)
 
-      val response = apiService.postHipUcLiability(validHeaders, randomNino, validInsertLCWLCWRAWithEndDateHipRequest)
-      Then("204 No Content should be returned")
-      withClue(s"Status=${response.status}, Body=${response.body}\n") {
-        response.status mustBe Status.NO_CONTENT
-      }
-    }
+        Then("204 NoContent must be returned")
+        withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
+          apiResponse.status mustBe NO_CONTENT
+        }
 
-    Scenario("UC_TC_003_0.1: Insert - UC") {
-      Given("The HIP API is up and running")
-      When("A request is sent to create UC liability without end date")
-
-      val response = apiService.postHipUcLiability(validHeaders, randomNino, validInsertUCWithOutEndDateHipRequest)
-      Then("204 No Content should be returned")
-      withClue(s"Status=${response.status}, Body=${response.body}\n") {
-        response.status mustBe Status.NO_CONTENT
-      }
-    }
-
-    Scenario("UC_TC_003_0.2: Insert - UC with End date") {
-      Given("The HIP API is up and running")
-      When("A request is sent to create UC liability with end date")
-
-      val response = apiService.postHipUcLiability(validHeaders, randomNino, validInsertUCWithEndDateHipRequest)
-      Then("204 No Content should be returned")
-      withClue(s"Status=${response.status}, Body=${response.body}\n") {
-
-        response.status mustBe Status.NO_CONTENT
+        And("response body must be empty")
+        apiResponse.body mustBe empty
       }
     }
   }
+
 }

@@ -26,8 +26,7 @@ trait BaseTestData {
   private val NinoPattern: Regex =
     "^([ACEHJLMOPRSWXY][A-CEGHJ-NPR-TW-Z]|B[A-CEHJ-NPR-TW-Z]|G[ACEGHJ-NPR-TW-Z]|[KT][A-CEGHJ-MPR-TW-Z]|N[A-CEGHJL-NPR-SW-Z]|Z[A-CEGHJ-NPR-TW-Y])[0-9]{6}$".r
 
-  /** Generates a random NINO that does not collide with any of the fixed prefixes used for 422 Unprocessable Entities
-    */
+  // Generates a random NINO that does not collide with any of the fixed prefixes used for 422 Unprocessable Entities
   def randomNino: String = {
     val restrictedPrefixes: Set[String] = unprocessableCases.keys.map(_.take(2)).toSet
     val digits: String                  = "%06d".format(Random.nextInt(999999))
@@ -62,6 +61,8 @@ trait BaseTestData {
     val suffix = "%03d".format(Random.nextInt(1000))
     s"$prefix$suffix"
   }
+
+  def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
 
   // Headers
   val jsonContentType: String = "application/json"
@@ -99,7 +100,7 @@ trait BaseTestData {
   def overrideHeader(headers: Seq[(String, String)], key: String, value: String): Seq[(String, String)] =
     removeHeader(headers, key) :+ (key -> value)
 
-  // Headers with missing
+  // Missing headers
   def headersMissingContentType: Seq[(String, String)] =
     removeHeader(baseHeaders, "Content-Type")
 
@@ -112,7 +113,7 @@ trait BaseTestData {
   def headersMissingGovUkOriginatorId: Seq[(String, String)] =
     removeHeader(baseHeaders, "gov-uk-originator-id")
 
-  // Headers with invalid values
+  // Invalid headers
   def headersInvalidContentType: Seq[(String, String)] =
     overrideHeader(baseHeaders, "Content-Type", "INVALID")
 
@@ -131,7 +132,7 @@ trait BaseTestData {
   def headersInvalidLongOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 41)
 
-  // Headers with empty values
+  // Empty headers
   def headersEmptyContentType: Seq[(String, String)] =
     overrideHeader(baseHeaders, "Content-Type", "")
 
@@ -150,12 +151,18 @@ trait BaseTestData {
   type ErrorCode  = String
   type Reason     = String
 
-  // object ErrorCodes {
   val InvalidInput: ErrorCode  = "400.1"
   val ForbiddenCode: ErrorCode = "403.2"
-  // }
 
-  val unprocessableCases: Map[Nino, (ErrorCode, Reason)] = Map(
+  val dateOfBirth: String        = "2002-04-27"
+  val liabilityStartDate: String = "2025-08-19"
+  val liabilityEndDate: String   = "2026-06-30"
+
+  val insertStartDate: String    = "2025-08-19"
+  val terminateStartDate: String = "2015-08-19"
+  val terminateEndDate: String   = "2025-01-04"
+
+  val unprocessableCases: Map[NinoPrefix, (ErrorCode, Reason)] = Map(
     "BW130" -> ("Start Date and End Date must be earlier than Date of Death", "55006"),
     "EZ200" -> ("End Date must be earlier than State Pension Age", "55008"),
     "BK190" -> ("End Date later than Date of Death", "55027"),
@@ -198,17 +205,5 @@ trait BaseTestData {
       "65543" -> "The NINO input matches an account that has been transferred to the Isle of Man",
       "99999" -> "Start Date after Death"
     )
-
-  def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
-
-  // -------------------
-
-  val dateOfBirth: String        = "2002-04-27"
-  val liabilityStartDate: String = "2025-08-19"
-  val liabilityEndDate: String   = "2026-06-30"
-
-  val insertStartDate: String    = "2025-08-19"
-  val terminateStartDate: String = "2015-08-19"
-  val terminateEndDate: String   = "2025-01-04"
 
 }

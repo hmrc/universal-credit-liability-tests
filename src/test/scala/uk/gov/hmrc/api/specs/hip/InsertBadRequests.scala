@@ -18,7 +18,7 @@ package uk.gov.hmrc.api.specs.hip
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.StandaloneWSResponse
@@ -43,56 +43,56 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         constraintViolation("universalCreditRecordType")
       ),
       (
-        "UC_TC_010_0.2: Invalid Start Date - Invalid day in Feb (value 2028-02-30)",
+        "UC_TC_010_0.2: Invalid liabilityStartDate - Invalid day in Feb (value 2028-02-30)",
         insertHipPayload(startDate = "2028-02-30"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.3: Invalid Start Date - Invalid Month (Value 2028-13-01)",
+        "UC_TC_010_0.3: Invalid liabilityStartDate - Invalid Month (Value 2028-13-01)",
         insertHipPayload(startDate = "2028-13-01"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.4: Invalid Start Date - Month can't be 00 (Value 2028-00-11)",
+        "UC_TC_010_0.4: Invalid liabilityStartDate - Month can't be 00 (Value 2028-00-11)",
         insertHipPayload(startDate = "2028-00-11"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.5: Invalid Start Date - Day can't be 00 (Value 2028-02-00)",
-        invalidStartDateDayZeroActionTypeRequest,
+        "UC_TC_010_0.5: Invalid liabilityStartDate - Day can't be 00 (Value 2028-02-00)",
+        insertHipPayload(startDate = "2028-02-00"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.6: Invalid Start Date - More than 30 days, ex: April (Value 2028-04-31)",
-        invalidStartDateDayAprilActionTypeRequest,
+        "UC_TC_010_0.6: Invalid liabilityStartDate - More than 30 days, ex: April (Value 2028-04-31)",
+        insertHipPayload(startDate = "2028-04-31"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.7: Invalid Start Date - Wrong Format (Value 11-05-2025)",
-        invalidStartDateWrongFormatActionTypeRequest,
+        "UC_TC_010_0.7: Invalid liabilityStartDate - Wrong Format (Value 11-05-2025)",
+        insertHipPayload(startDate = "11-05-2025"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.8: Invalid Start Date - Zero date (Value 0000-00-00)",
-        invalidStartDateZeroActionTypeRequest,
+        "UC_TC_010_0.8: Invalid liabilityStartDate - Zero date (Value 0000-00-00)",
+        insertHipPayload(startDate = "0000-00-00"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.9: Invalid Start Date - Empty Start Date ()",
-        invalidStartDateEmptyActionTypeRequest,
+        "UC_TC_010_0.9: Invalid liabilityStartDate - Empty Start Date (\"\")",
+        insertHipPayload(startDate = ""),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
       (
-        "UC_TC_010_0.10: Invalid Start Date - Missing Start date ()",
-        invalidStartDateMissingActionTypeRequest,
+        "UC_TC_010_0.10: Missing parameter: liabilityStartDate", // FIXME: description is wrong (not Invalid - but Missing)
+        insertHipPayloadMissing("liabilityStartDate"),
         randomNino,
         constraintViolation("liabilityStartDate")
       ),
@@ -104,49 +104,49 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid day in Feb(Value 2026-02-30)",
-        invalidEndDateInvalidDayFebActionTypeRequest,
+        insertHipPayload(endDate = Some("2026-02-30")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Invalid Month (Value 2026-15-18)",
-        invalidEndDateInvalidMonthActionTypeRequest,
+        insertHipPayload(endDate = Some("2026-15-18")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
-        "UC_TC_011_0.02: Invalid End Date - Month can't be 00 (Value 2026-00-11)",
-        invalidEndDateMonthZeroActionTypeRequest,
+        "UC_TC_011_0.02: Invalid End Date - Month can't be 00 (Value )",
+        insertHipPayload(endDate = Some("2026-00-11")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.02: Invalid End Date - Day can't be 00 (Value 2026-02-00)",
-        invalidEndDateDayZeroActionTypeRequest,
+        insertHipPayload(endDate = Some("2026-02-00")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - More than 30 days, ex: April (Value 2028-04-31)",
-        invalidEndDateDayAprilActionTypeRequest,
+        insertHipPayload(endDate = Some("2028-04-31")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Format issue - YYYY-M-DD (Value 2028-9-11)",
-        insertHipPayload(endDate = "2028-9-11"),
+        insertHipPayload(endDate = Some("2028-9-11")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Wrong Format - DD-MM-YYYY (Value 11-05-2025)",
-        insertHipPayload(endDate = "11-05-2025"),
+        insertHipPayload(endDate = Some("11-05-2025")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
       (
         "UC_TC_011_0.03: Invalid End Date - Zero date (Value 0000-00-00)",
-        insertHipPayload(endDate = "0000-00-00"),
+        insertHipPayload(endDate = Some("0000-00-00")),
         randomNino,
         constraintViolation("liabilityEndDate")
       ),
@@ -156,33 +156,32 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         randomNino,
         constraintViolation("liabilityEndDate")
       )
-
       // TODO: implement these scenarios
-      //  (
-      //    "UC_TC_016_0.3 Missing correlationId header",
-      //    headersWithoutCorrelationId,
-      //    randomNino,
-      //    validUCLiabilityRequest
-      //  )
+      // (
+      //  "UC_TC_016_0.3 Missing correlationId header",
+      //  headersWithoutCorrelationId,
+      //  randomNino,
+      //  constraintViolation("correlationId")
+      // )
       //  ,
       //  (
       //    "UC_TC_016_0.4 Invalid correlationId header",
       //    headersWithInvalidCorrelationId,
       //    randomNino,
-      //    validUCLiabilityRequest
+      //    constraintViolation("correlationId")
       //  )
     )
 
     cases.foreach { case (scenarioName, payload, nino, _) =>
       Scenario(scenarioName) {
-        Given("The HIP API is up and running")
+        Given("the HIP API is up and running")
         When("a request is sent with invalid data")
 
         val hipResponse: StandaloneWSResponse = apiService.postHipUcLiability(validHeaders, nino, payload)
 
         Then("400 Bad Request must be returned")
         withClue(s"Expected 400, got ${hipResponse.status}. Body ${hipResponse.body}\n") {
-          hipResponse.status mustBe Status.BAD_REQUEST
+          hipResponse.status mustBe BAD_REQUEST
         }
 
         And("response body must be empty")

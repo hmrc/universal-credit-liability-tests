@@ -15,6 +15,7 @@
  */
 
 package uk.gov.hmrc.api.specs.notification
+
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.UNPROCESSABLE_ENTITY

@@ -14,37 +14,36 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs.hip
+package uk.gov.hmrc.api.specs.notification
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.NO_CONTENT
-import play.api.libs.json.JsObject
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.TestDataHip
+import uk.gov.hmrc.api.testData.*
 
-class TerminateNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class TerminateNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("204 NoContent HIP Terminate scenarios") {
+  Feature("204 NoContent 'Terminate' scenarios") {
 
-    val cases: Seq[(String, JsObject)] = Seq(
+    val cases = Seq(
       (
-        "UC_TC_004: Terminate action for Record Type - LCW/LCWRA",
-        terminateHipPayload(recordType = "LCW/LCWRA")
+        "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW/LCWRA",
+        terminateNotificationPayload(recordType = "LCW/LCWRA")
       ),
       (
-        "UC_TC_006: Terminate action for Record Type - UC",
-        terminateHipPayload(recordType = "UC")
+        "UCL_Terminate_TC_001_0.2: Valid Credit Record type UC",
+        terminateNotificationPayload(recordType = "UC")
       )
     )
 
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
-        Given("the HIP API is up and running")
+        Given("the Universal Credit API is up and running")
         When("a request is sent")
 
-        val apiResponse = apiService.postHipUcTermination(validHeaders, randomNino, payload)
+        val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("204 NoContent must be returned")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
@@ -55,7 +54,5 @@ class TerminateNoContent extends BaseSpec with GuiceOneServerPerSuite with TestD
         apiResponse.body mustBe empty
       }
     }
-
   }
-
 }

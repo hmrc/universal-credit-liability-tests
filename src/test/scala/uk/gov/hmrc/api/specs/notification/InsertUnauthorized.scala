@@ -15,6 +15,7 @@
  */
 
 package uk.gov.hmrc.api.specs.notification
+
 import org.scalactic.Prettifier.default
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
