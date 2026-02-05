@@ -18,9 +18,6 @@ package uk.gov.hmrc.api.testData
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 
-import java.util.UUID
-import scala.util.Random
-
 trait TestDataHip extends BaseTestData {
 
   def insertHipPayload(
@@ -89,7 +86,6 @@ trait TestDataHip extends BaseTestData {
 
   // ---- Valid payloads ----
 
-  // FIXME go through payloads and fix issues (duplication/missing etc)
   val validInsertLCWLCWRAWithoutEndDateHipRequest: JsValue =
     hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, dateOfBirth = Some(dateOfBirth))
 
@@ -112,8 +108,6 @@ trait TestDataHip extends BaseTestData {
 
   val validHipUCTerminationRequest: JsValue =
     hipUcTerminationPayload("UC", liabilityStartDate, liabilityEndDate)
-
-  //
 
   // ---- Invalid UC Liability payloads ----
   val invalidHipRecordTypeLiabilityRequest: JsValue =
@@ -188,7 +182,12 @@ trait TestDataHip extends BaseTestData {
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
 
   val accountTransferredIsleOfManInsertHIPRequest: JsValue =
-    hipUcLiabilityPayload("LCW/LCWRA", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))
+    hipUcLiabilityPayload(
+      "LCW/LCWRA",
+      liabilityStartDate,
+      endDate = Some("2025-01-04"),
+      dateOfBirth = Some(dateOfBirth)
+    )
 
   val startDateAfterDeath2InsertHIPRequest: JsValue =
     hipUcLiabilityPayload("UC", liabilityStartDate, endDate = Some("2025-01-04"), dateOfBirth = Some(dateOfBirth))

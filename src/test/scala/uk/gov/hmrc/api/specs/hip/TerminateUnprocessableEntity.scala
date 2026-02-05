@@ -19,11 +19,11 @@ package uk.gov.hmrc.api.specs.hip
 import org.scalatest.matchers.must.Matchers.{must, mustBe}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status
-import uk.gov.hmrc.api.specs.BaseSpec
 import play.api.libs.json.{JsArray, JsValue, Json}
+import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Terminate_Unprocessable_Entity extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("422 Terminate Unprocessable Entity scenarios") {
 

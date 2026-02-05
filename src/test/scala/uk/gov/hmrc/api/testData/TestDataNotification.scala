@@ -18,9 +18,6 @@ package uk.gov.hmrc.api.testData
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 
-import java.util.UUID
-import scala.util.Random
-
 trait TestDataNotification extends BaseTestData {
 
   def notificationPayload(
@@ -63,12 +60,8 @@ trait TestDataNotification extends BaseTestData {
     "liabilityEndDate"          -> endDate
   )
 
-  def notificationPayloadMissing(parameterName: String): JsObject = {
-    val result = notificationPayload() - parameterName
-    println(parameterName)
-    println(result)
-    result
-  }
+  def notificationPayloadMissing(parameterName: String): JsObject =
+    notificationPayload() - parameterName
 
   def insertNotificationPayloadMissing(parameterName: String): JsObject =
     insertNotificationPayload() - parameterName
@@ -149,7 +142,7 @@ trait TestDataNotification extends BaseTestData {
   // ------Insert Unprocessable entity -------
 
   val conflictingInsertLiabilityRequest: JsValue =
-    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "GE100123")
+    uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth), nino = "GE100123")
 
   val startDateBefore16thBirthdayInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", startDate = "2023-04-05", dateOfBirth = Some("2009-10-10"), nino = "HC210123")
@@ -161,41 +154,40 @@ trait TestDataNotification extends BaseTestData {
     uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2009-10-10"), nino = "EK310123")
 
   val startAndEndDateAfterDeathInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "BW130123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "BW130123")
 
   val endDateAfterStatePensionAgeInsertRequest: JsValue =
     uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some("2025-04-15"), nino = "EZ200123")
 
   val endDateAfterDeathInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dob), nino = "BK190123")
+    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth), nino = "BK190123")
 
   val notWithinUCPeriodInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "HS260123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "HS260123")
 
   val lcwLcwrOverrideInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "CE150123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "CE150123")
 
   val notMatchingLiabilityInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "GP050123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "GP050123")
 
   val startDateBefore29042013InsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", startDate = "2013-04-28", dateOfBirth = Some(dob), nino = "GX240123")
+    uclPayload("LCW/LCWRA", "Insert", startDate = "2013-04-28", dateOfBirth = Some(dateOfBirth), nino = "GX240123")
 
   val endDateBeforeStartDateInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", "2013-04-29", dateOfBirth = Some(dob), nino = "HT230123")
+    uclPayload("LCW/LCWRA", "Insert", "2013-04-29", dateOfBirth = Some(dateOfBirth), nino = "HT230123")
 
   val pseudoAccountInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "BX100123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "BX100123")
 
   val nonLiveAccountInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "HZ310123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "HZ310123")
 
   val accountTransferredIsleOfManInsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "BZ230123")
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "BZ230123")
 
   val startDateAfterDeath2InsertRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dob), nino = "AB150123")
-
+    uclPayload("LCW/LCWRA", "Insert", terminateStartDate, dateOfBirth = Some(dateOfBirth), nino = "AB150123")
 
   // ------Terminate Unprocessable entity -------
 
