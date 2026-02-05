@@ -22,7 +22,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "AE404000",
+    "nationalInsuranceNumber": "XY404000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
@@ -37,6 +37,6 @@ assert {
 }
 
 docs {
-  The AE404000 NINO triggers a 404 at the HIP/Stub level.
+  The XY404000 NINO triggers a 404 at the HIP/Stub level.
   And the API controller maps this downstream error to a 404 NotFound.
 }

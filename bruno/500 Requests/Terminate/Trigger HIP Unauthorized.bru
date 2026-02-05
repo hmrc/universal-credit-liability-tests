@@ -23,7 +23,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "AE401000",
+    "nationalInsuranceNumber": "XY401000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -38,6 +38,6 @@ assert {
 }
 
 docs {
-  The AE401000 NINO triggers a 401 at the HIP/Stub level.
+  The XY401000 NINO triggers a 401 at the HIP/Stub level.
   And the API controller maps this downstream error to a 500 InternalServerError.
 }

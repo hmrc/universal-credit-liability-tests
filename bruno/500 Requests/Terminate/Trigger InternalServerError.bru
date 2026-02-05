@@ -22,7 +22,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "AE500000",
+    "nationalInsuranceNumber": "XY500000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -37,6 +37,6 @@ assert {
 }
 
 docs {
-  The AE500000 NINO triggers a 500 at the HIP/Stub level.
+  The XY500000 NINO triggers a 500 at the HIP/Stub level.
   And the API controller maps this downstream error to a 500 InternalServerError.
 }
