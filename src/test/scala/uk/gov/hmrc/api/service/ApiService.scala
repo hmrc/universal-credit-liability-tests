@@ -43,9 +43,11 @@ class ApiService {
     nino: String,
     requestBody: JsValue
   ): StandaloneWSResponse = {
-    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit"
+    val insertionEndpointUrl: String           = s"$hipHost/ni/person/$nino/liability/universal-credit"
+    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
+    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
 
-    post(url, headers, requestBody.toString)
+    post(insertionEndpointUrl, headersWithAuth, requestBody.toString)
   }
 
   def postHipUcTermination(
@@ -53,9 +55,11 @@ class ApiService {
     nino: String,
     requestBody: JsValue
   ): StandaloneWSResponse = {
-    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
+    val terminationEndpointUrl: String         = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
+    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
+    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
 
-    post(url, headers, requestBody.toString)
+    post(terminationEndpointUrl, headersWithAuth, requestBody.toString)
   }
 
 }

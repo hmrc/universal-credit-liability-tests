@@ -13,7 +13,8 @@ object Dependencies {
     "org.apache.pekko"       %% "pekko-actor-typed"           % pekkoVersion,
     "org.apache.pekko"       %% "pekko-serialization-jackson" % pekkoVersion,
     "org.apache.pekko"       %% "pekko-slf4j"                 % pekkoVersion,
-    "org.playframework"      %% "play-pekko-http-server"      % "3.0.6"
+    "org.playframework"      %% "play-pekko-http-server"      % "3.0.6",
+    "uk.gov.hmrc"            %% "totp-generator"              % "1.0.0"  % Test
   )
 
 }
