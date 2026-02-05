@@ -99,8 +99,8 @@ trait TestDataNotification extends BaseTestData {
   }
 
   // ---- Valid payloads ----
-  val validInsertLCWLCWRALiabilityRequest: JsValue =
-    uclPayload("LCW/LCWRA", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))
+
+  // TODO: remove unused ones
 
   val validInsertUCLiabilityRequest: JsValue =
     uclPayload("UC", "Insert", insertStartDate, dateOfBirth = Some(dateOfBirth))

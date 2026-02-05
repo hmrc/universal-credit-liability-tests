@@ -37,6 +37,13 @@ class ApiService {
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
 
+  // Used for testing unauthorised scenarios
+  def postNotificationWithoutAuth(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
+    val endpointUrl: String = s"$apiHost/notification"
+
+    HttpClient.post(endpointUrl, headers, requestBody.toString())
+  }
+
   // HIP
   def postHipUcLiability(
     headers: Seq[(String, String)],

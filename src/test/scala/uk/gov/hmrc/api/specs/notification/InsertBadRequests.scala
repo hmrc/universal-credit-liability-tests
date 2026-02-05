@@ -35,25 +35,25 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         constraintViolation("correlationId")
       ),
       (
-        "UCL_TC_???: Invalid parameter: nationalInsuranceNumber",
+        "UCL_TC_002_0.6: Invalid parameter: nationalInsuranceNumber",
         validHeaders,
         insertNotificationPayload(nino = "INVALID"),
         constraintViolation("nationalInsuranceNumber")
       ),
       (
-        "UCL_TC_???: Invalid parameter: universalCreditRecordType",
+        "UCL_TC_001_0.6: Invalid parameter: universalCreditRecordType",
         validHeaders,
         insertNotificationPayload(recordType = "INVALID"),
         constraintViolation("universalCreditRecordType")
       ),
       (
-        "UCL_TC_???: Invalid parameter: universalCreditAction",
+        "UCL_TC_002_0.3: Invalid parameter: universalCreditAction",
         validHeaders,
         notificationPayload(recordAction = "INVALID"),
         constraintViolation("universalCreditAction")
       ),
       (
-        "UCL_TC_???: Invalid parameter: dateOfBirth",
+        "UCL_TC_002_0.4: Invalid parameter: dateOfBirth",
         validHeaders,
         insertNotificationPayload(dateOfBirth = "INVALID"),
         constraintViolation("dateOfBirth")
@@ -93,82 +93,49 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         validHeaders,
         insertNotificationPayloadMissing("liabilityStartDate"),
         constraintViolation("liabilityStartDate")
+      ),
+      (
+        "UCL_TC_002_0.5: Invalid parameter: liabilityStartDate",
+        validHeaders,
+        insertNotificationPayload(startDate = "INVALID"),
+        constraintViolation("liabilityStartDate")
+      ),
+      (
+        "UCL_TC_003_0.1: Empty parameter: universalCreditRecordType",
+        validHeaders,
+        insertNotificationPayload(recordType = ""),
+        constraintViolation("universalCreditRecordType")
+      ),
+      (
+        "UCL_TC_003_0.2: Empty parameter: universalCreditAction",
+        validHeaders,
+        notificationPayload(recordAction = ""),
+        constraintViolation("universalCreditAction")
+      ),
+      (
+        "UCL_TC_003_0.3: Empty parameter: dateOfBirth",
+        validHeaders,
+        insertNotificationPayload(dateOfBirth = ""),
+        constraintViolation("dateOfBirth")
+      ),
+      (
+        "UCL_TC_003_0.4: Empty parameter: startDate",
+        validHeaders,
+        insertNotificationPayload(startDate = ""),
+        constraintViolation("liabilityStartDate")
+      ),
+      (
+        "UCL_TC_003_0.5: Empty parameter: nationalInsuranceNumber",
+        validHeaders,
+        insertNotificationPayload(nino = ""),
+        constraintViolation("nationalInsuranceNumber")
       )
-//      (
-//        "UCL_TC_001_0.5: Insert Invalid LCW/LCWRA details",
-//        validHeaders,
-//        insertPayload(recordType = "INVALID"),
-//        constraintViolation("universalCreditRecordType")
-//      ),
-//      (
-//        "UCL_TC_001_0.6: Insert Invalid UC details", // FIXME: this is identical to the above
-//        validHeaders,
-//        insertPayload(recordType = "INVALID"),
-//        constraintViolation("universalCreditRecordType")
-//      ),
-//      (
-//        "UCL_TC_002_0.3: Invalid Credit Action",
-//        validHeaders,
-//        notificationPayload(recordAction = "INVALID"),
-//        constraintViolation("universalCreditAction")
-//      ),
-//      (
-//        "UCL_TC_002_0.4: Invalid Date of Birth with Insert action",
-//        validHeaders,
-//        insertPayload(dateOfBirth = "INVALID"),
-//        constraintViolation("dateOfBirth")
-//      ),
-//      (
-//        "UCL_TC_002_0.5: Invalid Start Date with Insert action",
-//        validHeaders,
-//        insertPayload(startDate = "INVALID"),
-//        constraintViolation("liabilityStartDate")
-//      ),
-//      (
-//        "UCL_TC_002_0.6: Invalid NINO with Insert action",
-//        validHeaders,
-//        insertPayload(nino = "INVALID"),
-//        constraintViolation("nationalInsuranceNumber")
-//      ),
-//      (
-//        "UCL_TC_003_0.1: Empty Credit Record Type with Insert action",
-//        validHeaders,
-//        insertPayload(recordType = ""),
-//        constraintViolation("universalCreditRecordType")
-//      ),
-//      (
-//        "UCL_TC_003_0.2: Empty Credit Action with Insert action",
-//        validHeaders,
-//        notificationPayload(recordAction = ""),
-//        constraintViolation("universalCreditAction")
-//      ),
-//      (
-//        "UCL_TC_003_0.3: Empty Date of Birth with Insert action",
-//        validHeaders,
-//        insertPayload(dateOfBirth = ""),
-//        constraintViolation("dateOfBirth")
-//      ),
-//      (
-//        "UCL_TC_003_0.4:Empty Start Date with Insert action",
-//        validHeaders,
-//        insertPayload(startDate = ""),
-//        constraintViolation("liabilityStartDate")
-//      ),
-//      (
-//        "UCL_TC_003_0.5: Empty NINO with Insert action",
-//        validHeaders,
-//        insertPayload(nino = ""),
-//        constraintViolation("nationalInsuranceNumber")
-//      ),
     )
 
     cases.foreach { case (scenarioName, headers, payload, reason) =>
       Scenario(scenarioName) {
         Given("the Universal Credit API is up and running")
         When("a request is sent")
-
-        println("\nPAYLOAD:")
-        println(payload)
 
         val apiResponse = apiService.postNotification(headers, payload)
 

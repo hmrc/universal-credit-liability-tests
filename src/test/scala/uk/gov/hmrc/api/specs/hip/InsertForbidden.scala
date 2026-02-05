@@ -16,44 +16,90 @@
 
 package uk.gov.hmrc.api.specs.hip
 
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status
+import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
 class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("Forbidden (403) scenarios for HIP") {
+  Feature("403 Forbidden scenarios for HIP") {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue, String, String)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)])] = Seq(
+//      (
+//        "UC_TC_016: Invalid Headers details - UC",
+//        invalidHeaders,
+//        validUCLiabilityRequest,
+//        "Forbidden"
+//      ),
       (
-        "UC_TC_016: Invalid Headers details - UC",
-        invalidHeaders,
-        validUCLiabilityRequest,
-        "403.2",
-        "Forbidden"
+        "UC_TC_???: Missing header gov-uk-originator-id",
+        headersMissingGovUkOriginatorId
+      ),
+      (
+        "UC_TC_???: Invalid header - short gov-uk-originator-id",
+        headersInvalidShortOriginatorId
+      ),
+      (
+        "UC_TC_???: Invalid header - long missing gov-uk-originator-id",
+        headersInvalidLongOriginatorId
       )
     )
 
-    cases.foreach { case (scenarioName, _, _, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, header) =>
       Scenario(scenarioName) {
-        Given("The Universal Credit API is up and running")
-        When("A request is sent")
+        Given("the Universal Credit API is up and running")
+        When("a request is sent")
 
-        val hipResponse = apiService.postHipUcLiability(invalidHeaders, randomNino, validUCLiabilityRequest)
+        val hipResponse = apiService.postHipUcLiability(header, randomNino, insertHipPayload())
 
-        Then("403 Forbidden should be returned")
-        assert(hipResponse.status == Status.FORBIDDEN)
+        Then("403 Forbidden must be returned")
+        withClue(s"Status=${hipResponse.status}, Body=${hipResponse.body}\n") {
+          hipResponse.status mustBe FORBIDDEN
+        }
 
-        And("Response body should contain correct error details")
-        val actualJson = Json.parse(hipResponse.body)
-        val actualCode = (actualJson \ "code").as[String]
-        val actualMsg  = (actualJson \ "reason").as[String]
+        And("response body must contain correct error details")
+        val responseBody: JsValue = Json.parse(hipResponse.body)
 
-        assert(actualCode == expCode)
-        assert(actualMsg == expMessage)
+        (responseBody \ "code").as[String] mustBe "403.2"
+        (responseBody \ "reason").as[String] mustBe "Forbidden"
       }
     }
+
   }
 }
+
+/*
+def headersMissingContentType: Seq[(String, String)] =
+    removeHeader(baseHeaders, "Content-Type")
+
+  def headersMissingAuthorization: Seq[(String, String)] =
+    removeHeader(baseHeaders, "Authorization")
+
+  def headersMissingCorrelationId: Seq[(String, String)] =
+    removeHeader(baseHeaders, "correlationId")
+
+  def headersMissingGovUkOriginatorId: Seq[(String, String)] =
+    removeHeader(baseHeaders, "gov-uk-originator-id")
+
+  // Headers with invalid values
+  def headersInvalidContentType: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "Content-Type", "INVALID")
+
+  def headersInvalidAuth: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "Authorization", "INVALID")
+
+  def headersInvalidCorrelationId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "correlationId", "INVALID")
+
+  def headersInvalidShortOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 2)
+
+  def headersInvalidCharsOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "!NV@L!D")
+
+  def headersInvalidLongOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 41)
+ */

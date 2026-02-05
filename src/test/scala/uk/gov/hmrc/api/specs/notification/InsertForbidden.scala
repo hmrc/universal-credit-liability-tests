@@ -57,12 +57,12 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
 
         val apiResponse = apiService.postNotification(headers, payload)
 
-        Then("403 Forbidden should be returned")
+        Then("403 Forbidden must be returned")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe FORBIDDEN
         }
 
-        And("response body should contain correct error details")
+        And("response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
 
         (responseBody \ "code").as[String] mustBe ForbiddenCode

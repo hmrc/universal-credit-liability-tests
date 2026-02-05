@@ -144,6 +144,7 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNPROCESSABLE_ENTITY
         }
+
         And("response body should contain correct error 'code' and 'message'")
         val responseBody: JsValue = Json.parse(apiResponse.body)
 

@@ -80,13 +80,12 @@ trait BaseTestData {
   )
 
   def invalidHeaders: Seq[(String, String)] = Seq(
-    "Content-Type"         -> "INVALID",
+    "Content-Type"         -> jsonContentType,
     "Authorization"        -> "Bearer INVALID",
     "correlationId"        -> "INVALID",
     "gov-uk-originator-id" -> "!NV@L!D"
   )
 
-  // TODO: need to add `Authorization -> basicAuth,`
   val validHeaders: Seq[(String, String)] =
     Seq(
       "Content-Type"         -> jsonContentType,
