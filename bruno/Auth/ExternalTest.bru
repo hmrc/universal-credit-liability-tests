@@ -1,11 +1,11 @@
 meta {
-  name: DEV/QA
+  name: ExternalTest
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
-  url: https://api.{{ENVIRONMENT}}.tax.service.gov.uk/oauth/token
+  url: https://test-api.service.hmrc.gov.uk/oauth/token
   body: formUrlEncoded
   auth: none
 }
@@ -15,14 +15,15 @@ headers {
 }
 
 body:form-urlencoded {
-  client_secret: {{totp}}{{clientSecret}}
-  client_id: {{clientId}}
+  client_secret: {{totp}}{{client_secret}}
+  client_id: {{client_id}}
   grant_type: client_credentials
+  scope: {{scope}}
 }
 
 script:pre-request {
-  if (!['development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
-    throw new Error('Environment must be set to Dev or QA');
+  if (bru.getEnvVar("ENVIRONMENT") !== 'externaltest') {
+    throw new Error('Environment must be set to ExternalTest');
   }
 
   let TOTP;
@@ -45,6 +46,8 @@ script:pre-request {
 
 script:post-response {
   if (res.status === 200) {
+    console.log("FULL RESPONSE:");
+    console.log(JSON.stringify(res.body, null, 2));
     const authToken = `Bearer ${res.body.access_token}`;
     bru.setEnvVar('authorization', authToken);
   } else {
