@@ -1,5 +1,3 @@
-**This is the template README. Please update this with project specific content.**
-
 # universal-credit-liability-tests
 
 Universal Credit Liability API tests.

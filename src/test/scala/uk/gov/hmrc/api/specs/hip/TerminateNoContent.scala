@@ -22,13 +22,13 @@ import play.api.http.Status
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Terminate_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class TerminateNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("204 No Content HIP Terminate scenarios") {
 
-    Scenario("UC_TC_004: Terminate action for Record Type- LCW-LCWRA") {
+    Scenario("UC_TC_004: Terminate action for Record Type- LCW/LCWRA") {
       Given("The HIP API is up and running")
-      When("A request is sent to Terminate LCW-LCWRA liability")
+      When("A request is sent to Terminate LCW/LCWRA liability")
 
       val response = apiService.postHipUcTermination(validHeaders, randomNino, validHipLCWLCWRATerminationRequest)
       Then("204 No Content should be returned")
@@ -48,4 +48,5 @@ class Terminate_NoContent extends BaseSpec with GuiceOneServerPerSuite with Test
       }
     }
   }
+
 }

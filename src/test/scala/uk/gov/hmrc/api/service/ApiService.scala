@@ -19,57 +19,42 @@ package uk.gov.hmrc.api.service
 import play.api.libs.json.JsValue
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.client.HttpClient
+import uk.gov.hmrc.api.client.HttpClient.post
 import uk.gov.hmrc.api.conf.TestEnvironment
 import uk.gov.hmrc.api.helpers.AuthHelper
 
-import scala.concurrent.Await
-import scala.concurrent.duration.*
+class ApiService {
 
-class ApiService extends HttpClient {
+  private val apiHost: String = TestEnvironment.url("ucl")
+  private val hipHost: String = TestEnvironment.url("hip")
 
-  val host: String    = TestEnvironment.url("ucl")
-  val hipHost: String = TestEnvironment.url("hip")
-  val authHelper      = new AuthHelper
+  // API
+  def postNotification(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
+    val bearerToken: String               = AuthHelper.getAuthToken
+    val endpointUrl: String               = s"$apiHost/notification"
+    val authHeader: Seq[(String, String)] = Seq("Authorization" -> bearerToken)
 
-  def postNotificationWithValidToken(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
-
-    val token = authHelper.retrieveAuthBearerToken()
-    makeRequest(headers, requestBody, token)
+    HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
 
-  def makeRequest(headers: Seq[(String, String)], requestBody: JsValue, token: String): StandaloneWSResponse = {
-    val url: String                       = s"$host/notification"
-    val authHeader: Seq[(String, String)] =
-      Option(token)
-        .map(_.trim)
-        .filter(_.nonEmpty)
-        .map(t => Seq("authorization" -> t))
-        .getOrElse(Seq.empty)
+  // Used for testing unauthorised scenarios
+  def postNotificationWithoutAuth(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
+    val endpointUrl: String = s"$apiHost/notification"
 
-    Await.result(
-      post(
-        url,
-        requestBody.toString,
-        headers ++ authHeader
-      ),
-      10.seconds
-    )
+    HttpClient.post(endpointUrl, headers, requestBody.toString())
   }
 
+  // HIP
   def postHipUcLiability(
     headers: Seq[(String, String)],
     nino: String,
     requestBody: JsValue
   ): StandaloneWSResponse = {
-    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit"
-    Await.result(
-      post(
-        url,
-        requestBody.toString,
-        headers
-      ),
-      10.seconds
-    )
+    val insertionEndpointUrl: String           = s"$hipHost/ni/person/$nino/liability/universal-credit"
+    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
+    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
+
+    post(insertionEndpointUrl, headersWithAuth, requestBody.toString)
   }
 
   def postHipUcTermination(
@@ -77,16 +62,11 @@ class ApiService extends HttpClient {
     nino: String,
     requestBody: JsValue
   ): StandaloneWSResponse = {
+    val terminationEndpointUrl: String         = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
+    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
+    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
 
-    val url: String = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
-
-    Await.result(
-      post(
-        url,
-        requestBody.toString,
-        headers
-      ),
-      10.seconds
-    )
+    post(terminationEndpointUrl, headersWithAuth, requestBody.toString)
   }
+
 }

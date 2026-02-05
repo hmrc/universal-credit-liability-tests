@@ -22,13 +22,13 @@ import play.api.http.Status
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class Create_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class InsertNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature("204 No Content HIP Insert scenarios") {
 
-    Scenario("UC_TC_001_0.1: Insert - LCW-LCWRA") {
+    Scenario("UC_TC_001_0.1: Insert - LCW/LCWRA") {
       Given("The HIP API is up and running")
-      When("A request is sent to create LCW-LCWRA liability without end date")
+      When("A request is sent to create LCW/LCWRA liability without end date")
 
       val response =
         apiService.postHipUcLiability(validHeaders, randomNino, validInsertLCWLCWRAWithoutEndDateHipRequest)
@@ -38,9 +38,9 @@ class Create_NoContent extends BaseSpec with GuiceOneServerPerSuite with TestDat
       }
     }
 
-    Scenario("UC_TC_001_0.2: Insert - LCW-LCWRA with End date") {
+    Scenario("UC_TC_001_0.2: Insert - LCW/LCWRA with End date") {
       Given("The HIP API is up and running")
-      When("A request is sent to create LCW-LCWRA liability with end date")
+      When("A request is sent to create LCW/LCWRA liability with end date")
 
       val response = apiService.postHipUcLiability(validHeaders, randomNino, validInsertLCWLCWRAWithEndDateHipRequest)
       Then("204 No Content should be returned")

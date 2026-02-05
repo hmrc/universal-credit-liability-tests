@@ -21,17 +21,22 @@ import play.api.libs.ws.DefaultBodyWritables.*
 import play.api.libs.ws.StandaloneWSResponse
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Await
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
-trait HttpClient {
+object HttpClient {
 
-  implicit val actorSystem: ActorSystem = ActorSystem()
-  val wsClient: StandaloneAhcWSClient   = StandaloneAhcWSClient()
-  implicit val ec: ExecutionContext     = ExecutionContext.global
+  private given actorSystem: ActorSystem      = ActorSystem("universal-credit-liability-tests")
+  private val wsClient: StandaloneAhcWSClient = StandaloneAhcWSClient()
+  private val timeout: FiniteDuration         = 10.seconds
 
-  def post(url: String, bodyAsJson: String, headers: Seq[(String, String)]): Future[StandaloneWSResponse] =
-    wsClient
-      .url(url)
-      .withHttpHeaders(headers: _*)
-      .post(bodyAsJson)
+  def post(url: String, headers: Seq[(String, String)], body: String): StandaloneWSResponse =
+    Await.result(
+      wsClient
+        .url(url)
+        .withHttpHeaders(headers*)
+        .post(body),
+      timeout
+    )
+
 }
