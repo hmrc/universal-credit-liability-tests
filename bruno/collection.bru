@@ -8,9 +8,6 @@ script:pre-request {
     const randomInvalidNino = helpers.randomInvalidNino();
     bru.setEnvVar("invalidNino", randomInvalidNino);
 
-    const randomGovUkOriginatorId = helpers.randomGovUkOriginatorId();
-    bru.setEnvVar("govUkOriginatorId", randomGovUkOriginatorId);
-
     const randomUniversalCreditRecordType = helpers.randomUniversalCreditRecordType();
     bru.setEnvVar("universalCreditRecordType", randomUniversalCreditRecordType);
   }
@@ -20,36 +17,70 @@ script:pre-request {
 
 
 docs {
+
+  # Universal Credit Liability Tests
+
   This collection validates the [universal-credit-liability-api](https://github.com/hmrc/universal-credit-liability-api) logic and its downstream integration.
 
-  ## Setup
+  ## Prerequisites
+
+  - [Bruno](https://www.usebruno.com) installed
+  - Run `npm install` in the collection folder to install the `totp-generator`.
+
+
+  ## Environment Setup
+
+  ### Local / Development
+
+  No additional setup required because they use stubs.
+
+  ### QA / External Test
+
+  Get these variables from the HMRC Developer Hub and add them to each environment:
+
+  - `clientId`
+  - `clientSecret`
+  - `TOTP_SECRET`
+
+  Get the following variable from DWP:
+
+  - `gov-uk-originator-id`
+
+
+  ## Authentication
 
   Before running the collection, you must obtain a bearer token:
   
   1. Select the target **Environment** (Local, Development, QA, External Test)
   2. Run the matching Auth request.
 
-  ## Tags
+  The token is stored automatically and used for subsequent requests.
 
-  The requests are tagged as:
-  
-  - `API`: requests that only hit the `universal-credit-liability-api`
-  - `DOWNSTREAM`: requests that hit the downstream `universal-credit-liability-stubs` or HIP (depending on the Environment)
 
   ## Running Tests
 
-  ### GUI
+  ### Full Suite
 
-  1. Right click on a folder
-  2. Click "Filter requests with tags"
-  3. Click in the "Included tags" input field and select `API` or `DOWNSTREAM`
-  4. Click "Run collection"
+  Right click on the collection folder and select "Run collection".
 
-  ### CLI
+  Alternatively, install the [Bruno CLI](https://docs.usebruno.com/bru-cli/installation), and then `bru run`.
 
-  Install the [Bruno CLI](https://docs.usebruno.com/bru-cli/installation), and then use:
 
-  - `bru run`: run all requests
+  ## Filtered Runs (via Tags)
+
+  The requests are tagged to isolate test scenarios:
+
+  - `API`: requests that test standard API responses
+  - `DOWNSTREAM`: requests that test downstream error handling (e.g. HIP returns 400, API returns 500)
+
+  #### GUI
+
+  1. Right click on a folder and select "Filter requests with tags"
+  2. Click in the "Included tags" input field and select `API` or `DOWNSTREAM`
+  3. Click "Run collection"
+
+  #### CLI
+
   - `bru run --tag API`: run only API-tagged requests
   - `bru run --tag DOWNSTREAM`: run only DOWNSTREAM-tagged requests
 

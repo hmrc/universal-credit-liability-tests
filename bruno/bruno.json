@@ -8,6 +8,6 @@
   ],
   "presets": {
     "requestType": "http",
-    "requestUrl": "http://localhost:16108"
+    "requestUrl": "{{api-host}}/notification"
   }
 }
