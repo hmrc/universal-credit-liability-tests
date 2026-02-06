@@ -25,7 +25,7 @@ import uk.gov.hmrc.api.testData.TestDataHip
 
 class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("403 Forbidden scenarios for HIP") {
+  Feature("403 Forbidden 'Insert' scenarios for HIP") {
 
     val cases: Seq[(String, Seq[(String, String)])] = Seq(
 //      (
@@ -60,7 +60,7 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
           hipResponse.status mustBe FORBIDDEN
         }
 
-        And("response body must contain correct error details")
+        And("response body must contain correct 'error' and 'reason'")
         val responseBody: JsValue = Json.parse(hipResponse.body)
 
         (responseBody \ "code").as[String] mustBe "403.2"
@@ -70,36 +70,3 @@ class InsertForbidden extends BaseSpec with GuiceOneServerPerSuite with TestData
 
   }
 }
-
-/*
-def headersMissingContentType: Seq[(String, String)] =
-    removeHeader(baseHeaders, "Content-Type")
-
-  def headersMissingAuthorization: Seq[(String, String)] =
-    removeHeader(baseHeaders, "Authorization")
-
-  def headersMissingCorrelationId: Seq[(String, String)] =
-    removeHeader(baseHeaders, "correlationId")
-
-  def headersMissingGovUkOriginatorId: Seq[(String, String)] =
-    removeHeader(baseHeaders, "gov-uk-originator-id")
-
-  // Headers with invalid values
-  def headersInvalidContentType: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "Content-Type", "INVALID")
-
-  def headersInvalidAuth: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "Authorization", "INVALID")
-
-  def headersInvalidCorrelationId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "correlationId", "INVALID")
-
-  def headersInvalidShortOriginatorId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 2)
-
-  def headersInvalidCharsOriginatorId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "gov-uk-originator-id", "!NV@L!D")
-
-  def headersInvalidLongOriginatorId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 41)
- */
