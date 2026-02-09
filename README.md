@@ -65,14 +65,17 @@ After a successful authentication request, the obtained auth token will be store
 The auth token may be valid for a different length of time depending on the environment. e.g. QA = 4 hours
 
 # QA auth
-For `Auth/QA`, A privileged application subscribing to the API needs to have already preconfigured.
-The Bruno collection also has a dependency on an external javascript library `totp-generator` which will require `nodejs`.
+For `Auth/QA`, a privileged application subscribing to the API needs to have already been preconfigured.
+The Bruno collection also has a dependency on an external JavaScript library `totp-generator` which will require `nodejs`.
 
-After installing node, execute
+After installing node, execute:
 ```
 cd bruno
 npm i
 ```
+
+And then enable [Developer Mode](https://docs.usebruno.com/configure/javascript-sandbox) in Bruno.
+
 For more info on external libraries in Bruno see https://docs.usebruno.com/testing/script/external-libraries
 
 The QA environment is only semi configured, all the fields related to oauth 2.0 are specified as `secrets` which are not commited to the repo and will need to be manually set.
