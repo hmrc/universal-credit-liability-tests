@@ -23,10 +23,18 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "HS260000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"
+  }
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+
+  if (ninoPrefix != "HS260") {
+    throw new Error('The nationalInsuranceNumber should start with "HS260" to trigger a 64997.');
   }
 }
 
