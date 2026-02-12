@@ -1,7 +1,7 @@
 meta {
-  name: Long GovUkOriginatorId
+  name: Non-Matching GovUkOriginatorId
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
@@ -14,16 +14,16 @@ headers {
   Authorization: {{authorization}}
   Content-Type: application/json
   correlationId: {{correlationId}}
-  gov-uk-originator-id: gov-uk-originator-id-longer-than-40-characters
+  gov-uk-originator-id: ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP
 }
 
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
     "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-04-27",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
   }
 }
 

@@ -1,7 +1,7 @@
 meta {
-  name: 65542 - NINO matches non-live account
+  name: NINO not present on NPS
   type: http
-  seq: 14
+  seq: 2
   tags: [
     DOWNSTREAM
   ]
@@ -22,7 +22,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "HZ310000",
+    "nationalInsuranceNumber": "CM110000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
@@ -33,15 +33,24 @@ body:json {
 script:pre-request {
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
 
-  if (ninoPrefix != "HZ310") {
-    throw new Error('The nationalInsuranceNumber should start with "HZ310" to trigger a 65542.');
+  if (ninoPrefix != "CM110") {
+    throw new Error('The nationalInsuranceNumber should start with "CM110" to trigger a 404.');
   }
 }
 
 assert {
-  res.status: eq 422
+  res.status: eq 404
   res.headers.correlationid: eq {{correlationId}}
-  res.body: isJson
-  res.body.code: eq '65542'
-  res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
+  res.body: isEmpty
+}
+
+assert {
+  res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isEmpty
+}
+
+docs {
+  The CM110000 NINO triggers a 404 at the HIP/Stub level because it does not exist on NPS.
+  And the API controller maps this downstream error to a 404 NotFound.
 }
