@@ -1,5 +1,5 @@
 meta {
-  name: NINO not present on NPS
+  name: NINO not present on HIP (NPS database)
   type: http
   seq: 2
   tags: [
@@ -24,9 +24,9 @@ body:json {
   {
     "nationalInsuranceNumber": "CM110000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
-    "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-04-27",
-    "liabilityStartDate": "2025-08-19"
+    "universalCreditAction": "Terminate",
+    "liabilityStartDate": "2025-08-19",
+    "liabilityEndDate": "2026-06-30"
   }
 }
 
@@ -36,6 +36,12 @@ script:pre-request {
   if (ninoPrefix != "CM110") {
     throw new Error('The nationalInsuranceNumber should start with "CM110" to trigger a 404.');
   }
+}
+
+assert {
+  res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isEmpty
 }
 
 assert {
