@@ -1,7 +1,7 @@
 meta {
   name: Short GovUkOriginatorId
   type: http
-  seq: 4
+  seq: 3
 }
 
 post {
@@ -20,7 +20,7 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"

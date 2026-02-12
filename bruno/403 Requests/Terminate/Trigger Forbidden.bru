@@ -1,7 +1,7 @@
 meta {
   name: Trigger Forbidden
   type: http
-  seq: 5
+  seq: 6
 }
 
 post {
@@ -20,7 +20,7 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "XY403000",
-    "universalCreditRecordType": "UC",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"

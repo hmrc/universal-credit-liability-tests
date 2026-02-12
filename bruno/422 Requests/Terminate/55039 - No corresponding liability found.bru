@@ -23,10 +23,18 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "GP050000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"
+  }
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+
+  if (ninoPrefix != "GP050") {
+    throw new Error('The nationalInsuranceNumber should start with "GP050" to trigger a 55039.');
   }
 }
 

@@ -1,7 +1,7 @@
 meta {
-  name: 65026 - Start date must not be before 16th birthday
+  name: NINO not present on HIP (NPS database)
   type: http
-  seq: 10
+  seq: 2
   tags: [
     DOWNSTREAM
   ]
@@ -22,7 +22,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "HC210000",
+    "nationalInsuranceNumber": "CM110000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
@@ -33,15 +33,18 @@ body:json {
 script:pre-request {
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
 
-  if (ninoPrefix != "HC210") {
-    throw new Error('The nationalInsuranceNumber should start with "HC210" to trigger a 65026.');
+  if (ninoPrefix != "CM110") {
+    throw new Error('The nationalInsuranceNumber should start with "CM110" to trigger a 404.');
   }
 }
 
 assert {
-  res.status: eq 422
+  res.status: eq 404
   res.headers.correlationid: eq {{correlationId}}
-  res.body: isJson
-  res.body.code: eq '65026'
-  res.body.message: eq 'Start date must not be before 16th birthday'
+  res.body: isEmpty
+}
+
+docs {
+  The CM110000 NINO triggers a 404 at the HIP/Stub level because it does not exist on NPS.
+  And the API controller maps this downstream error to a 404 NotFound.
 }

@@ -23,10 +23,18 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "BW130000",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
+  }
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+
+  if (ninoPrefix != "BW130") {
+    throw new Error('The nationalInsuranceNumber should start with "BW130" to trigger a 55006.');
   }
 }
 
