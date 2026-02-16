@@ -1,0 +1,46 @@
+meta {
+  name: 55038 - Conflicting or identical Liability already recorded without dateofBirth
+  type: http
+  seq: 19
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "GE100000",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditAction": "Insert",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '55038'
+  res.body.message: eq 'A conflicting or identical Liability is already recorded'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "GE100") {
+    throw new Error('The nationalInsuranceNumber should start with "GE100" to trigger a 55038.');
+  }
+}
