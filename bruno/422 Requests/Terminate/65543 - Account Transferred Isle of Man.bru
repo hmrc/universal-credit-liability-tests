@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "BZ230") {
-    throw new Error('The nationalInsuranceNumber should start with "BZ230" to trigger a 65543.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '65543'
   res.body.message: eq 'The NINO input matches an account that has been transferred to the Isle of Man'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "BZ230") {
+    throw new Error('The nationalInsuranceNumber should start with "BZ230" to trigger a 65543.');
+  }
 }

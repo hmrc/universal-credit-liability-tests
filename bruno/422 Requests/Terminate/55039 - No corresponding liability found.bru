@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "GP050") {
-    throw new Error('The nationalInsuranceNumber should start with "GP050" to trigger a 55039.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '55039'
   res.body.message: eq 'NO corresponding liability found'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "GP050") {
+    throw new Error('The nationalInsuranceNumber should start with "GP050" to trigger a 55039.');
+  }
 }

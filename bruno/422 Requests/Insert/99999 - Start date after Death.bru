@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "AB150") {
-    throw new Error('The nationalInsuranceNumber should start with "AB150" to trigger a 99999.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '99999'
   res.body.message: eq 'Start Date after Death'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "AB150") {
+    throw new Error('The nationalInsuranceNumber should start with "AB150" to trigger a 99999.');
+  }
 }

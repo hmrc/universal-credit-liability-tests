@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "HZ310") {
-    throw new Error('The nationalInsuranceNumber should start with "HZ310" to trigger a 65542.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '65542'
   res.body.message: eq 'The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "HZ310") {
+    throw new Error('The nationalInsuranceNumber should start with "HZ310" to trigger a 65542.');
+  }
 }

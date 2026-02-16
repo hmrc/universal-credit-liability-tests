@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "EK310") {
-    throw new Error('The nationalInsuranceNumber should start with "EK310" to trigger a 64996.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '64996'
   res.body.message: eq 'Start Date is not before date of death'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "EK310") {
+    throw new Error('The nationalInsuranceNumber should start with "EK310" to trigger a 64996.');
+  }
 }
