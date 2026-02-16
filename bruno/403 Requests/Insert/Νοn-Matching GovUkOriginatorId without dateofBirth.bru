@@ -1,0 +1,35 @@
+meta {
+  name: Νοn-Matching GovUkOriginatorId without dateofBirth
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "{{nino}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
+    "universalCreditAction": "Insert",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '403.2'
+  res.body.message: eq 'Forbidden'
+}

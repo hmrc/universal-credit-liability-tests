@@ -1,0 +1,46 @@
+meta {
+  name: 65026 - Start date must not be before 16th birthday without dateofBirth
+  type: http
+  seq: 23
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "HC210000",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditAction": "Insert",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '65026'
+  res.body.message: eq 'Start date must not be before 16th birthday'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "HC210") {
+    throw new Error('The nationalInsuranceNumber should start with "HC210" to trigger a 65026.');
+  }
+}
