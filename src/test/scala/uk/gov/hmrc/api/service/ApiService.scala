@@ -40,7 +40,6 @@ class ApiService {
   // Used for testing unauthorised scenarios
   def postNotificationWithoutAuth(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
     val endpointUrl: String = s"$apiHost/notification"
-
     HttpClient.post(endpointUrl, headers, requestBody.toString())
   }
 
