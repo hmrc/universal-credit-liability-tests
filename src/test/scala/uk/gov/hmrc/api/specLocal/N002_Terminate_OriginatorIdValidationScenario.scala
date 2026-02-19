@@ -81,6 +81,9 @@ class N002_Terminate_OriginatorIdValidationScenario
         val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
       }
     }
   }

@@ -30,7 +30,7 @@ class N001_Insert_AuthorisationValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001 : Insert Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N001:Insert Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
@@ -77,6 +77,10 @@ class N001_Insert_AuthorisationValidationScenario
         System.out.println("----- responseBody -----  " + responseBody)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
+
       }
     }
   }

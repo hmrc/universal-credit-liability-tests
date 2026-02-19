@@ -120,6 +120,9 @@ class N004_Terminate_SchemaValidationScenario extends BaseSpec with GuiceOneServ
         val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe InvalidInput
         (responseBody \ "message").as[String] mustBe expMessage
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
       }
     }
   }

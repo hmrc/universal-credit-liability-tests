@@ -24,7 +24,7 @@ import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
 class N003_Terminate_CorrelationIdValidationScenario
-  extends BaseSpec
+    extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
@@ -69,6 +69,9 @@ class N003_Terminate_CorrelationIdValidationScenario
         val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
       }
     }
   }

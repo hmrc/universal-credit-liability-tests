@@ -67,7 +67,7 @@ class N001_Terminate_AuthorisationValidationScenario
         When("a request with invalid/empty/expired authorisation header is sent")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
-        
+
         Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNAUTHORIZED
@@ -76,6 +76,9 @@ class N001_Terminate_AuthorisationValidationScenario
         val responseBody = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
       }
     }
   }
