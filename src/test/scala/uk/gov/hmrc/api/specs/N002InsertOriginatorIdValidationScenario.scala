@@ -51,7 +51,7 @@ class N002InsertOriginatorIdValidationScenario extends BaseSpec with GuiceOneSer
       ),
       (
         "Error : GovUkOriginatorId is not found in HIP",
-        headerNotFoundInHIPOriginatorId
+        headerNotFoundInHipOriginatorId
       )
     )
 
