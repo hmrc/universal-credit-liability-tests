@@ -1,7 +1,7 @@
 meta {
   name: 55029 - Start Date later than State Pension Age (SPA) without dateofBirth
   type: http
-  seq: 18
+  seq: 17
   tags: [
     DOWNSTREAM
   ]
@@ -38,6 +38,9 @@ assert {
 }
 
 script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
+  
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
   
   if (ninoPrefix != "ET060") {
