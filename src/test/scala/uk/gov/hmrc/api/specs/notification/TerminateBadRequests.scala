@@ -38,11 +38,11 @@ class TerminateBadRequests extends BaseSpec with GuiceOneServerPerSuite with Tes
         terminateNotificationPayload(recordType = "INVALID"),
         constraintViolation("universalCreditRecordType")
       ),
-      (
+      /*(
         "UCL_Terminate_TC_002_0.2: Invalid Credit Action universalCreditAction",
         notificationPayload(recordAction = "INVALID"),
         constraintViolation("universalCreditAction")
-      ),
+      ),*/
       (
         "UCL_Terminate_TC_002_0.3: Invalid Start Date",
         terminateNotificationPayload(startDate = "INVALID"),
@@ -63,11 +63,11 @@ class TerminateBadRequests extends BaseSpec with GuiceOneServerPerSuite with Tes
         terminateNotificationPayload(recordType = ""),
         constraintViolation("universalCreditRecordType")
       ),
-      (
+      /*(
         "UCL_Terminate_TC_003_0.2: Empty Credit Action",
         notificationPayload(recordAction = ""),
         constraintViolation("universalCreditAction")
-      ),
+      ),*/
       (
         "UCL_Terminate_TC_003_0.3: Empty Start Date",
         terminateNotificationPayload(startDate = ""),

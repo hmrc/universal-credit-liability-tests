@@ -74,7 +74,6 @@ class N001_Insert_AuthorisationValidationScenario
         }
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        System.out.println("----- responseBody -----  " + responseBody)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
 

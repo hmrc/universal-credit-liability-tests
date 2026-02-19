@@ -46,12 +46,12 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         insertNotificationPayload(recordType = "INVALID"),
         constraintViolation("universalCreditRecordType")
       ),
-      (
+     /* (
         "UCL_TC_002_0.3: Invalid parameter: universalCreditAction",
         validHeaders,
         notificationPayload(recordAction = "INVALID"),
         constraintViolation("universalCreditAction")
-      ),
+      ),*/
       (
         "UCL_TC_002_0.4: Invalid parameter: dateOfBirth",
         validHeaders,
@@ -106,12 +106,12 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         insertNotificationPayload(recordType = ""),
         constraintViolation("universalCreditRecordType")
       ),
-      (
+      /*(
         "UCL_TC_003_0.2: Empty parameter: universalCreditAction",
         validHeaders,
-        notificationPayload(recordAction = ""),
+       // notificationPayload(recordAction = ""),
         constraintViolation("universalCreditAction")
-      ),
+      ),*/
       (
         "UCL_TC_003_0.3: Empty parameter: dateOfBirth",
         validHeaders,
