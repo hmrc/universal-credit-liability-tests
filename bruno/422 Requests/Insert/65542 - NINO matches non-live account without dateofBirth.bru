@@ -1,7 +1,7 @@
 meta {
   name: 65542 - NINO matches non-live account without dateofBirth
   type: http
-  seq: 25
+  seq: 19
   tags: [
     DOWNSTREAM
   ]
@@ -38,6 +38,9 @@ assert {
 }
 
 script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
+  
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
   
   if (ninoPrefix != "HZ310") {

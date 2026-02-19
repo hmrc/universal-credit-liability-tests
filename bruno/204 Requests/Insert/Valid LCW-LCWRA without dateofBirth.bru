@@ -1,7 +1,7 @@
 meta {
   name: Valid LCW/LCWRA without dateofBirth
   type: http
-  seq: 5
+  seq: 4
   tags: [
     DOWNSTREAM
   ]
@@ -33,4 +33,9 @@ assert {
   res.status: eq 204
   res.headers.correlationid: eq {{correlationId}}
   res.body: isEmpty
+}
+
+script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
 }

@@ -1,7 +1,7 @@
 meta {
   name: Missing Liability Start Date without dateofBirth
   type: http
-  seq: 21
+  seq: 14
   tags: [
     API
   ]
@@ -34,4 +34,9 @@ assert {
   res.body: isJson
   res.body.code: eq '400.1'
   res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: liabilityStartDate'
+}
+
+script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
 }

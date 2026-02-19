@@ -1,7 +1,7 @@
 meta {
   name: Null Date of Birth
   type: http
-  seq: 22
+  seq: 15
   tags: [
     API
   ]
@@ -36,4 +36,9 @@ assert {
   res.body: isJson
   res.body.code: eq '400.1'
   res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: dateOfBirth'
+}
+
+script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
 }

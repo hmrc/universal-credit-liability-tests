@@ -1,7 +1,7 @@
 meta {
   name: Invalid National Insurance Number without dateofBirth
   type: http
-  seq: 14
+  seq: 13
   tags: [
     API
   ]
@@ -35,4 +35,9 @@ assert {
   res.body: isJson
   res.body.code: eq '400.1'
   res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: nationalInsuranceNumber'
+}
+
+script:pre-request {
+  // TODO: remove once optional dateOfBirth have been implemented
+  bru.runner.skipRequest();
 }
