@@ -29,10 +29,10 @@ class N002_Terminate_OriginatorIdValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N002 : Terminate Request_MDTP returns 403 to DWP on request header - 'gov-uk-originator-id' validation failure"
+    "UCL_TC_N002 : Terminate Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ResponseCode, ResponseMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error: GovUkOriginatorId (Special Chars) is invalid in request header",
         headersInvalidCharsOriginatorId,
@@ -71,13 +71,12 @@ class N002_Terminate_OriginatorIdValidationScenario
         // code is missing - need to add ??
         When("a request with invalid/missing/empty GovUkOriginatorId header is sent")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
-        System.out.println("OriginatorID Validation Error Response Body ==> " + Json.parse(apiResponse.body))
+        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 403 Forbidden to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe FORBIDDEN
         }
-
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
