@@ -30,24 +30,21 @@ body:json {
   }
 }
 
+assert {
+  res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isEmpty
+  res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isEmpty
+}
+
 script:pre-request {
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
+  
   if (ninoPrefix != "CM110") {
     throw new Error('The nationalInsuranceNumber should start with "CM110" to trigger a 404.');
   }
-}
-
-assert {
-  res.status: eq 404
-  res.headers.correlationid: eq {{correlationId}}
-  res.body: isEmpty
-}
-
-assert {
-  res.status: eq 404
-  res.headers.correlationid: eq {{correlationId}}
-  res.body: isEmpty
 }
 
 docs {

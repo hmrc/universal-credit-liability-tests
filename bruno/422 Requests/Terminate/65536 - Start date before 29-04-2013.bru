@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "GX240") {
-    throw new Error('The nationalInsuranceNumber should start with "GX240" to trigger a 65536.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '65536'
   res.body.message: eq 'Start date before 29/04/2013'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "GX240") {
+    throw new Error('The nationalInsuranceNumber should start with "GX240" to trigger a 65536.');
+  }
 }
