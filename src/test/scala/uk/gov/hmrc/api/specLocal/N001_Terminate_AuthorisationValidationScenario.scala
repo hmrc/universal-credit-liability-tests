@@ -30,10 +30,10 @@ class N001_Terminate_AuthorisationValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001 : Terminate Request_MDTP returns 401 to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N001 : Terminate Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ResponseCode, ResponseMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error: Authorisation is invalid in request header",
         headersInvalidAuth,
@@ -66,16 +66,14 @@ class N001_Terminate_AuthorisationValidationScenario
         // ????? Need to add code
         When("a request with invalid/empty/expired authorisation header is sent")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
-        System.out.println("--------- api response ------ " + Json.parse(apiResponse.body))
-
+        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
+        
         Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNAUTHORIZED
         }
-
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        System.out.println("----- responseBody -----  " + responseBody)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
       }
