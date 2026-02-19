@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 
 trait TestDataNotification extends BaseTestData {
 
-  def notificationPayload(
+  /*def notificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     recordAction: String = randomUniversalCreditAction,
@@ -32,17 +32,18 @@ trait TestDataNotification extends BaseTestData {
     "universalCreditAction"     -> recordAction,
     "dateOfBirth"               -> dateOfBirth,
     "liabilityStartDate"        -> startDate
-  )
+  )*/
 
   def insertNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     dateOfBirth: String = "2002-04-27",
-    startDate: String = "2025-08-19"
+    startDate: String = "2025-08-19",
+    creditAction: String = "Insert"
   ): JsObject = Json.obj(
     "nationalInsuranceNumber"   -> nino,
     "universalCreditRecordType" -> recordType,
-    "universalCreditAction"     -> "Insert",
+    "universalCreditAction"     -> creditAction,
     "dateOfBirth"               -> dateOfBirth,
     "liabilityStartDate"        -> startDate
   )
@@ -51,17 +52,18 @@ trait TestDataNotification extends BaseTestData {
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     startDate: String = "2025-08-19",
-    endDate: String = "2026-06-30"
+    endDate: String = "2026-06-30",
+    creditAction: String = "Terminate"
   ): JsObject = Json.obj(
     "nationalInsuranceNumber"   -> nino,
     "universalCreditRecordType" -> recordType,
-    "universalCreditAction"     -> "Terminate",
+    "universalCreditAction"     -> creditAction,
     "liabilityStartDate"        -> startDate,
     "liabilityEndDate"          -> endDate
   )
 
-  def notificationPayloadMissing(parameterName: String): JsObject =
-    notificationPayload() - parameterName
+  /* def notificationPayloadMissing(parameterName: String): JsObject =
+    notificationPayload() - parameterName*/
 
   def insertNotificationPayloadMissing(parameterName: String): JsObject =
     insertNotificationPayload() - parameterName
