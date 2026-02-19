@@ -123,7 +123,7 @@ trait BaseTestData {
     overrideHeader(baseHeaders, "Authorization", "Bearer 1234")
 
   def headersInvalidCorrelationId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "correlationId", "INVALID")
+    overrideHeader(baseHeaders, "correlationId", "2db2a28e-52c9-4814-8a94")
 
   def headersInvalidShortOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 2)
@@ -152,8 +152,8 @@ trait BaseTestData {
   type NinoPrefix      = String
   type ErrorCode       = String
   type Reason          = String
-  type ResponseMessage = String
-  type ResponseCode    = String
+  type ErrorResponseMessage = String
+  type ErrorResponseCode    = String
 
   val InvalidInput: ErrorCode  = "400.1"
   val ForbiddenCode: ErrorCode = "403.2"
