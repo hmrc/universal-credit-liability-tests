@@ -32,82 +32,82 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
 
     val cases: Seq[(String, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Success:MDTP return 422 and cascade business error 550006 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 550006 from HIP to DWP",
         "550006",
         "Start Date and End Date must be earlier than Date of Death"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 55008 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 55008 from HIP to DWP",
         "55008",
         "End Date must be earlier than State Pension Age"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 55027 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 55027 from HIP to DWP",
         "55027",
         "End Date later than Date of Death"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 55029 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 55029 from HIP to DWP",
         "55029",
         "Start Date later than SPA"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 55038 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 55038 from HIP to DWP",
         "55038",
         "A conflicting or identical Liability is already recorded"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 55039 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 55039 from HIP to DWP",
         "55039",
         "NO corresponding liability found"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 64996 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 64996 from HIP to DWP",
         "64996",
         "Start Date is not before date of death"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 64997 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 64997 from HIP to DWP",
         "64997",
         "LCW/LCWRA not within a period of UC"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 64998 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 64998 from HIP to DWP",
         "64998",
         "LCW/LCWRA Override not within a period of LCW/LCWRA"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65026 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65026 from HIP to DWP",
         "65026",
         "Start date must not be before 16th birthday"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65536 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65536 from HIP to DWP",
         "65536",
         "Start date before 29/04/2013"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65537 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65537 from HIP to DWP",
         "65537",
         "End date before start date"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65541 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65541 from HIP to DWP",
         "65541",
         "The NINO input matches a Pseudo Account"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65542 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65542 from HIP to DWP",
         "65542",
         "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 65543 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 65543 from HIP to DWP",
         "65543",
         "The NINO input matches an account that has been transferred to the Isle of Man"
       ),
       (
-        "Success:MDTP return 422 and cascade business error 99999 from HIP to DWP",
+        "Error:MDTP return 422 and cascade business error 99999 from HIP to DWP",
         "99999",
         "Start Date after Death"
       )
