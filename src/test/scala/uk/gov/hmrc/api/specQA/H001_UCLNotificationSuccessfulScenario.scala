@@ -14,32 +14,47 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specQA
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NOT_FOUND
+import play.api.http.Status.NO_CONTENT
 import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class H001_UCLNotificationSuccessfulScenario
+    extends BaseSpec
+    with GuiceOneServerPerSuite
+    with TestDataNotification {
 
   Feature(
-    "UCL_TC_N007:MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
+    "UCL_TC_H001:MDTP successfully processes a valid UCL Notification received from DWP and gets successful response HIP"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 404 to DWP when request content path is invalid",
+        "Success:Insert Request_UCL Notification process successfully with valid Credit Record type UC",
         validHeaders,
         insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Error: Terminate Request_MDTP returns 404 to DWP when request content path is invalid",
+        "Success: Insert Request_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        validHeaders,
+        insertNotificationPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "Success: Terminate Request_UCL Notification process successfully with valid Credit Record type UC",
+        validHeaders,
+        terminateNotificationPayload(recordType = "UC")
+      ),
+      (
+        "Success: Terminate Request_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
         validHeaders,
         terminateNotificationPayload(recordType = "LCW/LCWRA")
       )
+
     )
 
     cases.foreach { case (scenarioName, headers, payload) =>
@@ -48,20 +63,18 @@ class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerS
         // need to add code
 
         When("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotificationWithInvalidContentPath(headers, payload)
+        val apiResponse = apiService.postNotification(headers, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Success Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 404 not found to DWP")
+        Then("MDTP returns HTTP status code 204 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NOT_FOUND
+          apiResponse.status mustBe NO_CONTENT
         }
 
-        And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe "NOT_FOUND"
-        (responseBody \ "message").as[String] mustBe "?????"
+        And("Success response body must be empty")
+        apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

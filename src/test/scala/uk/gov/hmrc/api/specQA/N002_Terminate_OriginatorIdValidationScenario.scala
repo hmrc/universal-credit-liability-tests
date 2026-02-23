@@ -14,74 +14,77 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specQA
 
-import org.scalactic.Prettifier.default
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.UNAUTHORIZED
+import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N001_Insert_AuthorisationValidationScenario
+class N002_Terminate_OriginatorIdValidationScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001:Insert Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N002 : Terminate Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: Authorisation is invalid in request header",
-        headersInvalidAuth,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
+        "Error: GovUkOriginatorId (Special Chars) is invalid in request header",
+        headersInvalidCharsOriginatorId,
+        "403.2",
+        "Forbidden"
       ),
       (
-        "Error: Authorisation is missing in request header",
-        headersMissingAuthorization,
-        "MISSING_CREDENTIALS",
-        "Bearer token not supplied"
+        "Error: GovUkOriginatorId is missing in request header",
+        headersMissingGovUkOriginatorId,
+        "403.2",
+        "Forbidden"
       ),
       (
-        "Error: Authorisation expired in request header",
-        overrideHeader(baseHeaders, "Authorization", getExpiredAuthToken),
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
+        "Error: GovUkOriginatorId (Long) is invalid in request header",
+        headersInvalidLongOriginatorId,
+        "403.2",
+        "Forbidden"
       ),
       (
-        "Error: Authorisation empty in request header",
-        headersEmptyAuth,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
+        "Error: GovUkOriginatorId (Short) is invalid in request header",
+        headersInvalidShortOriginatorId,
+        "403.2",
+        "Forbidden"
+      ),
+      (
+        "Error: GovUkOriginatorId (Short) is empty in request header",
+        headersEmptyOriginatorId,
+        "403.2",
+        "Forbidden"
       )
     )
 
     cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
-        // ????? Need to add code  ---
-        When("a request with invalid/empty/expired authorisation header is sent")
-        val apiResponse = apiService.postNotificationWithoutAuth(headers, insertNotificationPayload())
+        // code is missing - need to add ??
+        When("a request with invalid/missing/empty GovUkOriginatorId header is sent")
+        val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
-        Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
+        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe UNAUTHORIZED
+          apiResponse.status mustBe FORBIDDEN
         }
         And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
+        val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
-
       }
     }
   }
-
 }
