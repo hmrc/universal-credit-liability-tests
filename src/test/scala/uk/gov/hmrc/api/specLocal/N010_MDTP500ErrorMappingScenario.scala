@@ -14,54 +14,58 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
+    "UCL_TC_N010:MDTP error handling for downstream errors 400 and 401"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
+    val cases: Seq[(String, JsValue, String, String)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur in HIP",
-        validHeaders,
-        insertNotificationPayload(recordType = "UC")
+        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
+        insertNotificationPayload(recordType = "UC"),
+        "500",
+        "INTERNAL_SERVER_ERROR"
       ),
       (
-        "Error: Terminate Request_MDTP returns 500 to DWP when internal error occur in HIP",
-        validHeaders,
-        terminateNotificationPayload(recordType = "LCW/LCWRA")
+        "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
+        terminateNotificationPayload(recordType = "LCW/LCWRA"),
+        "500",
+        "INTERNAL_SERVER_ERROR"
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload) =>
+    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
         // need to add code
 
         When("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotification(headers, payload)
+        val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Success Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
+        Then("MDTP returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe "INTERNAL_SERVER_ERROR"
-        (responseBody \ "message").as[String] mustBe "?????"
+        (responseBody \ "code").as[String] mustBe errorCode
+        (responseBody \ "message"
+          ).as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

@@ -14,66 +14,59 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
-import org.scalactic.Prettifier.default
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.UNAUTHORIZED
+import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N001_Terminate_AuthorisationValidationScenario
+class N003_Insert_CorrelationIdValidationScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001 : Terminate Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N003 : Insert Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: Authorisation is invalid in request header",
-        headersInvalidAuth,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
+        "Error: Correlation Id is invalid in request header",
+        headersInvalidCorrelationId,
+        "400.1",
+        constraintViolation("correlationId")
       ),
       (
-        "Error: Authorisation is missing in request header",
-        headersMissingAuthorization,
-        "MISSING_CREDENTIALS",
-        "Bearer token not supplied"
+        "Error: Correlation Id is missing in request header",
+        headersMissingCorrelationId,
+        "400.1",
+        constraintViolation("correlationId")
       ),
       (
-        "Error: Authorisation expired in request header",
-        overrideHeader(baseHeaders, "Authorization", getExpiredAuthToken),
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
-      ),
-      (
-        "Error: Authorisation empty in request header",
-        headersEmptyAuth,
-        "INVALID_CREDENTIALS",
-        "Invalid bearer token"
+        "Error: Correlation Id is empty in request header",
+        headersEmptyCorrelationId,
+        "400.1",
+        constraintViolation("correlationId")
       )
     )
 
     cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
-        // ????? Need to add code
-        When("a request with invalid/empty/expired authorisation header is sent")
-        val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
+        // need to add a code ???
+        When("a request with invalid/missing/empty CorrelationId header is sent")
+        val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
-        Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
+        Then("MDTP returns HTTP status code 400 Bad Request to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe UNAUTHORIZED
+          apiResponse.status mustBe BAD_REQUEST
         }
         And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
+        val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe expCode
         (responseBody \ "message").as[String] mustBe expMessage
 
@@ -82,5 +75,4 @@ class N001_Terminate_AuthorisationValidationScenario
       }
     }
   }
-
 }

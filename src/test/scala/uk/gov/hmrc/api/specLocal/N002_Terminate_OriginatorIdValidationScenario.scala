@@ -14,56 +14,68 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.BAD_REQUEST
+import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N003_Terminate_CorrelationIdValidationScenario
+class N002_Terminate_OriginatorIdValidationScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N003 : Terminate Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
+    "UCL_TC_N002 : Terminate Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: Correlation Id is invalid in request header",
-        headersInvalidCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error: GovUkOriginatorId (Special Chars) is invalid in request header",
+        headersInvalidCharsOriginatorId,
+        "403.2",
+        "Forbidden"
       ),
       (
-        "Error: Correlation Id is missing in request header",
-        headersMissingCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error: GovUkOriginatorId is missing in request header",
+        headersMissingGovUkOriginatorId,
+        "403.2",
+        "Forbidden"
       ),
       (
-        "Error: Correlation Id is empty in request header",
-        headersEmptyCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error: GovUkOriginatorId (Long) is invalid in request header",
+        headersInvalidLongOriginatorId,
+        "403.2",
+        "Forbidden"
+      ),
+      (
+        "Error: GovUkOriginatorId (Short) is invalid in request header",
+        headersInvalidShortOriginatorId,
+        "403.2",
+        "Forbidden"
+      ),
+      (
+        "Error: GovUkOriginatorId (Short) is empty in request header",
+        headersEmptyOriginatorId,
+        "403.2",
+        "Forbidden"
       )
     )
 
     cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
-        // need to add a code ???
-        When("a request with invalid/missing/empty CorrelationId header is sent")
+        // code is missing - need to add ??
+        When("a request with invalid/missing/empty GovUkOriginatorId header is sent")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
-        Then("MDTP returns HTTP status code 400 Bad Request to DWP")
+        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe BAD_REQUEST
+          apiResponse.status mustBe FORBIDDEN
         }
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)

@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.FORBIDDEN
+import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N008:HIP fails to process the request from MDTP when originatorId is not found and returns 403 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N008:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue,String,String)] = Seq(
+    val cases: Seq[(String, JsValue, String, String)] = Seq(
       (
-        "Error:Insert Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
+        "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
         insertNotificationPayload(recordType = "UC"),
-        "403.2",
-        "FORBIDDEN"
+        "404",
+        "Not found"
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
+        "Error: Terminate Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
         terminateNotificationPayload(recordType = "LCW/LCWRA"),
-        "403.2",
-        "FORBIDDEN"
+        "404",
+        "Not found"
       )
     )
 
-    cases.foreach { case (scenarioName,payload,errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
         // need to add code
@@ -56,16 +56,16 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
+        Then("MDTP returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe FORBIDDEN
+          apiResponse.status mustBe NOT_FOUND
         }
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe errorCode
         (responseBody \ "message"
-        ).as[String] mustBe errorMessage
+          ).as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

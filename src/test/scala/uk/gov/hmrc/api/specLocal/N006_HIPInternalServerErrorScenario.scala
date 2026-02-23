@@ -14,58 +14,54 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NOT_FOUND
+import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{JsValue, Json}
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N008:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
   ) {
 
-    val cases: Seq[(String, JsValue, String, String)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        insertNotificationPayload(recordType = "UC"),
-        "404",
-        "Not found"
+        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur in HIP",
+        validHeaders,
+        insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        terminateNotificationPayload(recordType = "LCW/LCWRA"),
-        "404",
-        "Not found"
+        "Error: Terminate Request_MDTP returns 500 to DWP when internal error occur in HIP",
+        validHeaders,
+        terminateNotificationPayload(recordType = "LCW/LCWRA")
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, headers, payload) =>
       Scenario(scenarioName) {
         Given("Universal Credit Liability Notification API is up and running")
         // need to add code
 
         When("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotification(validHeaders, payload)
+        val apiResponse = apiService.postNotification(headers, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Success Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 404 Not Found to DWP")
+        Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NOT_FOUND
+          apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe errorCode
-        (responseBody \ "message"
-          ).as[String] mustBe errorMessage
+        (responseBody \ "code").as[String] mustBe "INTERNAL_SERVER_ERROR"
+        (responseBody \ "message").as[String] mustBe "?????"
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

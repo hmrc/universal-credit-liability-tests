@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specQA
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
@@ -23,13 +23,13 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N003_Insert_CorrelationIdValidationScenario
+class N003_Terminate_CorrelationIdValidationScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N003 : Insert Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
+    "UCL_TC_N003 : Terminate Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
@@ -58,7 +58,7 @@ class N003_Insert_CorrelationIdValidationScenario
         Given("Universal Credit Liability Notification API is up and running")
         // need to add a code ???
         When("a request with invalid/missing/empty CorrelationId header is sent")
-        val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
+        val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 400 Bad Request to DWP")
