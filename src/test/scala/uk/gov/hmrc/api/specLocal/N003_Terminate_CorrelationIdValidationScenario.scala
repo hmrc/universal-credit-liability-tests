@@ -55,9 +55,8 @@ class N003_Terminate_CorrelationIdValidationScenario
 
     cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add a code ???
-        When("a request with invalid/missing/empty CorrelationId header is sent")
+        
+        Given("a request with invalid/missing/empty CorrelationId header is sent")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
