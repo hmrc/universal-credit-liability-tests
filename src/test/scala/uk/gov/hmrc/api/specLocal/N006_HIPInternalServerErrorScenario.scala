@@ -20,6 +20,7 @@ import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
@@ -29,39 +30,36 @@ class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPe
     "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur in HIP",
-        validHeaders,
-        insertNotificationPayload(recordType = "UC")
+        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
+        insertNotificationPayload(nino = ninoWithPrefix("XY500"))
+
       ),
       (
-        "Error: Terminate Request_MDTP returns 500 to DWP when internal error occur in HIP",
-        validHeaders,
-        terminateNotificationPayload(recordType = "LCW/LCWRA")
+        "Error: Terminate Request_MDTP handles internal server error from HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY500"))
+
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload) =>
+    cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
 
-        When("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotification(headers, payload)
+        Given("a valid UCL notification is sent by DWP")
+        val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Success Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Success Response Body ==> " + apiResponse.statusText
         )
 
         Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe INTERNAL_SERVER_ERROR
+          apiResponse.statusText mustBe "Internal Server Error"
         }
 
-        And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe "INTERNAL_SERVER_ERROR"
-        (responseBody \ "message").as[String] mustBe "?????"
+        And("Error response body must be empty")
+        apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

@@ -30,26 +30,26 @@ class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPer
     "UCL_TC_N005:MDTP successfully processes a valid UCL Notification received from DWP but returns 503 when HIP server is unavailable"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
+    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error:Insert Request_MDTP returns 503 to DWP when HIP server is unavailable",
-        validHeaders,
-        insertNotificationPayload(recordType = "UC")
+        insertNotificationPayload(nino = ninoWithPrefix("XY503")),
+        "SERVER_ERROR",
+        "The 'misc/universal-credit/liability' API is currently unavailable"
       ),
       (
-        "Error: Terminate Request_MDTP returns 503 to DWP when HIP server is unavailable",
-        validHeaders,
-        terminateNotificationPayload(recordType = "LCW/LCWRA")
+        "Error: Terminate Request_MDTP handles HIP server unavailable error",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY503")),
+        "SERVER_ERROR",
+        "The 'misc/universal-credit/liability' API is currently unavailable"
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload) =>
+    cases.foreach { case (scenarioName, payload, expCode, expMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
 
         When("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotification(headers, payload)
+        val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
         )
@@ -61,8 +61,8 @@ class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPer
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe "SERVER_ERROR"
-        (responseBody \ "message").as[String] mustBe "?????"
+        (responseBody \ "code").as[String] mustBe expCode
+        (responseBody \ "message").as[String] mustBe expMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
