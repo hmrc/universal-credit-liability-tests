@@ -124,9 +124,8 @@ class N004_Insert_SchemaValidationScenario extends BaseSpec with GuiceOneServerP
 
     cases.foreach { case (scenarioName, headers, payload, expMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
-        When("a request with invalid request body is sent")
+
+        Given("a request with invalid request body is sent")
         val apiResponse = apiService.postNotification(headers, payload)
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
