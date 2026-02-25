@@ -55,10 +55,8 @@ class H001_UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServe
 
     cases.foreach { case (scenarioName, headers, payload) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
-
-        When("a valid UCL notification is sent by DWP")
+        
+        Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(headers, payload)
         System.out.println(
           "For Scenario " + scenarioName + " Success Response Body ==> " + apiResponse.statusText
