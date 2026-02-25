@@ -24,10 +24,7 @@ import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class H001_UCLNotificationSuccessfulScenario
-    extends BaseSpec
-    with GuiceOneServerPerSuite
-    with TestDataNotification {
+class H001_UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_H001:MDTP successfully processes a valid UCL Notification received from DWP and gets successful response HIP"
@@ -54,7 +51,6 @@ class H001_UCLNotificationSuccessfulScenario
         validHeaders,
         terminateNotificationPayload(recordType = "LCW/LCWRA")
       )
-
     )
 
     cases.foreach { case (scenarioName, headers, payload) =>
@@ -65,12 +61,13 @@ class H001_UCLNotificationSuccessfulScenario
         When("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(headers, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Success Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Success Response Body ==> " + apiResponse.statusText
         )
 
         Then("MDTP returns HTTP status code 204 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe NO_CONTENT
+          apiResponse.statusText mustBe "No Content"
         }
 
         And("Success response body must be empty")
