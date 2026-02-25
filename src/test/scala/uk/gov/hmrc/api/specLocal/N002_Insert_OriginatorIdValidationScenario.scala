@@ -67,9 +67,8 @@ class N002_Insert_OriginatorIdValidationScenario
 
     cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // code is missing - need to add ??
-        When("a request with invalid/missing/empty GovUkOriginatorId header is sent")
+
+        Given("a request with invalid/missing/empty GovUkOriginatorId header is sent")
         val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
         System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
