@@ -23,6 +23,8 @@ import scala.util.matching.Regex
 
 trait BaseTestData {
 
+  val govUkOriginatorIdProvidedByDwp: String = "TEST-GOV-UK-ORIGINATOR-ID"
+
   private val NinoPattern: Regex =
     "^([ACEHJLMOPRSWXY][A-CEGHJ-NPR-TW-Z]|B[A-CEHJ-NPR-TW-Z]|G[ACEGHJ-NPR-TW-Z]|[KT][A-CEGHJ-MPR-TW-Z]|N[A-CEGHJL-NPR-SW-Z]|Z[A-CEGHJ-NPR-TW-Y])[0-9]{6}$".r
 
@@ -77,21 +79,21 @@ trait BaseTestData {
   def baseHeaders: Seq[(String, String)] = Seq(
     "Content-Type"         -> jsonContentType,
     "correlationId"        -> randomCorrelationId,
-    "gov-uk-originator-id" -> randomGovUkOriginatorId
+    "gov-uk-originator-id" -> govUkOriginatorIdProvidedByDwp
   )
 
   def invalidHeaders: Seq[(String, String)] = Seq(
     "Content-Type"         -> jsonContentType,
     "Authorization"        -> "Bearer INVALID",
     "correlationId"        -> "INVALID",
-    "gov-uk-originator-id" -> "!NV@L!D"
+    "gov-uk-originator-id" -> govUkOriginatorIdProvidedByDwp
   )
 
   val validHeaders: Seq[(String, String)] =
     Seq(
       "Content-Type"         -> jsonContentType,
       "correlationId"        -> randomCorrelationId,
-      "gov-uk-originator-id" -> randomGovUkOriginatorId
+      "gov-uk-originator-id" -> govUkOriginatorIdProvidedByDwp
     )
 
   def removeHeader(headers: Seq[(String, String)], key: String): Seq[(String, String)] =
