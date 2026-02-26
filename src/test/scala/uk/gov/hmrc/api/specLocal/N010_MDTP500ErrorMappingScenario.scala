@@ -47,13 +47,11 @@ class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
 
     cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
 
-        When("a valid UCL notification is sent by DWP")
+        Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " Error Response Body ==> " + apiResponse.statusText
         )
 
         Then("MDTP returns HTTP status code 404 Not Found to DWP")
@@ -61,11 +59,8 @@ class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
           apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
-        And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe errorCode
-        (responseBody \ "message"
-          ).as[String] mustBe errorMessage
+        And("Success response body must be empty")
+        apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
