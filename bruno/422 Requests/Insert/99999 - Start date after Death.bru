@@ -23,18 +23,10 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "AB150000",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
-  }
-}
-
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "AB150") {
-    throw new Error('The nationalInsuranceNumber should start with "AB150" to trigger a 99999.');
   }
 }
 
@@ -44,4 +36,12 @@ assert {
   res.body: isJson
   res.body.code: eq '99999'
   res.body.message: eq 'Start Date after Death'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "AB150") {
+    throw new Error('The nationalInsuranceNumber should start with "AB150" to trigger a 99999.');
+  }
 }

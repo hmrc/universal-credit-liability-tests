@@ -9,7 +9,7 @@ script:pre-request {
     bru.setEnvVar("invalidNino", randomInvalidNino);
 
     const randomUniversalCreditRecordType = helpers.randomUniversalCreditRecordType();
-    bru.setEnvVar("universalCreditRecordType", randomUniversalCreditRecordType);
+    bru.setEnvVar("randomUniversalCreditRecordType", randomUniversalCreditRecordType);
   }
 
   bru.setVar('correlationId', bru.interpolate('{{$guid}}'));

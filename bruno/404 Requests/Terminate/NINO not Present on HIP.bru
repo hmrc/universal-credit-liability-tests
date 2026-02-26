@@ -3,7 +3,7 @@ meta {
   type: http
   seq: 2
   tags: [
-    DOWNSTREAM
+    NOTFOUND
   ]
 }
 
@@ -23,31 +23,25 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "CM110000",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"
   }
 }
 
+assert {
+  res.status: eq 404
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isEmpty
+}
+
 script:pre-request {
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
+  
   if (ninoPrefix != "CM110") {
     throw new Error('The nationalInsuranceNumber should start with "CM110" to trigger a 404.');
   }
-}
-
-assert {
-  res.status: eq 404
-  res.headers.correlationid: eq {{correlationId}}
-  res.body: isEmpty
-}
-
-assert {
-  res.status: eq 404
-  res.headers.correlationid: eq {{correlationId}}
-  res.body: isEmpty
 }
 
 docs {

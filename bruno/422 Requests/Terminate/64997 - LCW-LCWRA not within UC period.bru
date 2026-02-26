@@ -23,18 +23,10 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "HS260000",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"
-  }
-}
-
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "HS260") {
-    throw new Error('The nationalInsuranceNumber should start with "HS260" to trigger a 64997.');
   }
 }
 
@@ -44,4 +36,12 @@ assert {
   res.body: isJson
   res.body.code: eq '64997'
   res.body.message: eq 'LCW/LCWRA not within a period of UC'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "HS260") {
+    throw new Error('The nationalInsuranceNumber should start with "HS260" to trigger a 64997.');
+  }
 }

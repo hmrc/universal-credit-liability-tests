@@ -23,18 +23,10 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "HC210000",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
-  }
-}
-
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "HC210") {
-    throw new Error('The nationalInsuranceNumber should start with "HC210" to trigger a 65026.');
   }
 }
 
@@ -44,4 +36,12 @@ assert {
   res.body: isJson
   res.body.code: eq '65026'
   res.body.message: eq 'Start date must not be before 16th birthday'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "HC210") {
+    throw new Error('The nationalInsuranceNumber should start with "HC210" to trigger a 65026.');
+  }
 }

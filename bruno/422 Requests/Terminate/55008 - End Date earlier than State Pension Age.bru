@@ -23,18 +23,10 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "EZ200000",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Terminate",
     "liabilityStartDate": "2025-08-19",
     "liabilityEndDate": "2026-06-30"
-  }
-}
-
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "EZ200") {
-    throw new Error('The nationalInsuranceNumber should start with "EZ200" to trigger a 55008.');
   }
 }
 
@@ -44,4 +36,12 @@ assert {
   res.body: isJson
   res.body.code: eq '55008'
   res.body.message: eq 'End Date must be earlier than State Pension Age'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "EZ200") {
+    throw new Error('The nationalInsuranceNumber should start with "EZ200" to trigger a 55008.');
+  }
 }

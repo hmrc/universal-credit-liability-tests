@@ -1,7 +1,7 @@
 meta {
   name: Missing Authorization Header
   type: http
-  seq: 1
+  seq: 2
   tags: [
     AUTH
   ]
@@ -22,7 +22,7 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "{{randomUniversalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
