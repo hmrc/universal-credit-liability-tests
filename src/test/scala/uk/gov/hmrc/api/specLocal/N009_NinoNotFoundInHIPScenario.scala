@@ -27,19 +27,19 @@ import uk.gov.hmrc.api.testData.*
 class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N008:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N009:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue, String, String)] = Seq(
+    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        insertNotificationPayload(recordType = "UC"),
+        insertNotificationPayload(nino = ninoWithPrefix("??")),
         "404",
         "Not found"
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        terminateNotificationPayload(recordType = "LCW/LCWRA"),
+        "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("??")),
         "404",
         "Not found"
       )
@@ -47,10 +47,8 @@ class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
 
     cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
-
-        When("a valid UCL notification is sent by DWP")
+       
+        Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
@@ -64,8 +62,7 @@ class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe errorCode
-        (responseBody \ "message"
-          ).as[String] mustBe errorMessage
+        (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
