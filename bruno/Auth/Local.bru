@@ -23,7 +23,12 @@ body:json {
 
 script:pre-request {
   if (bru.getEnvVar("ENVIRONMENT") !== 'local') {
-    throw new Error('Environment must be set to Local');
+    if (req.getExecutionMode() == "standalone") {
+      throw new Error('Environment must be set to Local');
+    } else {
+      bru.runner.skipRequest();
+      return;
+    }
   }
 }
 

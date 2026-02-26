@@ -22,7 +22,12 @@ body:form-urlencoded {
 
 script:pre-request {
   if (!['development', 'qa'].includes(bru.getEnvVar("ENVIRONMENT"))) {
-    throw new Error('Environment must be set to Dev or QA');
+    if (req.getExecutionMode() == "standalone") {
+      throw new Error('Environment must be set to Dev or QA');
+    } else {
+      bru.runner.skipRequest();
+      return;
+    }
   }
 
   let TOTP;

@@ -23,7 +23,12 @@ body:form-urlencoded {
 
 script:pre-request {
   if (bru.getEnvVar("ENVIRONMENT") !== 'externaltest') {
-    throw new Error('Environment must be set to ExternalTest');
+    if (req.getExecutionMode() == "standalone") {
+      throw new Error('Environment must be set to ExternalTest');
+    } else {
+      bru.runner.skipRequest();
+      return;
+    }
   }
 
   let TOTP;
