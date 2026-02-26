@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "EZ200") {
-    throw new Error('The nationalInsuranceNumber should start with "EZ200" to trigger a 55008.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '55008'
   res.body.message: eq 'End Date must be earlier than State Pension Age'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "EZ200") {
+    throw new Error('The nationalInsuranceNumber should start with "EZ200" to trigger a 55008.');
+  }
 }

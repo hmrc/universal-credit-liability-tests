@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "ET060") {
-    throw new Error('The nationalInsuranceNumber should start with "ET060" to trigger a 55029.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '55029'
   res.body.message: eq 'Start Date later than SPA'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "ET060") {
+    throw new Error('The nationalInsuranceNumber should start with "ET060" to trigger a 55029.');
+  }
 }

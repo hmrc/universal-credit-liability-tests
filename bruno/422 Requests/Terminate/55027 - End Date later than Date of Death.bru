@@ -30,18 +30,18 @@ body:json {
   }
 }
 
-script:pre-request {
-  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
-
-  if (ninoPrefix != "BK190") {
-    throw new Error('The nationalInsuranceNumber should start with "BK190" to trigger a 55027.');
-  }
-}
-
 assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '55027'
   res.body.message: eq 'End Date later than Date of Death'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "BK190") {
+    throw new Error('The nationalInsuranceNumber should start with "BK190" to trigger a 55027.');
+  }
 }
