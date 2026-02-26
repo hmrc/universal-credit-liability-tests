@@ -38,7 +38,7 @@ class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerS
       ),
       (
         "Error: Terminate Request_MDTP 404 received from HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("CM110")),
+        terminateNotificationPayload(nino = ninoWithPrefix("CM110")),
         "404",
         "URI not found"
       )

@@ -30,27 +30,25 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
     "UCL_TC_N008:HIP fails to process the request from MDTP when originatorId is not found and returns 403 to MDTP and MDTP cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue,String,String)] = Seq(
+    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error:Insert Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
-        insertNotificationPayload(recordType = "UC"),
+        insertNotificationPayload(nino = ninoWithPrefix("??")),
         "403.2",
         "FORBIDDEN"
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
-        terminateNotificationPayload(recordType = "LCW/LCWRA"),
+        "Error: Terminate Request_MDTP cascades the HTTP 403 to DWP when originator Id is not found in HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("??")),
         "403.2",
         "FORBIDDEN"
       )
     )
 
-    cases.foreach { case (scenarioName,payload,errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // need to add code
 
-        When("a valid UCL notification is sent by DWP")
+        Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
@@ -64,8 +62,7 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe errorCode
-        (responseBody \ "message"
-        ).as[String] mustBe errorMessage
+        (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
