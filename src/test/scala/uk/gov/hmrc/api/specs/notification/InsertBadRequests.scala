@@ -46,7 +46,7 @@ class InsertBadRequests extends BaseSpec with GuiceOneServerPerSuite with TestDa
         insertNotificationPayload(recordType = "INVALID"),
         constraintViolation("universalCreditRecordType")
       ),
-     /* (
+      /* (
         "UCL_TC_002_0.3: Invalid parameter: universalCreditAction",
         validHeaders,
         notificationPayload(recordAction = "INVALID"),
