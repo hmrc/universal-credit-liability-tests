@@ -37,15 +37,16 @@ class ApiService {
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
 
-  def postNotificationWithInvalidContentPath(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
-    val bearerToken: String = AuthHelper.getAuthToken
-    val endpointUrl: String = s"$apiHost/invalidNotification"
+  def postNotificationWithInvalidContentPath(
+    headers: Seq[(String, String)],
+    requestBody: JsValue
+  ): StandaloneWSResponse = {
+    val bearerToken: String               = AuthHelper.getAuthToken
+    val endpointUrl: String               = s"$apiHost/invalidNotification"
     val authHeader: Seq[(String, String)] = Seq("Authorization" -> bearerToken)
 
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
-
-
 
   // Used for testing unauthorised scenarios
   def postNotificationWithoutAuth(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
