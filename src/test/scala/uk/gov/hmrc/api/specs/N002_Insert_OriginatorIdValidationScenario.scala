@@ -28,39 +28,45 @@ class N002_Insert_OriginatorIdValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N002 : Insert Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
+    "UCL_TC_N002 : Insert Request_HIP fails to process the request from MDTP when originatorId validation fails and returns 403 to MDTP and MDTP cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: GovUkOriginatorId (Special Chars) is invalid in request header",
+        "Error: GovUkOriginatorId (Special Chars) is invalid in MDTP's request header",
         headersInvalidCharsOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId is missing in request header",
+        "Error: GovUkOriginatorId is missing in MDTP's request header",
         headersMissingGovUkOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Long) is invalid in request header",
+        "Error: GovUkOriginatorId (Long) is invalid in MDTP's request header",
         headersInvalidLongOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is invalid in request header",
+        "Error: GovUkOriginatorId (Short) is invalid in MDTP's request header",
         headersInvalidShortOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is empty in request header",
+        "Error: GovUkOriginatorId (Short) is empty in MDTP's request header",
         headersEmptyOriginatorId,
         "403.2",
         "Forbidden"
+      ),
+      (
+        "Error:GovUkOriginatorId is not found in HIP",
+        headerNotFoundInHIPOriginatorId,
+        "403.2",
+        "FORBIDDEN"
       )
     )
 

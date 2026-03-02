@@ -147,6 +147,9 @@ trait BaseTestData {
   def headersEmptyOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "")
 
+  def headerNotFoundInHIPOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")
+
   // Types
   type Nino                 = String
   type NinoPrefix           = String

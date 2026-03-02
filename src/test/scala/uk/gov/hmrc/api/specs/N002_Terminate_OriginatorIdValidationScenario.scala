@@ -33,34 +33,40 @@ class N002_Terminate_OriginatorIdValidationScenario
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: GovUkOriginatorId (Special Chars) is invalid in request header",
+        "Error: GovUkOriginatorId (Special Chars) is invalid in MDTP's request header",
         headersInvalidCharsOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId is missing in request header",
+        "Error: GovUkOriginatorId is missing in MDTP's request header",
         headersMissingGovUkOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Long) is invalid in request header",
+        "Error: GovUkOriginatorId (Long) is invalid in MDTP's request header",
         headersInvalidLongOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is invalid in request header",
+        "Error: GovUkOriginatorId (Short) is invalid in MDTP's request header",
         headersInvalidShortOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is empty in request header",
+        "Error: GovUkOriginatorId (Short) is empty in MDTP's request header",
         headersEmptyOriginatorId,
         "403.2",
         "Forbidden"
+      ),
+      (
+        "Error: GovUkOriginatorId is not found in HIP",
+        headerNotFoundInHIPOriginatorId,
+        "403.2",
+        "FORBIDDEN"
       )
     )
 
