@@ -1,0 +1,47 @@
+meta {
+  name: 00000 - NINO exists, no adult registration
+  type: http
+  seq: 0
+  tags: [
+    DOWNSTREAM
+  ]
+}
+
+post {
+  url: {{api-host}}/notification
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{authorization}}
+  Content-Type: application/json
+  correlationId: {{correlationId}}
+  gov-uk-originator-id: {{govUkOriginatorId}}
+}
+
+body:json {
+  {
+    "nationalInsuranceNumber": "HG200000",
+    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditAction": "Insert",
+    "dateOfBirth": "2002-04-27",
+    "liabilityStartDate": "2025-08-19"
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers.correlationid: eq {{correlationId}}
+  res.body: isJson
+  res.body.code: eq '00000'
+  res.body.message: eq 'NINO exists but has no adult registration'
+}
+
+script:pre-request {
+  let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
+  
+  if (ninoPrefix != "HG200") {
+    throw new Error('The nationalInsuranceNumber should start with "HG200" to trigger a 00000.');
+  }
+}
