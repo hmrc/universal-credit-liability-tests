@@ -29,6 +29,12 @@ class InsertUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite wit
 
     val cases: Seq[(String, NinoPrefix, ErrorCode, Reason)] = Seq(
       (
+        "UC_TC_????: 00000 NINO exists but has no adult registration",
+        "HG200",
+        "00000",
+        "NINO exists but has no adult registration"
+      ),
+      (
         "UC_TC_032: 55038 A conflicting or identical Liability is already recorded",
         "GE100",
         "55038",
