@@ -33,13 +33,13 @@ class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
     val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("??")),
+        insertNotificationPayload(nino = ninoWithPrefix("CM110000")),
         "404",
         "Not found"
       ),
       (
         "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("??")),
+        terminateNotificationPayload(nino = ninoWithPrefix("CM110000")),
         "404",
         "Not found"
       )

@@ -33,13 +33,13 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
     val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
         "Error:Insert Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("??")),
+        insertNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
         "403.2",
         "FORBIDDEN"
       ),
       (
         "Error: Terminate Request_MDTP cascades the HTTP 403 to DWP when originator Id is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("??")),
+        terminateNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
         "403.2",
         "FORBIDDEN"
       )
