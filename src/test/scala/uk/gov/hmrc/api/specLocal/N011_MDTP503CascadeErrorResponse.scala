@@ -14,44 +14,53 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs.notification
+package uk.gov.hmrc.api.specLocal
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NO_CONTENT
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class TerminateNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N011_MDTP503CascadeErrorResponse extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("204 NoContent 'Terminate' scenarios") {
+  Feature(
+    "UCL_TC_N011:HIP returns 503 and MDTP cascades the error to DWP"
+  ) {
 
-    val cases = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
-        "UCL_Terminate_TC_001_0.1: Valid Credit Record type LCW/LCWRA",
-        terminateNotificationPayload(recordType = "LCW/LCWRA")
+        "Error:Insert Request_MDTP returns 503 to DWP when HIP returns 503",
+        insertNotificationPayload(nino = ninoWithPrefix("XY503")),
       ),
       (
-        "UCL_Terminate_TC_001_0.2: Valid Credit Record type UC",
-        terminateNotificationPayload(recordType = "UC")
-      )
+        "Error: Terminate Request_MDTP returns 503 to DWP when HIP returns 503",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY503"))
+      ),
+
     )
 
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
-        Given("the Universal Credit API is up and running")
-        When("a request is sent")
 
+        Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
+        System.out.println(
+          "For Scenario " + scenarioName + " Error Response Status ==> " + apiResponse.statusText
+        )
 
-        Then("204 NoContent must be returned")
+        Then("MDTP returns HTTP status code 500 with no payload to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NO_CONTENT
+          apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
-        And("response body must be empty")
+        And("Error response body must be empty")
         apiResponse.body mustBe empty
+
+        And("CorrelationId in the response header should match the request CorrelationId")
+        // need to add code
       }
     }
   }

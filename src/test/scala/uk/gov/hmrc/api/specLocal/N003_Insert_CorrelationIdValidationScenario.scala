@@ -53,7 +53,7 @@ class N003_Insert_CorrelationIdValidationScenario
       )
     )
 
-    cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
         Given("a request with invalid/missing/empty CorrelationId header is sent")
@@ -66,8 +66,8 @@ class N003_Insert_CorrelationIdValidationScenario
         }
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe expCode
-        (responseBody \ "message").as[String] mustBe expMessage
+        (responseBody \ "code").as[String] mustBe errorResponseCode
+        (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

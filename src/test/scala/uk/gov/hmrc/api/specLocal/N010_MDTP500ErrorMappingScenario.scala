@@ -27,39 +27,39 @@ import uk.gov.hmrc.api.testData.*
 class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N010:MDTP error handling for downstream errors 400 and 401"
+    "UCL_TC_N010:MDTP error handling for downstream errors 400,401 and 403"
   ) {
 
-    val cases: Seq[(String, JsValue, String, String)] = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
         "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
-        insertNotificationPayload(recordType = "UC"),
-        "500",
-        "INTERNAL_SERVER_ERROR"
+        insertNotificationPayload(nino = ninoWithPrefix("XY400")),
       ),
       (
         "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
-        terminateNotificationPayload(recordType = "LCW/LCWRA"),
-        "500",
-        "INTERNAL_SERVER_ERROR"
+        terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
+      ),
+      (
+        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 403",
+        insertNotificationPayload(nino = ninoWithPrefix("XY403")),
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + apiResponse.statusText
+          "For Scenario " + scenarioName + " Error Response Status ==> " + apiResponse.statusText
         )
 
-        Then("MDTP returns HTTP status code 404 Not Found to DWP")
+        Then("MDTP returns HTTP status code 500 with no payload to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
-        And("Success response body must be empty")
+        And("Error response body must be empty")
         apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")

@@ -29,7 +29,7 @@ class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSui
     "UCL_TC_B002:Terminate Request_MDTP handle and cascade 422 and business error code from HIP to DWP"
   ) {
 
-    val cases: Seq[(String, NinoPrefix, ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, NinoPrefix, BusinessErrorCode, BusinessErrorMessage)] = Seq(
       (
         "Error:MDTP return 422 and cascade business error 55038 from HIP to DWP",
         "GE100",
@@ -128,7 +128,7 @@ class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSui
       )
     )
 
-    cases.foreach { case (scenarioName, ninoPrefix, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, ninoPrefix, businessErrorCode, businessErrorMessage) =>
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
@@ -148,8 +148,8 @@ class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSui
         val failuresArray = (responseBody \ "failures").as[JsArray].value
         failuresArray must not be empty
         val firstFailure: JsValue = failuresArray.head
-        (firstFailure \ "code").as[String] mustBe expCode
-        (firstFailure \ "reason").as[String] mustBe expMessage
+        (firstFailure \ "code").as[String] mustBe businessErrorCode
+        (firstFailure \ "reason").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

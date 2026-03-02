@@ -148,12 +148,14 @@ trait BaseTestData {
     overrideHeader(baseHeaders, "gov-uk-originator-id", "")
 
   // Types
-  type Nino            = String
-  type NinoPrefix      = String
-  type ErrorCode       = String
-  type Reason          = String
-  type ErrorResponseMessage = String
+  type Nino                 = String
+  type NinoPrefix           = String
+  type ErrorCode            = String
+  type Reason               = String
+  type BusinessErrorMessage = String
+  type BusinessErrorCode    = String
   type ErrorResponseCode    = String
+  type ErrorResponseMessage = String
 
   val InvalidInput: ErrorCode  = "400.1"
   val ForbiddenCode: ErrorCode = "403.2"

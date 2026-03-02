@@ -104,7 +104,7 @@ class N004_Terminate_SchemaValidationScenario extends BaseSpec with GuiceOneServ
       )
     )
 
-    cases.foreach { case (scenarioName, headers, payload, expMessage) =>
+    cases.foreach { case (scenarioName, headers, payload, errorResponseMessage) =>
       Scenario(scenarioName) {
 
         Given("a request with invalid request body is sent")
@@ -118,7 +118,7 @@ class N004_Terminate_SchemaValidationScenario extends BaseSpec with GuiceOneServ
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe InvalidInput
-        (responseBody \ "message").as[String] mustBe expMessage
+        (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

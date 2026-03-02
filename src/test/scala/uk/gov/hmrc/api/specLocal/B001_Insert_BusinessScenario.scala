@@ -29,7 +29,7 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
 
   Feature("Insert Request_MDTP handle and cascade 422 and business error code from HIP to DWP") {
 
-    val cases: Seq[(String, NinoPrefix, ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, NinoPrefix, BusinessErrorCode, BusinessErrorMessage)] = Seq(
       (
         "Error:MDTP return 422 and cascade business error 55006 from HIP to DWP",
         "BW130",
@@ -128,7 +128,7 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
       )
     )
 
-    cases.foreach { case (scenarioName, ninoPrefix, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, ninoPrefix, businessErrorCode, businessErrorMessage) =>
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
@@ -145,8 +145,8 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
 
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe expCode
-        (responseBody \ "message").as[String] mustBe expMessage
+        (responseBody \ "code").as[String] mustBe businessErrorCode
+        (responseBody \ "message").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
 

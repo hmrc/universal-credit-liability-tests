@@ -45,7 +45,7 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
@@ -61,8 +61,8 @@ class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServe
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe errorCode
-        (responseBody \ "message").as[String] mustBe errorMessage
+        (responseBody \ "code").as[String] mustBe errorResponseCode
+        (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code
