@@ -20,7 +20,6 @@ import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.SERVICE_UNAVAILABLE
 import play.api.libs.json.{JsValue, Json}
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
 class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {

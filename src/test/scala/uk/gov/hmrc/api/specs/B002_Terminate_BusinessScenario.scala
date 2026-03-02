@@ -140,7 +140,7 @@ class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSui
         }
 
         And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
+        val responseBody  = Json.parse(apiResponse.body)
         val failuresArray = (responseBody \ "failures").as[JsArray].value
         failuresArray must not be empty
         val firstFailure: JsValue = failuresArray.head

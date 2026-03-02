@@ -19,7 +19,7 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
@@ -32,7 +32,7 @@ class N009_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
     val cases: Seq[(String, JsValue)] = Seq(
       (
         "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
-        insertNotificationPayload(nino = ninoWithPrefix("XY400")),
+        insertNotificationPayload(nino = ninoWithPrefix("XY400"))
       ),
       (
         "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",

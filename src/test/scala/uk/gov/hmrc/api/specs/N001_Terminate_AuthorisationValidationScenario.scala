@@ -61,7 +61,7 @@ class N001_Terminate_AuthorisationValidationScenario
 
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
-        
+
         Given("a request with invalid/empty/expired authorisation header is sent")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
 

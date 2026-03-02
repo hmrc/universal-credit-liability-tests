@@ -19,7 +19,7 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
 import uk.gov.hmrc.api.testData.*
 
@@ -33,12 +33,10 @@ class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPe
       (
         "Error:Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
         insertNotificationPayload(nino = ninoWithPrefix("XY500"))
-
       ),
       (
         "Error: Terminate Request_MDTP handles internal server error from HIP",
         terminateNotificationPayload(nino = ninoWithPrefix("XY500"))
-
       )
     )
 

@@ -20,20 +20,6 @@ import play.api.libs.json.{JsObject, Json}
 
 trait TestDataNotification extends BaseTestData {
 
-  /*def notificationPayload(
-    nino: String = randomNino,
-    recordType: String = randomUniversalCreditRecordType,
-    recordAction: String = randomUniversalCreditAction,
-    dateOfBirth: String = "2002-04-27",
-    startDate: String = "2025-08-19"
-  ): JsObject = Json.obj(
-    "nationalInsuranceNumber"   -> nino,
-    "universalCreditRecordType" -> recordType,
-    "universalCreditAction"     -> recordAction,
-    "dateOfBirth"               -> dateOfBirth,
-    "liabilityStartDate"        -> startDate
-  )*/
-
   def insertNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
@@ -62,36 +48,11 @@ trait TestDataNotification extends BaseTestData {
     "liabilityEndDate"          -> endDate
   )
 
-  /* def notificationPayloadMissing(parameterName: String): JsObject =
-    notificationPayload() - parameterName*/
-
   def insertNotificationPayloadMissing(parameterName: String): JsObject =
     insertNotificationPayload() - parameterName
 
   def terminateNotificationPayloadMissing(parameterName: String): JsObject =
     terminateNotificationPayload() - parameterName
-
-  // FIXME: replace with notificationPayload
-  def uclPayload(
-    recordType: String,
-    action: String,
-    startDate: String,
-    dateOfBirth: Option[String] = None,
-    endDate: Option[String] = None,
-    nino: String = randomNino
-  ): JsObject = {
-    val base = Json.obj(
-      "nationalInsuranceNumber"   -> nino,
-      "universalCreditRecordType" -> recordType,
-      "universalCreditAction"     -> action,
-      "liabilityStartDate"        -> startDate
-    )
-
-    val dobObj = dateOfBirth.fold(Json.obj())(d => Json.obj("dateOfBirth" -> d))
-    val endObj = endDate.fold(Json.obj())(d => Json.obj("liabilityEndDate" -> d))
-
-    base ++ dobObj ++ endObj
-  }
 
   val getInvalidAuthToken: String = "Invalid token"
   val getNoAuthToken: String      = ""

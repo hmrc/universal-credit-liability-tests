@@ -54,7 +54,7 @@ class N003_Terminate_CorrelationIdValidationScenario
 
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
-        
+
         Given("a request with invalid/missing/empty CorrelationId header is sent")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
 

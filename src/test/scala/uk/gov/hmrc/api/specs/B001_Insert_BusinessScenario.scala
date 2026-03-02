@@ -22,9 +22,12 @@ import play.api.http.Status.UNPROCESSABLE_ENTITY
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.testData.*
-import uk.gov.hmrc.api.testData.TestDataHip
 
-class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification with TestDataHip{
+class B001_Insert_BusinessScenario
+    extends BaseSpec
+    with GuiceOneServerPerSuite
+    with TestDataNotification
+    with TestDataHip {
 
   Feature("Insert Request_MDTP handle and cascade 422 and business error code from HIP to DWP") {
 
@@ -131,7 +134,7 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
-        val payload: JsObject = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
+        val payload: JsObject                 = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
         val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 422 No Content to DWP")
