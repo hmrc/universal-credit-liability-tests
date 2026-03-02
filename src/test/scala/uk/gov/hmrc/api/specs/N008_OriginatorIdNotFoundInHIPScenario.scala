@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NOT_FOUND
+import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.api.specs.BaseSpec
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N007:MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
+    "UCL_TC_N008:HIP fails to process the request from MDTP when originatorId is not found and returns 403 to MDTP and MDTP cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 404 to DWP when request content path is invalid",
-        insertNotificationPayload(nino = ninoWithPrefix("XY404")),
-        "404",
-        "URI not found"
+        "Error:Insert Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
+        insertNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
+        "403.2",
+        "FORBIDDEN"
       ),
       (
-        "Error: Terminate Request_MDTP 404 received from HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("CM110")),
-        "404",
-        "URI not found"
+        "Error: Terminate Request_MDTP cascades the HTTP 403 to DWP when originator Id is not found in HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
+        "403.2",
+        "FORBIDDEN"
       )
     )
 
@@ -53,14 +53,14 @@ class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerS
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 404 not found to DWP")
+        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NOT_FOUND
+          apiResponse.status mustBe FORBIDDEN
         }
 
         And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "statusCode").as[String] mustBe errorResponseCode
+        (responseBody \ "code").as[String] mustBe errorResponseCode
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")

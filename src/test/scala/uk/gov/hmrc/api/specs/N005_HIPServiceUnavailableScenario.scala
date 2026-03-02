@@ -14,49 +14,48 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.FORBIDDEN
+import play.api.http.Status.SERVICE_UNAVAILABLE
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
-import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class N008_OriginatorIdNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N008:HIP fails to process the request from MDTP when originatorId is not found and returns 403 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N005:MDTP successfully processes a valid UCL Notification received from DWP but returns 503 when HIP server is unavailable"
   ) {
 
     val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error:Insert Request_MDTP cascades the HTTP 403 status with error payload from HIP to DWP when originator Id is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
-        "403.2",
-        "FORBIDDEN"
+        "Error:Insert Request_MDTP returns 503 to DWP when HIP server is unavailable",
+        insertNotificationPayload(nino = ninoWithPrefix("XY503")),
+        "SERVER_ERROR",
+        "The 'misc/universal-credit/liability' API is currently unavailable"
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 403 to DWP when originator Id is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")),
-        "403.2",
-        "FORBIDDEN"
+        "Error: Terminate Request_MDTP handles HIP server unavailable error",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY503")),
+        "SERVER_ERROR",
+        "The 'misc/universal-credit/liability' API is currently unavailable"
       )
     )
 
     cases.foreach { case (scenarioName, payload, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        When("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
         System.out.println(
           "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
         )
 
-        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
+        Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe FORBIDDEN
+          apiResponse.status mustBe SERVICE_UNAVAILABLE
         }
 
         And("Error response body must contain correct error details")

@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.TestDataNotification
 
 class N003_Insert_CorrelationIdValidationScenario

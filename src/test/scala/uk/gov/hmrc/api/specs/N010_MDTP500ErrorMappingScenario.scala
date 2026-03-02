@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
-import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
 class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {

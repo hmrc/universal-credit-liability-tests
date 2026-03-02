@@ -14,39 +14,32 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specLocal
+package uk.gov.hmrc.api.specs
 
-import org.scalatest.matchers.must.Matchers.mustBe
+import org.scalatest.matchers.must.Matchers.{must, mustBe}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.UNPROCESSABLE_ENTITY
-import play.api.libs.json.{JsObject, JsValue, Json}
-import play.api.libs.ws.StandaloneWSResponse
-import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.*
+import play.api.libs.json.{JsArray, JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification with TestDataHip{
+class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature("Insert Request_MDTP handle and cascade 422 and business error code from HIP to DWP") {
+  Feature(
+    "UCL_TC_B002:Terminate Request_MDTP handle and cascade 422 and business error code from HIP to DWP"
+  ) {
 
     val cases: Seq[(String, NinoPrefix, BusinessErrorCode, BusinessErrorMessage)] = Seq(
       (
-        "Error:MDTP return 422 and cascade business error 55006 from HIP to DWP",
-        "BW130",
-        "55006",
-        "Start Date and End Date must be earlier than Date of Death"
+        "Error:MDTP return 422 and cascade business error 55038 from HIP to DWP",
+        "GE100",
+        "55038",
+        "A conflicting or identical Liability is already recorded"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 55008 from HIP to DWP",
-        "EZ200",
-        "55008",
-        "End Date must be earlier than State Pension Age"
-      ),
-      (
-        "Error:MDTP return 422 and cascade business error 55027 from HIP to DWP",
-        "BK190",
-        "55027",
-        "End Date later than Date of Death"
+        "Error:MDTP return 422 and cascade business error 65026 from HIP to DWP",
+        "HC210",
+        "65026",
+        "Start date must not be before 16th birthday"
       ),
       (
         "Error:MDTP return 422 and cascade business error 55029 from HIP to DWP",
@@ -55,22 +48,28 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
         "Start Date later than SPA"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 55038 from HIP to DWP",
-        "GE100",
-        "55038",
-        "A conflicting or identical Liability is already recorded"
-      ),
-      (
-        "Error:MDTP return 422 and cascade business error 55039 from HIP to DWP",
-        "GP050",
-        "55039",
-        "NO corresponding liability found"
-      ),
-      (
-        "Error:MDTP return 422 and cascade business error 64996 from HIP to DWP",
+        "Error:MDTP cascade business error 64996 from HIP to DWP",
         "EK310",
         "64996",
         "Start Date is not before date of death"
+      ),
+      (
+        "Error:MDTP return 422 and cascade business error 55006 from HIP to DWP",
+        "BW130",
+        "55006",
+        "Start Date and End Date must be earlier than Date of Death"
+      ),
+      (
+        "Error:MDTP return 422 and cascade business error 55039 from HIP to DWP",
+        "EZ200",
+        "55008",
+        "End Date must be earlier than State Pension Age"
+      ),
+      (
+        "Error:MDTP return 422 and cascade business error 64996 from HIP to DWP",
+        "BK190",
+        "55027",
+        "End Date later than Date of Death"
       ),
       (
         "Error:MDTP return 422 and cascade business error 64997 from HIP to DWP",
@@ -85,10 +84,10 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
         "LCW/LCWRA Override not within a period of LCW/LCWRA"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65026 from HIP to DWP",
-        "HC210",
-        "65026",
-        "Start date must not be before 16th birthday"
+        "Error:MDTP cascade business error 55039 from HIP to DWP",
+        "GP050",
+        "55039",
+        "NO corresponding liability found"
       ),
       (
         "Error:MDTP return 422 and cascade business error 65536 from HIP to DWP",
@@ -132,10 +131,10 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
-        val payload: JsObject = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
-        val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
+        val apiResponse =
+          apiService.postHipUcTermination(validHeaders, ninoWithPrefix(ninoPrefix), terminateHipPayload())
         System.out.println(
-          "For insert request type Scenario " + scenarioName + " -  Business Error Response Body ==> " + Json.parse(apiResponse.body)
+          "For Scenario " + scenarioName + " - Business Error  Response Body ==> " + Json.parse(apiResponse.body)
         )
 
         Then("MDTP returns HTTP status code 422 No Content to DWP")
@@ -144,12 +143,14 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
         }
 
         And("Error response body must contain correct error details")
-        val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe businessErrorCode
-        (responseBody \ "message").as[String] mustBe businessErrorMessage
+        val responseBody = Json.parse(apiResponse.body)
+        val failuresArray = (responseBody \ "failures").as[JsArray].value
+        failuresArray must not be empty
+        val firstFailure: JsValue = failuresArray.head
+        (firstFailure \ "code").as[String] mustBe businessErrorCode
+        (firstFailure \ "reason").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-
         // need to add code
       }
     }
