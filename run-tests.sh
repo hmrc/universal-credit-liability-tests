@@ -2,4 +2,4 @@
 
 ENVIRONMENT=$1
 
-sbt clean -Denvironment="${ENVIRONMENT:=local}" "testOnly uk.gov.hmrc.api.specLocal.*Scenario"
+sbt clean -Denvironment="${ENVIRONMENT:=local}" "testOnly uk.gov.hmrc.api.specs.*Scenario"

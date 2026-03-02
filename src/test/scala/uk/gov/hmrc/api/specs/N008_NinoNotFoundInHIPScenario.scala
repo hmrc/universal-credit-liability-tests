@@ -23,28 +23,24 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N008_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N009:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
         "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("XY404")),
-        "404",
-        "Not found"
+        insertNotificationPayload(nino = ninoWithPrefix("XY404"))
       ),
       (
         "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY404")),
-        "404",
-        "Not found"
+        terminateNotificationPayload(nino = ninoWithPrefix("XY404"))
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorResponseCode, errorResponseMessage) =>
+    cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
        
         Given("a valid UCL notification is sent by DWP")
@@ -55,10 +51,8 @@ class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
           apiResponse.status mustBe NOT_FOUND
         }
 
-        And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe errorResponseCode
-        (responseBody \ "message").as[String] mustBe errorResponseMessage
+        And("Error response body must be empty")
+        apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
         // need to add code

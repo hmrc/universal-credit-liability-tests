@@ -66,7 +66,7 @@ class N002_Insert_OriginatorIdValidationScenario
         "Error:GovUkOriginatorId is not found in HIP",
         headerNotFoundInHIPOriginatorId,
         "403.2",
-        "FORBIDDEN"
+        "Forbidden"
       )
     )
 

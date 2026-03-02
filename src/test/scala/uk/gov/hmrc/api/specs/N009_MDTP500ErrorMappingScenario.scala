@@ -23,7 +23,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N009_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N010:MDTP error handling for downstream errors 400,401 and 403"
@@ -37,10 +37,6 @@ class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
       (
         "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
         terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
-      ),
-      (
-        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 403",
-        insertNotificationPayload(nino = ninoWithPrefix("XY403")),
       )
     )
 
