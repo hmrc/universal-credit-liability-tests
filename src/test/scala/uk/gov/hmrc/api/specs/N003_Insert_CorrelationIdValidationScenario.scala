@@ -57,7 +57,6 @@ class N003_Insert_CorrelationIdValidationScenario
 
         Given("a request with invalid/missing/empty CorrelationId header is sent")
         val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
-        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 400 Bad Request to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

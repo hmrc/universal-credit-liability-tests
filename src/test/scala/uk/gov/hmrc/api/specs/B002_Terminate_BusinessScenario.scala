@@ -133,9 +133,6 @@ class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSui
         Given("a valid UCL notification is sent by DWP")
         val apiResponse =
           apiService.postHipUcTermination(validHeaders, ninoWithPrefix(ninoPrefix), terminateHipPayload())
-        System.out.println(
-          "For Scenario " + scenarioName + " - Business Error  Response Body ==> " + Json.parse(apiResponse.body)
-        )
 
         Then("MDTP returns HTTP status code 422 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

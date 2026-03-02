@@ -49,9 +49,6 @@ class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPer
 
         When("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
-        System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
-        )
 
         Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

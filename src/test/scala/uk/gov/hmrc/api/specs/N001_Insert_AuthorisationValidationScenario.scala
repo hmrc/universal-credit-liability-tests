@@ -64,7 +64,6 @@ class N001_Insert_AuthorisationValidationScenario
 
         Given("a request with invalid/empty/expired authorisation header is sent")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, insertNotificationPayload())
-        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

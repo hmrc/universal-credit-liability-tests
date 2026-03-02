@@ -75,7 +75,6 @@ class N002_Insert_OriginatorIdValidationScenario
 
         Given("a request with invalid/missing/empty GovUkOriginatorId header is sent")
         val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
-        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 403 Forbidden to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

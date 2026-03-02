@@ -49,9 +49,6 @@ class N010_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
 
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
-        System.out.println(
-          "For Scenario " + scenarioName + " Error Response Status ==> " + apiResponse.statusText
-        )
 
         Then("MDTP returns HTTP status code 500 with no payload to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

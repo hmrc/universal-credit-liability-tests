@@ -126,7 +126,6 @@ class N004_Insert_SchemaValidationScenario extends BaseSpec with GuiceOneServerP
 
         Given("a request with invalid request body is sent")
         val apiResponse = apiService.postNotification(headers, payload)
-        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 400 Bad Request to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

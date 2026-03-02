@@ -61,11 +61,9 @@ class N001_Terminate_AuthorisationValidationScenario
 
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
-        Given("Universal Credit Liability Notification API is up and running")
-        // ????? Need to add code
-        When("a request with invalid/empty/expired authorisation header is sent")
+        
+        Given("a request with invalid/empty/expired authorisation header is sent")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
-        System.out.println("For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body))
 
         Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

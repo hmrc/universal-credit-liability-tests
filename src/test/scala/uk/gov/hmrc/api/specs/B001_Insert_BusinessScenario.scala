@@ -133,9 +133,6 @@ class B001_Insert_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite 
         Given("a valid UCL notification is sent by DWP")
         val payload: JsObject = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
         val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
-        System.out.println(
-          "For insert request type Scenario " + scenarioName + " -  Business Error Response Body ==> " + Json.parse(apiResponse.body)
-        )
 
         Then("MDTP returns HTTP status code 422 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

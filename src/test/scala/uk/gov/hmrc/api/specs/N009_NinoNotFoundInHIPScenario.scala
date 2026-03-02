@@ -49,9 +49,6 @@ class N009_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
        
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
-        System.out.println(
-          "For Scenario " + scenarioName + " Error Response Body ==> " + Json.parse(apiResponse.body)
-        )
 
         Then("MDTP returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

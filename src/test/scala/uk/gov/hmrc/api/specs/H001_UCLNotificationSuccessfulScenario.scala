@@ -57,9 +57,6 @@ class H001_UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServe
         
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(headers, payload)
-        System.out.println(
-          "For Scenario " + scenarioName + " Success Response Body ==> " + apiResponse.statusText
-        )
 
         Then("MDTP returns HTTP status code 204 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
