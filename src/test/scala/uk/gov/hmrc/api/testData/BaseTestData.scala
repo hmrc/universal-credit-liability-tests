@@ -183,6 +183,7 @@ trait BaseTestData {
       "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65542"
     ),
+    "HG200" -> ("Account held on NPS, but has not gone through adult registration", "65544"),
     "BZ230" -> ("The NINO input matches an account that has been transferred to the Isle of Man", "65543"),
     "AB150" -> ("Start Date after Death", "99999")
   )
@@ -205,6 +206,7 @@ trait BaseTestData {
       "65541" -> "The NINO input matches a Pseudo Account",
       "65542" -> "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65543" -> "The NINO input matches an account that has been transferred to the Isle of Man",
+      "65544" -> "NINO exists but has no adult registration",
       "99999" -> "Start Date after Death"
     )
 
