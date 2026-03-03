@@ -86,7 +86,7 @@ class N002TerminateOriginatorIdValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        
+
       }
     }
   }
