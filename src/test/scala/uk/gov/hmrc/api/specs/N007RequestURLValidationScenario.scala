@@ -25,16 +25,16 @@ import uk.gov.hmrc.api.testData.*
 class N007RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N007:MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
+    "UCL_TC_N007 : MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 404 to DWP when request content path is invalid",
+        "Error : Insert Request_MDTP returns 404 to DWP when request content path is invalid",
         insertNotificationPayload()
       ),
       (
-        "Error: Terminate Request_MDTP 404 received from HIP",
+        "Error : Terminate Request_MDTP 404 received from HIP",
         terminateNotificationPayload()
       )
     )
@@ -42,8 +42,8 @@ class N007RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSu
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotificationWithInvalidContentPath(validHeaders, payload)
+        Given("MDTP receives a valid UCL notification request from DWP")
+        val apiResponse = apiService.postNotificationWithInvalidContextPath(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 404 not found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {

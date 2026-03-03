@@ -25,18 +25,18 @@ import uk.gov.hmrc.api.testData.*
 class N005HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N005:MDTP successfully processes a valid UCL Notification received from DWP but returns 503 when HIP server is unavailable"
+    "UCL_TC_N005 : MDTP successfully processes a valid UCL Notification received from DWP but returns 503 when HIP server is unavailable"
   ) {
 
-    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, JsValue, ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 503 to DWP when HIP server is unavailable",
+        "Error : Insert_MDTP returns 503 to DWP when HIP server is unavailable",
         insertNotificationPayload(nino = ninoWithPrefix("XY503")),
         "SERVER_ERROR",
         "The 'misc/universal-credit/liability' API is currently unavailable"
       ),
       (
-        "Error: Terminate Request_MDTP handles HIP server unavailable error",
+        "Error : Terminate_MDTP handles HIP server unavailable error",
         terminateNotificationPayload(nino = ninoWithPrefix("XY503")),
         "SERVER_ERROR",
         "The 'misc/universal-credit/liability' API is currently unavailable"
@@ -46,7 +46,7 @@ class N005HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerS
     cases.foreach { case (scenarioName, payload, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        When("a valid UCL notification is sent by DWP")
+        When("MDTP receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 503 Service unavailable to DWP")

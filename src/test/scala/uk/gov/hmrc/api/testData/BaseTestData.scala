@@ -64,7 +64,7 @@ trait BaseTestData {
     s"$prefix$suffix"
   }
 
-  def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
+  def constraintViolation(field: String): ResponseErrorMessage = s"Constraint Violation - Invalid/Missing input parameter: $field"
 
   // Headers
   val jsonContentType: String = "application/json"
@@ -153,15 +153,13 @@ trait BaseTestData {
   // Types
   type Nino                 = String
   type NinoPrefix           = String
-  type ErrorCode            = String
-  type Reason               = String
   type BusinessErrorMessage = String
   type BusinessErrorCode    = String
-  type ErrorResponseCode    = String
-  type ErrorResponseMessage = String
+  type ResponseErrorCode    = String
+  type ResponseErrorMessage = String
 
-  val InvalidInput: ErrorCode  = "400.1"
-  val ForbiddenCode: ErrorCode = "403.2"
+  val InvalidInput: ResponseErrorCode  = "400.1"
+  val ForbiddenCode: ResponseErrorCode = "403.2"
 
   val dateOfBirth: String        = "2002-04-27"
   val liabilityStartDate: String = "2025-08-19"
@@ -192,6 +190,7 @@ trait BaseTestData {
     ),
     "HG200" -> ("Account held on NPS, but has not gone through adult registration", "65544"),
     "BZ230" -> ("The NINO input matches an account that has been transferred to the Isle of Man", "65543"),
+    "HG200" -> ("Account held on NPS, but has not gone through adult registration.", "65544"),
     "AB150" -> ("Start Date after Death", "99999")
   )
 
@@ -214,6 +213,7 @@ trait BaseTestData {
       "65542" -> "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65543" -> "The NINO input matches an account that has been transferred to the Isle of Man",
       "65544" -> "NINO exists but has no adult registration",
+      "65544" -> "Account held on NPS, but has not gone through adult registration.",
       "99999" -> "Start Date after Death"
     )
 

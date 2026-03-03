@@ -26,16 +26,16 @@ import uk.gov.hmrc.api.testData.*
 class N009MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N010:MDTP error handling for downstream errors 400,401 and 403"
+    "UCL_TC_N010 : MDTP error handling for downstream errors 400,401 and 403"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
+        "Error : Insert_MDTP returns 500 to DWP when HIP returns 400",
         insertNotificationPayload(nino = ninoWithPrefix("XY400"))
       ),
       (
-        "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
+        "Error : Terminate_MDTP returns 500 to DWP when HIP returns 401",
         terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
       )
     )
@@ -43,7 +43,7 @@ class N009MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSui
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        Given("MDTP receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 500 with no payload to DWP")

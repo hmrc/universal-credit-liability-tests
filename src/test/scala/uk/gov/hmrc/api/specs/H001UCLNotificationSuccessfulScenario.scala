@@ -26,27 +26,27 @@ import uk.gov.hmrc.api.testData.*
 class H001UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_H001:MDTP successfully processes a valid UCL Notification received from DWP and gets successful response HIP"
+    "UCL_TC_H001 : MDTP successfully processes a valid UCL Notification received from DWP and gets successful response HIP"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue)] = Seq(
       (
-        "Success:Insert Request_UCL Notification process successfully with valid Credit Record type UC",
+        "Success : Insert_UCL Notification process successfully with valid Credit Record type UC",
         validHeaders,
         insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Success: Insert Request_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        "Success : Insert_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
         validHeaders,
         insertNotificationPayload(recordType = "LCW/LCWRA")
       ),
       (
-        "Success: Terminate Request_UCL Notification process successfully with valid Credit Record type UC",
+        "Success : Terminate_UCL Notification process successfully with valid Credit Record type UC",
         validHeaders,
         terminateNotificationPayload(recordType = "UC")
       ),
       (
-        "Success: Terminate Request_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        "Success : Terminate_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
         validHeaders,
         terminateNotificationPayload(recordType = "LCW/LCWRA")
       )
@@ -55,7 +55,7 @@ class H001UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServer
     cases.foreach { case (scenarioName, headers, payload) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        Given("MDTP receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(headers, payload)
 
         Then("MDTP returns HTTP status code 204 No Content to DWP")

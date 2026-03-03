@@ -28,42 +28,42 @@ class N002TerminateOriginatorIdValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N002 : Terminate Request_HIP fails to process the request from MDTP when originatorId validation fails and returns 403 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N002 : Terminate_HIP fails to process the request from MDTP when originatorId validation fails and returns 403 to MDTP and MDTP cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "Error: GovUkOriginatorId (Special Chars) is invalid in MDTP's request header",
+        "Error : GovUkOriginatorId (Special Chars) is invalid in MDTP's request header",
         headersInvalidCharsOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId is missing in MDTP's request header",
+        "Error : GovUkOriginatorId is missing in MDTP's request header",
         headersMissingGovUkOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Long) is invalid in MDTP's request header",
+        "Error : GovUkOriginatorId (Long) is invalid in MDTP's request header",
         headersInvalidLongOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is invalid in MDTP's request header",
+        "Error : GovUkOriginatorId (Short) is invalid in MDTP's request header",
         headersInvalidShortOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is empty in MDTP's request header",
+        "Error : GovUkOriginatorId (Short) is empty in MDTP's request header",
         headersEmptyOriginatorId,
         "403.2",
         "Forbidden"
       ),
       (
-        "Error: GovUkOriginatorId is not found in HIP",
+        "Error : GovUkOriginatorId is not found in HIP",
         headerNotFoundInHIPOriginatorId,
         "403.2",
         "Forbidden"
@@ -73,7 +73,7 @@ class N002TerminateOriginatorIdValidationScenario
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("a request with invalid/missing/empty GovUkOriginatorId header is sent")
+        Given("MDTP receives a request with invalid/missing/empty GovUkOriginatorId header from DWP")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
 
         Then("MDTP returns HTTP status code 403 Forbidden to DWP")

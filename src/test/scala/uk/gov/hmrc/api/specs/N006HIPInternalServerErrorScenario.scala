@@ -26,16 +26,16 @@ import uk.gov.hmrc.api.testData.*
 class N006HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
+    "UCL_TC_N006 : MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
+        "Error : Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
         insertNotificationPayload(nino = ninoWithPrefix("XY500"))
       ),
       (
-        "Error: Terminate Request_MDTP handles internal server error from HIP",
+        "Error : Terminate Request_MDTP handles internal server error from HIP",
         terminateNotificationPayload(nino = ninoWithPrefix("XY500"))
       )
     )
@@ -43,7 +43,7 @@ class N006HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPer
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        Given("MDTP receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 503 Service unavailable to DWP")

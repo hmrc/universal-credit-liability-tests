@@ -26,30 +26,30 @@ import uk.gov.hmrc.api.testData.TestDataNotification
 class N001InsertAuthorisationValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001:Insert Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N001 : Insert_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "Error: Authorisation is invalid in request header",
+        "Error : Authorisation is invalid in request header",
         headersInvalidAuth,
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
       ),
       (
-        "Error: Authorisation is missing in request header",
+        "Error : Authorisation is missing in request header",
         headersMissingAuthorization,
         "MISSING_CREDENTIALS",
         "Bearer token not supplied"
       ),
       (
-        "Error: Authorisation expired in request header",
+        "Error : Authorisation expired in request header",
         overrideHeader(baseHeaders, "Authorization", getExpiredAuthToken),
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
       ),
       (
-        "Error: Authorisation empty in request header",
+        "Error : Authorisation empty in request header",
         headersEmptyAuth,
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
@@ -59,7 +59,7 @@ class N001InsertAuthorisationValidationScenario extends BaseSpec with GuiceOneSe
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("a request with invalid/empty/expired authorisation header is sent")
+        Given("MDTP receives a request with invalid/empty/expired authorisation header from DWP")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, insertNotificationPayload())
 
         Then("MDTP returns HTTP status code 401 Unauthorized to DWP")

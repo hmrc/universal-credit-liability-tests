@@ -37,7 +37,7 @@ class ApiService {
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
 
-  def postNotificationWithInvalidContentPath(
+  def postNotificationWithInvalidContextPath(
     headers: Seq[(String, String)],
     requestBody: JsValue
   ): StandaloneWSResponse = {

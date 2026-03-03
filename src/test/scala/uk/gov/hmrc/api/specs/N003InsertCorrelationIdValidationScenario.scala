@@ -28,21 +28,21 @@ class N003InsertCorrelationIdValidationScenario extends BaseSpec with GuiceOneSe
     "UCL_TC_N003 : Insert Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "Error: Correlation Id is invalid in request header",
+        "Error : Correlation Id is invalid in request header",
         headersInvalidCorrelationId,
         "400.1",
         constraintViolation("correlationId")
       ),
       (
-        "Error: Correlation Id is missing in request header",
+        "Error : Correlation Id is missing in request header",
         headersMissingCorrelationId,
         "400.1",
         constraintViolation("correlationId")
       ),
       (
-        "Error: Correlation Id is empty in request header",
+        "Error : Correlation Id is empty in request header",
         headersEmptyCorrelationId,
         "400.1",
         constraintViolation("correlationId")
@@ -52,7 +52,7 @@ class N003InsertCorrelationIdValidationScenario extends BaseSpec with GuiceOneSe
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("a request with invalid/missing/empty CorrelationId header is sent")
+        Given("MDTP receives a request with invalid/missing/empty CorrelationId header from DWP")
         val apiResponse = apiService.postNotification(headers, insertNotificationPayload())
 
         Then("MDTP returns HTTP status code 400 Bad Request to DWP")

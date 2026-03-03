@@ -26,16 +26,16 @@ import uk.gov.hmrc.api.testData.*
 class N008NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N009:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N009 : HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
+        "Error : Insert_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
         insertNotificationPayload(nino = ninoWithPrefix("XY404"))
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
+        "Error : Terminate_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
         terminateNotificationPayload(nino = ninoWithPrefix("XY404"))
       )
     )
@@ -43,7 +43,7 @@ class N008NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        Given("MDTP receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 404 Not Found to DWP")

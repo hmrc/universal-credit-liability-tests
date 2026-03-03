@@ -24,103 +24,107 @@ import uk.gov.hmrc.api.testData.TestDataHip
 
 class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
-  Feature(
-    "UCL_TC_B002:Terminate Request_MDTP handle and cascade 422 and business error code from HIP to DWP"
-  ) {
+  Feature("UCL_TC_B002 : Terminate_MDTP handle and cascade 422 and business error code from HIP to DWP") {
 
     val cases: Seq[(String, NinoPrefix, BusinessErrorCode, BusinessErrorMessage)] = Seq(
       (
-        "Error:MDTP return 422 and cascade business error 55038 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 55038 from HIP to DWP",
         "GE100",
         "55038",
         "A conflicting or identical Liability is already recorded"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65026 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65026 from HIP to DWP",
         "HC210",
         "65026",
         "Start date must not be before 16th birthday"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 55029 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 55029 from HIP to DWP",
         "ET060",
         "55029",
         "Start Date later than SPA"
       ),
       (
-        "Error:MDTP cascade business error 64996 from HIP to DWP",
+        "Error : MDTP cascade business error 64996 from HIP to DWP",
         "EK310",
         "64996",
         "Start Date is not before date of death"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 55006 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 55006 from HIP to DWP",
         "BW130",
         "55006",
         "Start Date and End Date must be earlier than Date of Death"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 55039 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 55039 from HIP to DWP",
         "EZ200",
         "55008",
         "End Date must be earlier than State Pension Age"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 64996 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 64996 from HIP to DWP",
         "BK190",
         "55027",
         "End Date later than Date of Death"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 64997 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 64997 from HIP to DWP",
         "HS260",
         "64997",
         "LCW/LCWRA not within a period of UC"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 64998 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 64998 from HIP to DWP",
         "CE150",
         "64998",
         "LCW/LCWRA Override not within a period of LCW/LCWRA"
       ),
       (
-        "Error:MDTP cascade business error 55039 from HIP to DWP",
+        "Error : MDTP cascade business error 55039 from HIP to DWP",
         "GP050",
         "55039",
         "NO corresponding liability found"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65536 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65536 from HIP to DWP",
         "GX240",
         "65536",
         "Start date before 29/04/2013"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65537 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65537 from HIP to DWP",
         "HT230",
         "65537",
         "End date before start date"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65541 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65541 from HIP to DWP",
         "BX100",
         "65541",
         "The NINO input matches a Pseudo Account"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65542 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65542 from HIP to DWP",
         "HZ310",
         "65542",
         "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 65543 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65543 from HIP to DWP",
         "BZ230",
         "65543",
         "The NINO input matches an account that has been transferred to the Isle of Man"
       ),
       (
-        "Error:MDTP return 422 and cascade business error 99999 from HIP to DWP",
+        "Error : MDTP return 422 and cascade business error 65544 from HIP to DWP",
+        "HG200",
+        "65544",
+        "Account held on NPS, but has not gone through adult registration."
+      ),
+      (
+        "Error : MDTP return 422 and cascade business error 99999 from HIP to DWP",
         "AB150",
         "99999",
         "Start Date after Death"
@@ -130,7 +134,7 @@ class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite
     cases.foreach { case (scenarioName, ninoPrefix, businessErrorCode, businessErrorMessage) =>
       Scenario(scenarioName) {
 
-        Given("a valid UCL notification is sent by DWP")
+        Given("MDTP receives a valid UCL notification request from DWP")
         val apiResponse =
           apiService.postHipUcTermination(validHeaders, ninoWithPrefix(ninoPrefix), terminateHipPayload())
 
