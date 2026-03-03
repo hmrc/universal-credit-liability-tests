@@ -165,7 +165,6 @@ trait BaseTestData {
   val terminateEndDate: String   = "2025-01-04"
 
   val unprocessableCases: Map[NinoPrefix, (ErrorCode, Reason)] = Map(
-    "HG200" -> ("NINO exists but has no adult registration", "00000"),
     "BW130" -> ("Start Date and End Date must be earlier than Date of Death", "55006"),
     "EZ200" -> ("End Date must be earlier than State Pension Age", "55008"),
     "BK190" -> ("End Date later than Date of Death", "55027"),
@@ -184,13 +183,13 @@ trait BaseTestData {
       "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65542"
     ),
+    "HG200" -> ("Account held on NPS, but has not gone through adult registration", "65544"),
     "BZ230" -> ("The NINO input matches an account that has been transferred to the Isle of Man", "65543"),
     "AB150" -> ("Start Date after Death", "99999")
   )
 
   val map422ErrorResponses: Map[ErrorCode, Reason] =
     Map(
-      "00000" -> "NINO exists but has no adult registration",
       "55006" -> "Start Date and End Date must be earlier than Date of Death",
       "55008" -> "End Date must be earlier than State Pension Age",
       "55027" -> "End Date later than Date of Death",
@@ -207,6 +206,7 @@ trait BaseTestData {
       "65541" -> "The NINO input matches a Pseudo Account",
       "65542" -> "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65543" -> "The NINO input matches an account that has been transferred to the Isle of Man",
+      "65544" -> "NINO exists but has no adult registration",
       "99999" -> "Start Date after Death"
     )
 

@@ -29,10 +29,10 @@ class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite 
 
     val cases: Seq[(String, NinoPrefix, String, String)] = Seq(
       (
-        "UC_TC_????: 00000 NINO exists but has no adult registration",
+        "UC_TC_????: 65544 Account held on NPS, but has not gone through adult registration.",
         "HG200",
-        "00000",
-        "The NINO input exists but has no adult registration"
+        "65544",
+        "Account held on NPS, but has not gone through adult registration."
       ),
       (
         "UCL_TC_008_0.10: 55006 Start Date and End Date must be earlier than Date of Death",
