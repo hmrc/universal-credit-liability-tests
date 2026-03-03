@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.api.specs
 
-import org.scalatest.matchers.must.Matchers.{must, mustBe}
+import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.UNPROCESSABLE_ENTITY
-import play.api.libs.json.{JsArray, JsValue, Json}
-import uk.gov.hmrc.api.testData.TestDataHip
+import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.ws.StandaloneWSResponse
+import uk.gov.hmrc.api.testData.TestDataNotification
 
-class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("UCL_TC_B002 : Terminate_MDTP handle and cascade 422 and business error code from HIP to DWP") {
 
@@ -135,8 +136,8 @@ class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite
       Scenario(scenarioName) {
 
         Given("MDTP receives a valid UCL notification request from DWP")
-        val apiResponse =
-          apiService.postHipUcTermination(validHeaders, ninoWithPrefix(ninoPrefix), terminateHipPayload())
+        val payload: JsObject                 = terminateNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
+        val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 422 UnprocessableEntity to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
@@ -144,12 +145,11 @@ class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite
         }
 
         And("Error response body must contain correct error details")
-        val responseBody  = Json.parse(apiResponse.body)
-        val failuresArray = (responseBody \ "failures").as[JsArray].value
-        failuresArray must not be empty
-        val firstFailure: JsValue = failuresArray.head
-        (firstFailure \ "code").as[String] mustBe businessErrorCode
-        (firstFailure \ "reason").as[String] mustBe businessErrorMessage
+        val responseBody: JsValue = Json.parse(apiResponse.body)
+
+        (responseBody \ "code").as[String] mustBe businessErrorCode
+        (responseBody \ "message")
+          .as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
       }
