@@ -35,7 +35,7 @@ assert {
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
   res.body.code: eq '00000'
-  res.body.message: eq 'NINO exists but has no adult registration'
+  res.body.message: eq 'The NINO input exists but has no adult registration'
 }
 
 script:pre-request {

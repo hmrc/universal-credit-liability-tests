@@ -32,7 +32,7 @@ class InsertUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite wit
         "UC_TC_????: 00000 NINO exists but has no adult registration",
         "HG200",
         "00000",
-        "NINO exists but has no adult registration"
+        "The NINO input exists but has no adult registration"
       ),
       (
         "UC_TC_032: 55038 A conflicting or identical Liability is already recorded",
