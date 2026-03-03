@@ -22,7 +22,7 @@ import play.api.http.Status.SERVICE_UNAVAILABLE
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
-class N005_HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N005HIPServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N005:MDTP successfully processes a valid UCL Notification received from DWP but returns 503 when HIP server is unavailable"

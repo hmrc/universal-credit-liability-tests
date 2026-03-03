@@ -22,7 +22,7 @@ import play.api.http.Status.UNPROCESSABLE_ENTITY
 import play.api.libs.json.{JsArray, JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataHip
 
-class B002_Terminate_BusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
+class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataHip {
 
   Feature(
     "UCL_TC_B002:Terminate Request_MDTP handle and cascade 422 and business error code from HIP to DWP"

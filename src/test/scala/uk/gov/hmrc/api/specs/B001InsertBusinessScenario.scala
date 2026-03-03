@@ -23,7 +23,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.testData.*
 
-class B001_Insert_BusinessScenario
+class B001InsertBusinessScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification

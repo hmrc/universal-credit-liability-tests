@@ -23,7 +23,7 @@ import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class H001_UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class H001UCLNotificationSuccessfulScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_H001:MDTP successfully processes a valid UCL Notification received from DWP and gets successful response HIP"

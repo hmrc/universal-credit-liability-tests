@@ -22,7 +22,7 @@ import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
-class N007_RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N007RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N007:MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"

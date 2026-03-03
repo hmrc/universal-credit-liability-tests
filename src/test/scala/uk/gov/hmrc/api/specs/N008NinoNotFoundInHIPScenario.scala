@@ -18,25 +18,25 @@ package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.JsValue
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
+import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
 import uk.gov.hmrc.api.testData.*
 
-class N009_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N008NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N010:MDTP error handling for downstream errors 400,401 and 403"
+    "UCL_TC_N009:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
-        insertNotificationPayload(nino = ninoWithPrefix("XY400"))
+        "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
+        insertNotificationPayload(nino = ninoWithPrefix("XY404"))
       ),
       (
-        "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
+        "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY404"))
       )
     )
 
@@ -46,9 +46,9 @@ class N009_MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSu
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("MDTP returns HTTP status code 500 with no payload to DWP")
+        Then("MDTP returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe INTERNAL_SERVER_ERROR
+          apiResponse.status mustBe NOT_FOUND
         }
 
         And("Error response body must be empty")

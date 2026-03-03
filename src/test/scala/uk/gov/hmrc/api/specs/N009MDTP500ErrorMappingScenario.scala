@@ -20,23 +20,23 @@ import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.JsValue
-import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N009MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
+    "UCL_TC_N010:MDTP error handling for downstream errors 400,401 and 403"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("XY500"))
+        "Error:Insert Request_MDTP returns 500 to DWP when HIP returns 400",
+        insertNotificationPayload(nino = ninoWithPrefix("XY400"))
       ),
       (
-        "Error: Terminate Request_MDTP handles internal server error from HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY500"))
+        "Error: Terminate Request_MDTP returns 500 to DWP when HIP returns 401",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
       )
     )
 
@@ -46,10 +46,9 @@ class N006_HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPe
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
+        Then("MDTP returns HTTP status code 500 with no payload to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe INTERNAL_SERVER_ERROR
-          apiResponse.statusText mustBe "Internal Server Error"
         }
 
         And("Error response body must be empty")

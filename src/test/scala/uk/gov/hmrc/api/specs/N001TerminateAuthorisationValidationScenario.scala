@@ -16,72 +16,61 @@
 
 package uk.gov.hmrc.api.specs
 
+import org.scalactic.Prettifier.default
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.FORBIDDEN
+import play.api.http.Status.UNAUTHORIZED
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N002_Terminate_OriginatorIdValidationScenario
+class N001TerminateAuthorisationValidationScenario
     extends BaseSpec
     with GuiceOneServerPerSuite
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N002 : Terminate Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
+    "UCL_TC_N001 : Terminate Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
       (
-        "Error: GovUkOriginatorId (Special Chars) is invalid in MDTP's request header",
-        headersInvalidCharsOriginatorId,
-        "403.2",
-        "Forbidden"
+        "Error: Authorisation is invalid in request header",
+        headersInvalidAuth,
+        "INVALID_CREDENTIALS",
+        "Invalid bearer token"
       ),
       (
-        "Error: GovUkOriginatorId is missing in MDTP's request header",
-        headersMissingGovUkOriginatorId,
-        "403.2",
-        "Forbidden"
+        "Error: Authorisation is missing in request header",
+        headersMissingAuthorization,
+        "MISSING_CREDENTIALS",
+        "Bearer token not supplied"
       ),
       (
-        "Error: GovUkOriginatorId (Long) is invalid in MDTP's request header",
-        headersInvalidLongOriginatorId,
-        "403.2",
-        "Forbidden"
+        "Error: Authorisation expired in request header",
+        overrideHeader(baseHeaders, "Authorization", getExpiredAuthToken),
+        "INVALID_CREDENTIALS",
+        "Invalid bearer token"
       ),
       (
-        "Error: GovUkOriginatorId (Short) is invalid in MDTP's request header",
-        headersInvalidShortOriginatorId,
-        "403.2",
-        "Forbidden"
-      ),
-      (
-        "Error: GovUkOriginatorId (Short) is empty in MDTP's request header",
-        headersEmptyOriginatorId,
-        "403.2",
-        "Forbidden"
-      ),
-      (
-        "Error: GovUkOriginatorId is not found in HIP",
-        headerNotFoundInHIPOriginatorId,
-        "403.2",
-        "Forbidden"
+        "Error: Authorisation empty in request header",
+        headersEmptyAuth,
+        "INVALID_CREDENTIALS",
+        "Invalid bearer token"
       )
     )
 
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("a request with invalid/missing/empty GovUkOriginatorId header is sent")
-        val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
+        Given("a request with invalid/empty/expired authorisation header is sent")
+        val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
 
-        Then("MDTP returns HTTP status code 403 Forbidden to DWP")
+        Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe FORBIDDEN
+          apiResponse.status mustBe UNAUTHORIZED
         }
         And("Error response body must contain correct error details")
-        val responseBody: JsValue = Json.parse(apiResponse.body)
+        val responseBody = Json.parse(apiResponse.body)
         (responseBody \ "code").as[String] mustBe errorResponseCode
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
@@ -90,4 +79,5 @@ class N002_Terminate_OriginatorIdValidationScenario
       }
     }
   }
+
 }

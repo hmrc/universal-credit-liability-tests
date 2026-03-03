@@ -22,83 +22,101 @@ import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N004_Terminate_SchemaValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N004InsertSchemaValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N004 : Terminate Request_MDTP returns 400 with error response body to DWP on request schema validation failure"
+    "UCL_TC_N004 : Insert Request_MDTP returns 400 with error response body to DWP on request schema validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], JsValue, ErrorResponseMessage)] = Seq(
       (
         "Error: nationalInsuranceNumber is invalid in request body",
         validHeaders,
-        terminateNotificationPayload(nino = "WW2344Z"),
+        insertNotificationPayload(nino = "WW2344Z"),
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "Error: nationalInsuranceNumber is missing in request body",
         validHeaders,
-        terminateNotificationPayloadMissing("nationalInsuranceNumber"),
+        insertNotificationPayloadMissing("nationalInsuranceNumber"),
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "Error: nationalInsuranceNumber is empty in request body",
         validHeaders,
-        terminateNotificationPayload(nino = ""),
+        insertNotificationPayload(nino = ""),
         constraintViolation("nationalInsuranceNumber")
       ),
       (
         "Error: universalCreditRecordType is invalid in request body",
         validHeaders,
-        terminateNotificationPayload(recordType = "123Test"),
+        insertNotificationPayload(recordType = "ABCD"),
         constraintViolation("universalCreditRecordType")
       ),
       (
         "Error: universalCreditRecordType is empty in request body",
         validHeaders,
-        terminateNotificationPayload(recordType = ""),
+        insertNotificationPayload(recordType = ""),
         constraintViolation("universalCreditRecordType")
       ),
       (
         "Error: universalCreditRecordType is missing in request body",
         validHeaders,
-        terminateNotificationPayloadMissing("universalCreditRecordType"),
+        insertNotificationPayloadMissing("universalCreditRecordType"),
         constraintViolation("universalCreditRecordType")
       ),
       (
         "Error: universalCreditAction is invalid in request body",
         validHeaders,
-        terminateNotificationPayload(creditAction = "Delete"),
+        insertNotificationPayload(creditAction = "Add"),
         constraintViolation("universalCreditAction")
       ),
       (
         "Error: universalCreditAction is missing in request body",
         validHeaders,
-        terminateNotificationPayloadMissing("universalCreditAction"),
+        insertNotificationPayloadMissing("universalCreditAction"),
         constraintViolation("universalCreditAction")
       ),
       (
         "Error: universalCreditAction is empty in request body",
         validHeaders,
-        terminateNotificationPayload(creditAction = ""),
+        insertNotificationPayload(creditAction = ""),
         constraintViolation("universalCreditAction")
+      ),
+      (
+        "Error: dateOfBirth had invalid format in request body",
+        validHeaders,
+        insertNotificationPayload(dateOfBirth = "2020/12/01"),
+        constraintViolation("dateOfBirth")
+      ),
+      (
+        "Error: dateOfBirth is missing in request body",
+        validHeaders,
+        insertNotificationPayloadMissing("dateOfBirth"),
+        constraintViolation("dateOfBirth")
+      ),
+      (
+        "Error: dateOfBirth is empty in empty body",
+        validHeaders,
+        insertNotificationPayload(dateOfBirth = ""),
+        constraintViolation("dateOfBirth")
       ),
       (
         "Error: liabilityStartDate is missing in request body",
         validHeaders,
-        terminateNotificationPayloadMissing("liabilityStartDate"),
+        insertNotificationPayloadMissing("liabilityStartDate"),
         constraintViolation("liabilityStartDate")
       ),
       (
         "Error: liabilityStartDate has invalid format in request body",
         validHeaders,
-        terminateNotificationPayload(startDate = "1234-0-1"),
+        insertNotificationPayload(startDate = "01-01-1990"),
         constraintViolation("liabilityStartDate")
       ),
       (
         "Error: liabilityStartDate is empty in request body",
         validHeaders,
-        terminateNotificationPayload(startDate = ""),
+        insertNotificationPayload(startDate = ""),
         constraintViolation("liabilityStartDate")
       )
     )

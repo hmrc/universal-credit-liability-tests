@@ -18,25 +18,25 @@ package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NOT_FOUND
+import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
 import uk.gov.hmrc.api.testData.*
 
-class N008_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N006HIPInternalServerErrorScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N009:HIP fails to process the request from MDTP when nino is not found and returns 404 to MDTP and MDTP cascades the response to DWP"
+    "UCL_TC_N006:MDTP successfully process a valid UCL Notification received from DWP but returns 500 when unexpected internal error occur in HIP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error:Insert Request_MDTP cascades the HTTP 404 status with error payload from HIP to DWP when nino is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("XY404"))
+        "Error:Insert Request_MDTP returns 500 to DWP when internal error occur 500 in HIP",
+        insertNotificationPayload(nino = ninoWithPrefix("XY500"))
       ),
       (
-        "Error: Terminate Request_MDTP cascades the HTTP 404 to DWP when nino is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY404"))
+        "Error: Terminate Request_MDTP handles internal server error from HIP",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY500"))
       )
     )
 
@@ -46,9 +46,10 @@ class N008_NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuit
         Given("a valid UCL notification is sent by DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("MDTP returns HTTP status code 404 Not Found to DWP")
+        Then("MDTP returns HTTP status code 503 Service unavailable to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NOT_FOUND
+          apiResponse.status mustBe INTERNAL_SERVER_ERROR
+          apiResponse.statusText mustBe "Internal Server Error"
         }
 
         And("Error response body must be empty")
