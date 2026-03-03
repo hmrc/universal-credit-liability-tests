@@ -55,7 +55,7 @@ class N008NinoNotFoundInHIPScenario extends BaseSpec with GuiceOneServerPerSuite
         apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
+
       }
     }
   }

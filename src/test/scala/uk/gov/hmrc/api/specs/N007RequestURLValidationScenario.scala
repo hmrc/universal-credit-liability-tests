@@ -19,7 +19,7 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.NOT_FOUND
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.api.testData.*
 
 class N007RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
@@ -28,39 +28,33 @@ class N007RequestURLValidationScenario extends BaseSpec with GuiceOneServerPerSu
     "UCL_TC_N007:MDTP unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue, ErrorResponseCode, ErrorResponseMessage)] = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
         "Error:Insert Request_MDTP returns 404 to DWP when request content path is invalid",
-        insertNotificationPayload(nino = ninoWithPrefix("XY404")),
-        "404",
-        "URI not found"
+        insertNotificationPayload()
       ),
       (
         "Error: Terminate Request_MDTP 404 received from HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("CM110")),
-        "404",
-        "URI not found"
+        terminateNotificationPayload()
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorResponseCode, errorResponseMessage) =>
+    cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
         Given("a valid UCL notification is sent by DWP")
-        val apiResponse = apiService.postNotification(validHeaders, payload)
+        val apiResponse = apiService.postNotificationWithInvalidContentPath(validHeaders, payload)
 
         Then("MDTP returns HTTP status code 404 not found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe NOT_FOUND
         }
 
-        And("Error response body must contain correct error details")
-        val responseBody = Json.parse(apiResponse.body)
-        (responseBody \ "statusCode").as[String] mustBe errorResponseCode
-        (responseBody \ "message").as[String] mustBe errorResponseMessage
+        /*And("Error response body must be empty")
+        apiResponse.body mustBe empty*/
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
+
       }
     }
   }

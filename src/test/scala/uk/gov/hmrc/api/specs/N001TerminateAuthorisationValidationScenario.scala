@@ -75,7 +75,6 @@ class N001TerminateAuthorisationValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
       }
     }
   }

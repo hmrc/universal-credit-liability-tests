@@ -137,7 +137,7 @@ class B001InsertBusinessScenario
         val payload: JsObject                 = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
         val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("MDTP returns HTTP status code 422 No Content to DWP")
+        Then("MDTP returns HTTP status code 422 UnprocessableEntity to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNPROCESSABLE_ENTITY
         }
@@ -148,8 +148,6 @@ class B001InsertBusinessScenario
         (responseBody \ "message").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-
-        // need to add code
       }
     }
 

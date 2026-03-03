@@ -28,7 +28,7 @@ class N002TerminateOriginatorIdValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N002 : Terminate Request_MDTP returns 403 with error response body to DWP on request header - 'gov-uk-originator-id' validation failure"
+    "UCL_TC_N002 : Terminate Request_HIP fails to process the request from MDTP when originatorId validation fails and returns 403 to MDTP and MDTP cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ErrorResponseCode, ErrorResponseMessage)] = Seq(
@@ -86,7 +86,7 @@ class N002TerminateOriginatorIdValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
+        
       }
     }
   }

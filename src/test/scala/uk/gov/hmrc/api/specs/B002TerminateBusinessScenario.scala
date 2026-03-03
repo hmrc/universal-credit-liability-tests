@@ -134,7 +134,7 @@ class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite
         val apiResponse =
           apiService.postHipUcTermination(validHeaders, ninoWithPrefix(ninoPrefix), terminateHipPayload())
 
-        Then("MDTP returns HTTP status code 422 No Content to DWP")
+        Then("MDTP returns HTTP status code 422 UnprocessableEntity to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNPROCESSABLE_ENTITY
         }
@@ -148,7 +148,6 @@ class B002TerminateBusinessScenario extends BaseSpec with GuiceOneServerPerSuite
         (firstFailure \ "reason").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
       }
     }
 

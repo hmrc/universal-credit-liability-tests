@@ -22,10 +22,7 @@ import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N003InsertCorrelationIdValidationScenario
-    extends BaseSpec
-    with GuiceOneServerPerSuite
-    with TestDataNotification {
+class N003InsertCorrelationIdValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N003 : Insert Request_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
@@ -68,7 +65,7 @@ class N003InsertCorrelationIdValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
+
       }
     }
   }

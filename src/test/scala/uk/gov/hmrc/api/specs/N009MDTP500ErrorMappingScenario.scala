@@ -55,7 +55,6 @@ class N009MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSui
         apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
       }
     }
   }

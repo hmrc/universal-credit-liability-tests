@@ -23,10 +23,7 @@ import play.api.http.Status.UNAUTHORIZED
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N001InsertAuthorisationValidationScenario
-    extends BaseSpec
-    with GuiceOneServerPerSuite
-    with TestDataNotification {
+class N001InsertAuthorisationValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N001:Insert Request_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
@@ -75,7 +72,6 @@ class N001InsertAuthorisationValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
 
       }
     }

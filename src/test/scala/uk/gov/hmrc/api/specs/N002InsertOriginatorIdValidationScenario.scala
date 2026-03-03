@@ -22,10 +22,7 @@ import play.api.http.Status.FORBIDDEN
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class N002InsertOriginatorIdValidationScenario
-    extends BaseSpec
-    with GuiceOneServerPerSuite
-    with TestDataNotification {
+class N002InsertOriginatorIdValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
     "UCL_TC_N002 : Insert Request_HIP fails to process the request from MDTP when originatorId validation fails and returns 403 to MDTP and MDTP cascades the response to DWP"
@@ -63,7 +60,7 @@ class N002InsertOriginatorIdValidationScenario
         "Forbidden"
       ),
       (
-        "Error:GovUkOriginatorId is not found in HIP",
+        "Error: GovUkOriginatorId is not found in HIP",
         headerNotFoundInHIPOriginatorId,
         "403.2",
         "Forbidden"
@@ -86,7 +83,6 @@ class N002InsertOriginatorIdValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        // need to add code
       }
     }
   }

@@ -171,7 +171,7 @@ trait BaseTestData {
   val terminateStartDate: String = "2015-08-19"
   val terminateEndDate: String   = "2025-01-04"
 
-  val unprocessableCases: Map[NinoPrefix, (ErrorCode, Reason)] = Map(
+  val unprocessableCases: Map[NinoPrefix, (BusinessErrorCode, BusinessErrorMessage)] = Map(
     "BW130" -> ("Start Date and End Date must be earlier than Date of Death", "55006"),
     "EZ200" -> ("End Date must be earlier than State Pension Age", "55008"),
     "BK190" -> ("End Date later than Date of Death", "55027"),
@@ -195,7 +195,7 @@ trait BaseTestData {
     "AB150" -> ("Start Date after Death", "99999")
   )
 
-  val map422ErrorResponses: Map[ErrorCode, Reason] =
+  val map422ErrorResponses: Map[BusinessErrorCode, BusinessErrorMessage] =
     Map(
       "55006" -> "Start Date and End Date must be earlier than Date of Death",
       "55008" -> "End Date must be earlier than State Pension Age",
