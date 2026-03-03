@@ -64,7 +64,8 @@ trait BaseTestData {
     s"$prefix$suffix"
   }
 
-  def constraintViolation(field: String): ResponseErrorMessage = s"Constraint Violation - Invalid/Missing input parameter: $field"
+  def constraintViolation(field: String): ResponseErrorMessage =
+    s"Constraint Violation - Invalid/Missing input parameter: $field"
 
   // Headers
   val jsonContentType: String = "application/json"
