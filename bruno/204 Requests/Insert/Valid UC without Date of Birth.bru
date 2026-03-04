@@ -1,5 +1,5 @@
 meta {
-  name: Valid LCW/LCWRA
+  name: Valid UC without dateOfBirth
   type: http
   seq: 2
   tags: [
@@ -23,10 +23,9 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "LCW/LCWRA",
-    "universalCreditAction": "Terminate",
-    "liabilityStartDate": "2025-08-19",
-    "liabilityEndDate": "2026-06-30"
+    "universalCreditRecordType": "UC",
+    "universalCreditAction": "Insert",
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
