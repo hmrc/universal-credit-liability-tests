@@ -26,7 +26,7 @@ import uk.gov.hmrc.api.testData.TestDataNotification
 class N001InsertAuthorisationValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N001 : Insert_MDTP returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+    "UCL_TC_N001 : Insert returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
   ) {
 
     val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
@@ -59,10 +59,10 @@ class N001InsertAuthorisationValidationScenario extends BaseSpec with GuiceOneSe
     cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
 
-        Given("MDTP receives a request with invalid/empty/expired authorisation header from DWP")
+        Given("API receives a request with invalid/empty/expired authorisation header from DWP")
         val apiResponse = apiService.postNotificationWithoutAuth(headers, insertNotificationPayload())
 
-        Then("MDTP returns HTTP status code 401 Unauthorized to DWP")
+        Then("API returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNAUTHORIZED
         }

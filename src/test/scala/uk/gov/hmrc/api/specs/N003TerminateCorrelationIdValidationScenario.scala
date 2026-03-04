@@ -28,44 +28,38 @@ class N003TerminateCorrelationIdValidationScenario
     with TestDataNotification {
 
   Feature(
-    "UCL_TC_N003 : Terminate_MDTP returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
+    "UCL_TC_N003 : Terminate returns 400 with error response body to DWP on request header - 'correlation Id' validation failure"
   ) {
 
-    val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
+    val cases: Seq[(String, Seq[(String, String)])] = Seq(
       (
-        "Error : Correlation Id is invalid in request header",
-        headersInvalidCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error : correlationId is invalid in request header",
+        headersInvalidCorrelationId
       ),
       (
-        "Error : Correlation Id is missing in request header",
-        headersMissingCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error : correlationId is missing in request header",
+        headersMissingCorrelationId
       ),
       (
-        "Error : Correlation Id is empty in request header",
-        headersEmptyCorrelationId,
-        "400.1",
-        constraintViolation("correlationId")
+        "Error : correlationId is empty in request header",
+        headersEmptyCorrelationId
       )
     )
 
-    cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
+    cases.foreach { case (scenarioName, headers) =>
       Scenario(scenarioName) {
 
-        Given("MDTP receives a request with invalid/missing/empty CorrelationId header from DWP")
+        Given("API receives a request with invalid/missing/empty CorrelationId header from DWP")
         val apiResponse = apiService.postNotification(headers, terminateNotificationPayload())
 
-        Then("MDTP returns HTTP status code 400 Bad Request to DWP")
+        Then("API returns HTTP status code 400 Bad Request to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe BAD_REQUEST
         }
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe errorResponseCode
-        (responseBody \ "message").as[String] mustBe errorResponseMessage
+        (responseBody \ "code").as[String] mustBe InvalidInputCode
+        (responseBody \ "message").as[String] mustBe constraintViolation("correlationId")
 
         And("CorrelationId in the response header should match the request CorrelationId")
 

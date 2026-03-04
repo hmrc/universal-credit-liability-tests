@@ -154,13 +154,13 @@ trait BaseTestData {
   // Types
   type Nino                 = String
   type NinoPrefix           = String
-  type BusinessErrorMessage = String
   type BusinessErrorCode    = String
+  type BusinessErrorMessage = String
   type ResponseErrorCode    = String
   type ResponseErrorMessage = String
 
-  val InvalidInput: ResponseErrorCode  = "400.1"
-  val ForbiddenCode: ResponseErrorCode = "403.2"
+  val InvalidInputCode: ResponseErrorCode = "400.1"
+  val ForbiddenCode: ResponseErrorCode    = "403.2"
 
   val dateOfBirth: String        = "2002-04-27"
   val liabilityStartDate: String = "2025-08-19"

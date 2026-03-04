@@ -29,21 +29,13 @@ class ApiService {
   private val hipHost: String = TestEnvironment.url("hip")
 
   // API
-  def postNotification(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
-    val bearerToken: String               = AuthHelper.getAuthToken
-    val endpointUrl: String               = s"$apiHost/notification"
-    val authHeader: Seq[(String, String)] = Seq("Authorization" -> bearerToken)
-
-    HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
-  }
-
-  def postNotificationWithInvalidContextPath(
+  def postNotification(
     headers: Seq[(String, String)],
-    requestBody: JsValue
+    requestBody: JsValue,
+    path: String = "notification"
   ): StandaloneWSResponse = {
-    val bearerToken: String               = AuthHelper.getAuthToken
-    val endpointUrl: String               = s"$apiHost/invalidNotification"
-    val authHeader: Seq[(String, String)] = Seq("Authorization" -> bearerToken)
+    val authHeader          = Seq("Authorization" -> AuthHelper.getAuthToken)
+    val endpointUrl: String = s"$apiHost/$path"
 
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }

@@ -18,40 +18,49 @@ package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.http.Status.NO_CONTENT
 import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
-class N009MDTP500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class H001UclNotificationSuccessfulScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N010 : MDTP error handling for downstream errors 400,401 and 403"
+    "UCL_TC_H001 : API successfully processes a valid UCL Notification received from DWP and gets successful response HIP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Error : Insert_MDTP returns 500 to DWP when HIP returns 400",
-        insertNotificationPayload(nino = ninoWithPrefix("XY400"))
+        "Success : Insert_UCL Notification process successfully with valid Credit Record type UC",
+        insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Error : Terminate_MDTP returns 500 to DWP when HIP returns 401",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
+        "Success : Insert_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        insertNotificationPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "Success : Terminate_UCL Notification process successfully with valid Credit Record type UC",
+        terminateNotificationPayload(recordType = "UC")
+      ),
+      (
+        "Success : Terminate_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        terminateNotificationPayload(recordType = "LCW/LCWRA")
       )
     )
 
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
 
-        Given("MDTP receives a valid UCL notification request from DWP")
+        Given("API receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("MDTP returns HTTP status code 500 with no payload to DWP")
+        Then("API returns HTTP status code 204 No Content to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe INTERNAL_SERVER_ERROR
+          apiResponse.status mustBe NO_CONTENT
+          apiResponse.statusText mustBe "No Content"
         }
 
-        And("Error response body must be empty")
+        And("Success response body must be empty")
         apiResponse.body mustBe empty
 
         And("CorrelationId in the response header should match the request CorrelationId")
