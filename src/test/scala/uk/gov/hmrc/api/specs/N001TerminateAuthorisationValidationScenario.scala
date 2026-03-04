@@ -14,64 +14,67 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs.notification
+package uk.gov.hmrc.api.specs
 
 import org.scalactic.Prettifier.default
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.UNAUTHORIZED
-import play.api.libs.json.Json
-import uk.gov.hmrc.api.specs.BaseSpec
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.TestDataNotification
 
-class InsertUnauthorized extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N001TerminateAuthorisationValidationScenario
+    extends BaseSpec
+    with GuiceOneServerPerSuite
+    with TestDataNotification {
 
-  Feature("401 Unauthorized scenarios") {
+  Feature(
+    "UCL_TC_N001 : Terminate returns 401 with error response body to DWP on request header - 'Authorisation' validation failure"
+  ) {
 
-    val cases = Seq(
+    val cases: Seq[(String, Seq[(String, String)], ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "UCL_TC_001_0.1: Invalid Token",
+        "Error : Authorisation is invalid in request header",
         headersInvalidAuth,
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
       ),
       (
-        "UCL_TC_001_0.2: Missing Auth",
+        "Error : Authorisation is missing in request header",
         headersMissingAuthorization,
         "MISSING_CREDENTIALS",
         "Bearer token not supplied"
       ),
       (
-        "UCL_TC_001_0.3: Expired Token",
+        "Error : Authorisation expired in request header",
         overrideHeader(baseHeaders, "Authorization", getExpiredAuthToken),
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
       ),
       (
-        "UCL_TC_???_??: Empty Token",
+        "Error : Authorisation empty in request header",
         headersEmptyAuth,
         "INVALID_CREDENTIALS",
         "Invalid bearer token"
       )
     )
 
-    cases.foreach { case (scenarioName, headers, expCode, expMessage) =>
+    cases.foreach { case (scenarioName, headers, errorResponseCode, errorResponseMessage) =>
       Scenario(scenarioName) {
-        Given("the Universal Credit API is up and running")
-        When("an invalid/empty/expired token is sent")
 
-        val apiResponse = apiService.postNotificationWithoutAuth(headers, insertNotificationPayload())
+        Given("API receives a request with invalid/empty/expired authorisation header from DWP")
+        val apiResponse = apiService.postNotificationWithoutAuth(headers, terminateNotificationPayload())
 
-        Then("401 Unauthorized received")
+        Then("API returns HTTP status code 401 Unauthorized to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNAUTHORIZED
         }
-
-        And("response body must contain correct error details")
+        And("Error response body must contain correct error details")
         val responseBody = Json.parse(apiResponse.body)
+        (responseBody \ "code").as[String] mustBe errorResponseCode
+        (responseBody \ "message").as[String] mustBe errorResponseMessage
 
-        (responseBody \ "code").as[String] mustBe expCode
-        (responseBody \ "message").as[String] mustBe expMessage
+        And("CorrelationId in the response header should match the request CorrelationId")
       }
     }
   }

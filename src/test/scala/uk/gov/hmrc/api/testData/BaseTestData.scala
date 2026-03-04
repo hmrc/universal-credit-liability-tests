@@ -64,7 +64,8 @@ trait BaseTestData {
     s"$prefix$suffix"
   }
 
-  def constraintViolation(field: String): Reason = s"Constraint Violation - Invalid/Missing input parameter: $field"
+  def constraintViolation(field: String): ResponseErrorMessage =
+    s"Constraint Violation - Invalid/Missing input parameter: $field"
 
   // Headers
   val jsonContentType: String = "application/json"
@@ -120,10 +121,10 @@ trait BaseTestData {
     overrideHeader(baseHeaders, "Content-Type", "INVALID")
 
   def headersInvalidAuth: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "Authorization", "INVALID")
+    overrideHeader(baseHeaders, "Authorization", "Bearer 1234")
 
   def headersInvalidCorrelationId: Seq[(String, String)] =
-    overrideHeader(baseHeaders, "correlationId", "INVALID")
+    overrideHeader(baseHeaders, "correlationId", "2db2a28e-52c9-4814-8a94")
 
   def headersInvalidShortOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 2)
@@ -147,14 +148,19 @@ trait BaseTestData {
   def headersEmptyOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "")
 
-  // Types
-  type Nino       = String
-  type NinoPrefix = String
-  type ErrorCode  = String
-  type Reason     = String
+  def headerNotFoundInHIPOriginatorId: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "ID-NOT-MATCHING-THE-ONE-PROVIDED-BY-DWP")
 
-  val InvalidInput: ErrorCode  = "400.1"
-  val ForbiddenCode: ErrorCode = "403.2"
+  // Types
+  type Nino                 = String
+  type NinoPrefix           = String
+  type BusinessErrorCode    = String
+  type BusinessErrorMessage = String
+  type ResponseErrorCode    = String
+  type ResponseErrorMessage = String
+
+  val InvalidInputCode: ResponseErrorCode = "400.1"
+  val ForbiddenCode: ResponseErrorCode    = "403.2"
 
   val dateOfBirth: String        = "2002-04-27"
   val liabilityStartDate: String = "2025-08-19"
@@ -164,7 +170,7 @@ trait BaseTestData {
   val terminateStartDate: String = "2015-08-19"
   val terminateEndDate: String   = "2025-01-04"
 
-  val unprocessableCases: Map[NinoPrefix, (ErrorCode, Reason)] = Map(
+  val unprocessableCases: Map[NinoPrefix, (BusinessErrorCode, BusinessErrorMessage)] = Map(
     "BW130" -> ("Start Date and End Date must be earlier than Date of Death", "55006"),
     "EZ200" -> ("End Date must be earlier than State Pension Age", "55008"),
     "BK190" -> ("End Date later than Date of Death", "55027"),
@@ -185,10 +191,11 @@ trait BaseTestData {
     ),
     "HG200" -> ("Account held on NPS, but has not gone through adult registration", "65544"),
     "BZ230" -> ("The NINO input matches an account that has been transferred to the Isle of Man", "65543"),
+    "HG200" -> ("Account held on NPS, but has not gone through adult registration.", "65544"),
     "AB150" -> ("Start Date after Death", "99999")
   )
 
-  val map422ErrorResponses: Map[ErrorCode, Reason] =
+  val map422ErrorResponses: Map[BusinessErrorCode, BusinessErrorMessage] =
     Map(
       "55006" -> "Start Date and End Date must be earlier than Date of Death",
       "55008" -> "End Date must be earlier than State Pension Age",
@@ -207,6 +214,7 @@ trait BaseTestData {
       "65542" -> "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)",
       "65543" -> "The NINO input matches an account that has been transferred to the Isle of Man",
       "65544" -> "NINO exists but has no adult registration",
+      "65544" -> "Account held on NPS, but has not gone through adult registration.",
       "99999" -> "Start Date after Death"
     )
 

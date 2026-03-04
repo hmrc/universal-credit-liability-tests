@@ -29,10 +29,13 @@ class ApiService {
   private val hipHost: String = TestEnvironment.url("hip")
 
   // API
-  def postNotification(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
-    val bearerToken: String               = AuthHelper.getAuthToken
-    val endpointUrl: String               = s"$apiHost/notification"
-    val authHeader: Seq[(String, String)] = Seq("Authorization" -> bearerToken)
+  def postNotification(
+    headers: Seq[(String, String)],
+    requestBody: JsValue,
+    path: String = "notification"
+  ): StandaloneWSResponse = {
+    val authHeader          = Seq("Authorization" -> AuthHelper.getAuthToken)
+    val endpointUrl: String = s"$apiHost/$path"
 
     HttpClient.post(endpointUrl, headers ++ authHeader, requestBody.toString())
   }
@@ -40,7 +43,6 @@ class ApiService {
   // Used for testing unauthorised scenarios
   def postNotificationWithoutAuth(headers: Seq[(String, String)], requestBody: JsValue): StandaloneWSResponse = {
     val endpointUrl: String = s"$apiHost/notification"
-
     HttpClient.post(endpointUrl, headers, requestBody.toString())
   }
 

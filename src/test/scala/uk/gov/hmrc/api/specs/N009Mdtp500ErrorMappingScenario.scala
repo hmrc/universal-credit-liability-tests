@@ -14,44 +14,47 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs.notification
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.http.Status.NO_CONTENT
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.libs.json.JsValue
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
-import uk.gov.hmrc.api.specs.BaseSpec
 import uk.gov.hmrc.api.testData.*
 
-class InsertNoContent extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N009Mdtp500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
-  Feature("204 NoContent scenarios") {
+  Feature(
+    "UCL_TC_N010 : API error handling for downstream errors 400, 401 and 403"
+  ) {
 
-    val cases = Seq(
+    val cases: Seq[(String, JsValue)] = Seq(
       (
-        "UCL_TC_001_0.1: Valid Credit Record type LCW/LCWRA",
-        insertNotificationPayload(recordType = "LCW/LCWRA")
+        "Error : Insert returns 500 to DWP when HIP returns 400",
+        insertNotificationPayload(nino = ninoWithPrefix("XY400"))
       ),
       (
-        "UCL_TC_001_0.2: Valid Credit Record type UC",
-        insertNotificationPayload(recordType = "UC")
+        "Error : Terminate returns 500 to DWP when HIP returns 401",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY401"))
       )
     )
 
     cases.foreach { case (scenarioName, payload) =>
       Scenario(scenarioName) {
-        Given("the Universal Credit API is up and running")
-        When("a request is sent")
 
+        Given("API receives a valid UCL notification request from DWP")
         val apiResponse = apiService.postNotification(validHeaders, payload)
 
-        Then("204 NoContent must be returned")
+        Then("API returns HTTP status code 500 with no payload to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
-          apiResponse.status mustBe NO_CONTENT
+          apiResponse.status mustBe INTERNAL_SERVER_ERROR
         }
 
-        And("response body must be empty")
+        And("Error response body must be empty")
         apiResponse.body mustBe empty
+
+        And("CorrelationId in the response header should match the request CorrelationId")
       }
     }
   }

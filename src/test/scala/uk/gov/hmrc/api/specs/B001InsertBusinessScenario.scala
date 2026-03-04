@@ -14,150 +14,148 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.api.specs.notification
+package uk.gov.hmrc.api.specs
 
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.UNPROCESSABLE_ENTITY
 import play.api.libs.json.{JsObject, JsValue, Json}
-import uk.gov.hmrc.api.specs.BaseSpec
-import uk.gov.hmrc.api.testData.TestDataNotification
+import play.api.libs.ws.StandaloneWSResponse
+import uk.gov.hmrc.api.testData.*
 
-class TerminateUnprocessableEntity extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class B001InsertBusinessScenario
+    extends BaseSpec
+    with GuiceOneServerPerSuite
+    with TestDataNotification
+    with TestDataHip {
 
-  Feature("422 UnprocessableEntity scenarios for 'Terminate' record type") {
+  Feature("UCL_TC_B001 : Insert handle and cascade 422 and business error code from HIP to DWP") {
 
-    val cases: Seq[(String, NinoPrefix, String, String)] = Seq(
+    val cases: Seq[(String, NinoPrefix, BusinessErrorCode, BusinessErrorMessage)] = Seq(
       (
-        "UC_TC_????: 65544 Account held on NPS, but has not gone through adult registration.",
-        "HG200",
-        "65544",
-        "Account held on NPS, but has not gone through adult registration."
-      ),
-      (
-        "UCL_TC_008_0.10: 55006 Start Date and End Date must be earlier than Date of Death",
+        "Error : API return 422 and cascade business error 55006 from HIP to DWP",
         "BW130",
         "55006",
         "Start Date and End Date must be earlier than Date of Death"
       ),
       (
-        "UCL_TC_008_0.12: 55008 End Date must be earlier than State Pension Age",
+        "Error : API return 422 and cascade business error 55008 from HIP to DWP",
         "EZ200",
         "55008",
         "End Date must be earlier than State Pension Age"
       ),
       (
-        "UCL_TC_008_0.14: 55027 End Date later than Date of Death",
+        "Error : API return 422 and cascade business error 55027 from HIP to DWP",
         "BK190",
         "55027",
         "End Date later than Date of Death"
       ),
       (
-        "UCL_TC_008_0.6: 55029 Start Date later than SPA",
+        "Error : API return 422 and cascade business error 55029 from HIP to DWP",
         "ET060",
         "55029",
         "Start Date later than SPA"
       ),
       (
-        "UCL_TC_008_0.2: 55038 A conflicting or identical Liability is already recorded",
+        "Error : API return 422 and cascade business error 55038 from HIP to DWP",
         "GE100",
         "55038",
         "A conflicting or identical Liability is already recorded"
       ),
       (
-        "UCL_TC_008_0.20: 55039 NO corresponding liability found",
+        "Error : API return 422 and cascade business error 55039 from HIP to DWP",
         "GP050",
         "55039",
         "NO corresponding liability found"
       ),
       (
-        "UCL_TC_008_0.8: 64996 Start Date is not before date of death",
+        "Error : API return 422 and cascade business error 64996 from HIP to DWP",
         "EK310",
         "64996",
         "Start Date is not before date of death"
       ),
       (
-        "UCL_TC_008_0.16: 64997 LCW/LCWRA not within a period of UC",
+        "Error : API return 422 and cascade business error 64997 from HIP to DWP",
         "HS260",
         "64997",
         "LCW/LCWRA not within a period of UC"
       ),
       (
-        "UCL_TC_008_0.18: 64998 LCW/LCWRA Override not within a period of LCW/LCWRA",
+        "Error : API return 422 and cascade business error 64998 from HIP to DWP",
         "CE150",
         "64998",
         "LCW/LCWRA Override not within a period of LCW/LCWRA"
       ),
       (
-        "UCL_TC_008_0.4: 65026 Start date must not be before 16th birthday",
+        "Error : API return 422 and cascade business error 65026 from HIP to DWP",
         "HC210",
         "65026",
         "Start date must not be before 16th birthday"
       ),
       (
-        "UCL_TC_008_0.22: 65536 Start date before 29/04/2013",
+        "Error : API return 422 and cascade business error 65536 from HIP to DWP",
         "GX240",
         "65536",
         "Start date before 29/04/2013"
       ),
       (
-        "UCL_TC_008_0.24: 65537 End date before start date",
+        "Error : API return 422 and cascade business error 65537 from HIP to DWP",
         "HT230",
         "65537",
         "End date before start date"
       ),
       (
-        "UCL_TC_???: 65538 End date missing but the input was a Termination",
-        "EA040",
-        "65538",
-        "End date missing but the input was a Termination"
-      ),
-      (
-        "UCL_TC_008_0.26: 65541 The NINO input matches a Pseudo Account",
+        "Error : API return 422 and cascade business error 65541 from HIP to DWP",
         "BX100",
         "65541",
         "The NINO input matches a Pseudo Account"
       ),
       (
-        "UCL_TC_008_0.28: 65542 The NINO input matches a non-live account",
+        "Error : API return 422 and cascade business error 65542 from HIP to DWP",
         "HZ310",
         "65542",
         "The NINO input matches a non-live account (including redundant, amalgamated and administrative account types)"
       ),
       (
-        "UCL_TC_008_0.30: 65543 The NINO input matches an account that has been transferred to the Isle of Man",
+        "Error : API return 422 and cascade business error 65543 from HIP to DWP",
         "BZ230",
         "65543",
         "The NINO input matches an account that has been transferred to the Isle of Man"
       ),
       (
-        "UCL_TC_008_0.32: 99999 Start Date after Death",
+        "Error : API return 422 and cascade business error 65544 from HIP to DWP",
+        "HG200",
+        "65544",
+        "Account held on NPS, but has not gone through adult registration."
+      ),
+      (
+        "Error : API return 422 and cascade business error 99999 from HIP to DWP",
         "AB150",
         "99999",
         "Start Date after Death"
       )
     )
 
-    cases.foreach { case (scenarioName, ninoPrefix, expectedCode, expectedMessage) =>
+    cases.foreach { case (scenarioName, ninoPrefix, businessErrorCode, businessErrorMessage) =>
       Scenario(scenarioName) {
-        Given("the Universal Credit API is up and running")
-        When("a request is sent")
 
-        val payload: JsObject = terminateNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
+        Given("API receives a valid UCL notification request from DWP")
+        val payload: JsObject                 = insertNotificationPayload(nino = ninoWithPrefix(ninoPrefix))
+        val apiResponse: StandaloneWSResponse = apiService.postNotification(validHeaders, payload)
 
-        val apiResponse = apiService.postNotification(validHeaders, payload)
-
-        Then("422 UnprocessableEntity should be returned")
+        Then("API returns HTTP status code 422 UnprocessableEntity to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe UNPROCESSABLE_ENTITY
         }
 
-        And("response body should contain correct error 'code' and 'message'")
+        And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
+        (responseBody \ "code").as[String] mustBe businessErrorCode
+        (responseBody \ "message").as[String] mustBe businessErrorMessage
 
-        (responseBody \ "code").as[String] mustBe expectedCode
-        (responseBody \ "message").as[String] mustBe expectedMessage
+        And("CorrelationId in the response header should match the request CorrelationId")
       }
     }
+
   }
 }
