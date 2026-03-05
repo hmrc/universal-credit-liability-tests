@@ -76,17 +76,12 @@ class N004InsertSchemaValidationScenario extends BaseSpec with GuiceOneServerPer
       ),
       (
         "Error : dateOfBirth had invalid format in request body",
-        insertNotificationPayload(dateOfBirth = "2020/12/01"),
+        insertNotificationPayload(dateOfBirth = Some("2020/12/01")),
         constraintViolation("dateOfBirth")
       ),
       (
-        "Error : dateOfBirth is missing in request body",
-        insertNotificationPayloadMissing("dateOfBirth"),
-        constraintViolation("dateOfBirth")
-      ),
-      (
-        "Error : dateOfBirth is empty in empty body",
-        insertNotificationPayload(dateOfBirth = ""),
+        "Error : dateOfBirth is empty in request body",
+        insertNotificationPayload(dateOfBirth = Some("")),
         constraintViolation("dateOfBirth")
       ),
       (

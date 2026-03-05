@@ -31,20 +31,24 @@ class H001UclNotificationSuccessfulScenario extends BaseSpec with GuiceOneServer
 
     val cases: Seq[(String, JsValue)] = Seq(
       (
-        "Success : Insert_UCL Notification process successfully with valid Credit Record type UC",
+        "Success : Insert UCL Notification successfully with valid Credit Record type UC",
         insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Success : Insert_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        "Success : Insert UCL Notification successfully with valid Credit Record type LCW/LCWRA",
         insertNotificationPayload(recordType = "LCW/LCWRA")
       ),
       (
-        "Success : Terminate_UCL Notification process successfully with valid Credit Record type UC",
+        "Success : Terminate UCL Notification successfully with valid Credit Record type UC",
         terminateNotificationPayload(recordType = "UC")
       ),
       (
-        "Success : Terminate_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
+        "Success : Terminate UCL Notification successfully with valid Credit Record type LCW/LCWRA",
         terminateNotificationPayload(recordType = "LCW/LCWRA")
+      ),
+      (
+        "Success : Insert UCL Notification successfully without date of birth",
+        insertNotificationPayloadMissing("dateOfBirth")
       )
     )
 
