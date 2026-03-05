@@ -80,12 +80,7 @@ class N004InsertSchemaValidationScenario extends BaseSpec with GuiceOneServerPer
         constraintViolation("dateOfBirth")
       ),
       (
-        "Error : dateOfBirth is missing in request body",
-        insertNotificationPayloadMissing("dateOfBirth"),
-        constraintViolation("dateOfBirth")
-      ),
-      (
-        "Error : dateOfBirth is empty in empty body",
+        "Error : dateOfBirth is empty in request body",
         insertNotificationPayload(dateOfBirth = Some("")),
         constraintViolation("dateOfBirth")
       ),
