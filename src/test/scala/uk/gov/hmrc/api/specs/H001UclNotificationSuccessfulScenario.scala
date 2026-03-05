@@ -35,8 +35,8 @@ class H001UclNotificationSuccessfulScenario extends BaseSpec with GuiceOneServer
         insertNotificationPayload(recordType = "UC")
       ),
       (
-        "Success : Insert_UCL Notification process successfully with valid Credit Record type LCW/LCWRA",
-        insertNotificationPayload(recordType = "LCW/LCWRA")
+        "Success : Insert_UCL Notification process successfully with missing date of birth",
+        insertNotificationPayloadMissing("dateOfBirth")
       ),
       (
         "Success : Terminate_UCL Notification process successfully with valid Credit Record type UC",
