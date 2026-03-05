@@ -1,7 +1,7 @@
 meta {
-  name: Valid UC Unexpected Parameters
+  name: Valid LCW/LCWRA without dateOfBirth
   type: http
-  seq: 15
+  seq: 4
   tags: [
     DOWNSTREAM
   ]
@@ -23,12 +23,9 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "{{universalCreditRecordType}}",
+    "universalCreditRecordType": "LCW/LCWRA",
     "universalCreditAction": "Insert",
-    "dateOfBirth": "2002-04-27",
-    "liabilityStartDate": "2025-08-19",
-    "extraField1": "Extra Field 1",
-    "extraField2": "Extra Field 2"
+    "liabilityStartDate": "2025-08-19"
   }
 }
 
@@ -36,10 +33,4 @@ assert {
   res.status: eq 204
   res.headers.correlationid: eq {{correlationId}}
   res.body: isEmpty
-}
-
-tests {
-  test("API currently returns 204 for payload with extra parameters", function() {
-    expect(res.getStatus()).to.equal(204);
-  });
 }
