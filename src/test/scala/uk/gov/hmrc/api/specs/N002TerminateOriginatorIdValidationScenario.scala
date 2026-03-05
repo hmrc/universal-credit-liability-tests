@@ -54,7 +54,7 @@ class N002TerminateOriginatorIdValidationScenario
       ),
       (
         "Error : GovUkOriginatorId is not found in HIP",
-        headerNotFoundInHIPOriginatorId
+        headerNotFoundInHipOriginatorId
       )
     )
 

@@ -20,26 +20,28 @@ import play.api.libs.json.{JsObject, Json}
 
 trait TestDataNotification extends BaseTestData {
 
+  private def optionalField(key: String, value: Option[String]): JsObject =
+    value.fold(Json.obj())(v => Json.obj(key -> v))
+
   def insertNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
-    dateOfBirth: String = "2002-04-27",
-    startDate: String = "2025-08-19",
-    creditAction: String = "Insert"
+    creditAction: String = "Insert",
+    dateOfBirth: Option[String] = Some("2002-04-27"),
+    startDate: String = "2025-08-19"
   ): JsObject = Json.obj(
     "nationalInsuranceNumber"   -> nino,
     "universalCreditRecordType" -> recordType,
     "universalCreditAction"     -> creditAction,
-    "dateOfBirth"               -> dateOfBirth,
     "liabilityStartDate"        -> startDate
-  )
+  ) ++ optionalField("dateOfBirth", dateOfBirth)
 
   def terminateNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
+    creditAction: String = "Terminate",
     startDate: String = "2025-08-19",
-    endDate: String = "2026-06-30",
-    creditAction: String = "Terminate"
+    endDate: String = "2026-06-30"
   ): JsObject = Json.obj(
     "nationalInsuranceNumber"   -> nino,
     "universalCreditRecordType" -> recordType,
