@@ -135,6 +135,22 @@ trait BaseTestData {
   def headersInvalidLongOriginatorId: Seq[(String, String)] =
     overrideHeader(baseHeaders, "gov-uk-originator-id", "A" * 41)
 
+  // Originator Id contains unicode characters
+  def headersOriginatorIdContainsCurrencySymbol: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "TEST-GOV-ORIGINATOR-ID£")
+
+  def headersOriginatorIdContainsEmoji: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "TEST:-)-GOV-ORIGINATOR-ID")
+
+  def headersOriginatorIdContainsAccentedLetter: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "TèST-GOV-ORIGINATOR-ID")
+
+  def headersOriginatorIdContainsSpecialChar: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "TEST-GOV-ORIGIN@TOR-ID")
+
+  def headersOriginatorIdContainsUnicodeLetter: Seq[(String, String)] =
+    overrideHeader(baseHeaders, "gov-uk-originator-id", "U+0054EST-GOV-ORIGINATOR-ID")
+
   // Empty headers
   def headersEmptyContentType: Seq[(String, String)] =
     overrideHeader(baseHeaders, "Content-Type", "")
