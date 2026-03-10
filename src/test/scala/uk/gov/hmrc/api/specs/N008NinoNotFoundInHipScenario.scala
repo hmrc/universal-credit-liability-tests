@@ -31,11 +31,11 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
     val cases: Seq[(String, JsValue)] = Seq(
       (
         "Error : Insert cascades the HTTP 404 status with error payload from HIP to DWP when NINO is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("XY404"))
+        insertNotificationPayload(nino = ninoWithPrefix("CM110"))
       ),
       (
         "Error : Terminate cascades the HTTP 404 to DWP when NINO is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("XY404"))
+        terminateNotificationPayload(nino = ninoWithPrefix("CM110"))
       )
     )
 
