@@ -28,22 +28,20 @@ class N007RequestUrlValidationScenario extends BaseSpec with GuiceOneServerPerSu
     "UCL_TC_N007 : API unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue, ResponseErrorCode, ResponseErrorMessage)] = Seq(
+    val cases: Seq[(String, JsValue, ResponseErrorMessage)] = Seq(
       (
         "Error : Insert request returns 404 to DWP when request content path is invalid",
         insertNotificationPayload(),
-        "404",
         "URI not found"
       ),
       (
         "Error : Terminate request 404 received from HIP",
         terminateNotificationPayload(),
-        "404",
         "URI not found"
       )
     )
 
-    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload, errorMessage) =>
       Scenario(scenarioName) {
 
         Given("API receives a valid UCL notification request from DWP")
@@ -56,7 +54,7 @@ class N007RequestUrlValidationScenario extends BaseSpec with GuiceOneServerPerSu
 
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "statusCode").as[String] mustBe errorCode
+        (responseBody \ "statusCode").as[Int] mustBe NOT_FOUND
         (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
