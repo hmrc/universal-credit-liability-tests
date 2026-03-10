@@ -19,7 +19,7 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.NOT_FOUND
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
 class N007RequestUrlValidationScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
@@ -28,18 +28,22 @@ class N007RequestUrlValidationScenario extends BaseSpec with GuiceOneServerPerSu
     "UCL_TC_N007 : API unable to process UCL notification received by DWP due invalid URL/Endpoint and returns 404 to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue)] = Seq(
+    val cases: Seq[(String, JsValue, ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
         "Error : Insert request returns 404 to DWP when request content path is invalid",
-        insertNotificationPayload()
+        insertNotificationPayload(),
+        "404",
+        "URI not found"
       ),
       (
         "Error : Terminate request 404 received from HIP",
-        terminateNotificationPayload()
+        terminateNotificationPayload(),
+        "404",
+        "URI not found"
       )
     )
 
-    cases.foreach { case (scenarioName, payload) =>
+    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
 
         Given("API receives a valid UCL notification request from DWP")
@@ -50,8 +54,10 @@ class N007RequestUrlValidationScenario extends BaseSpec with GuiceOneServerPerSu
           apiResponse.status mustBe NOT_FOUND
         }
 
-        /*And("Error response body must be empty")
-        apiResponse.body mustBe empty*/
+        And("Error response body must contain correct error details")
+        val responseBody: JsValue = Json.parse(apiResponse.body)
+        (responseBody \ "statusCode").as[String] mustBe errorCode
+        (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
 

@@ -19,14 +19,13 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.NOT_FOUND
-import play.api.libs.json.JsValue
-import play.api.libs.ws.DefaultBodyReadables.readableAsByteArray
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
 class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N009 : HIP fails to process the request from API when NINO is not found and returns 404 to API and API cascades the response to DWP"
+    "UCL_TC_N008 : HIP fails to process the request from API when NINO is not found and returns 404 to API and API cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
@@ -51,8 +50,10 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
           apiResponse.status mustBe NOT_FOUND
         }
 
-        And("Error response body must be empty")
-        apiResponse.body mustBe empty
+        And("Error response body must contain correct error details")
+        val responseBody: JsValue = Json.parse(apiResponse.body)
+        (responseBody \ "code").as[String] mustBe "404"
+        (responseBody \ "message").as[String] mustBe "Resource not found"
 
         And("CorrelationId in the response header should match the request CorrelationId")
 
