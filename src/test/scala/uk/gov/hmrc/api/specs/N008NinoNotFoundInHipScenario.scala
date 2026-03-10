@@ -43,7 +43,7 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
       )
     )
 
-    cases.foreach { case (scenarioName, payload,errorCode, errorMessage) =>
+    cases.foreach { case (scenarioName, payload, errorCode, errorMessage) =>
       Scenario(scenarioName) {
 
         Given("API receives a valid UCL notification request from DWP")
@@ -54,7 +54,6 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
           apiResponse.status mustBe NOT_FOUND
           System.out.println("---------- " + Json.parse(apiResponse.body))
         }
-
 
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)

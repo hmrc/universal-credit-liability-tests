@@ -22,7 +22,6 @@ import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
-
 class N010HipNotFoundScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
@@ -66,6 +65,3 @@ class N010HipNotFoundScenario extends BaseSpec with GuiceOneServerPerSuite with 
     }
   }
 }
-
-
-
