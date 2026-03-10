@@ -28,18 +28,22 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
     "UCL_TC_N008 : HIP fails to process the request from API when NINO is not found and returns 404 to API and API cascades the response to DWP"
   ) {
 
-    val cases: Seq[(String, JsValue)] = Seq(
+    val cases: Seq[(String, JsValue, ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
         "Error : Insert cascades the HTTP 404 status with error payload from HIP to DWP when NINO is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("CM110"))
+        insertNotificationPayload(nino = ninoWithPrefix("CM110")),
+        "404",
+        "Resource not found"
       ),
       (
         "Error : Terminate cascades the HTTP 404 to DWP when NINO is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("CM110"))
+        terminateNotificationPayload(nino = ninoWithPrefix("CM110")),
+        "404",
+        "Resource not found"
       )
     )
 
-    cases.foreach { case (scenarioName, payload) =>
+    cases.foreach { case (scenarioName, payload,errorCode, errorMessage) =>
       Scenario(scenarioName) {
 
         Given("API receives a valid UCL notification request from DWP")
@@ -48,12 +52,14 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
         Then("API returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe NOT_FOUND
+          System.out.println("---------- " + Json.parse(apiResponse.body))
         }
+
 
         And("Error response body must contain correct error details")
         val responseBody: JsValue = Json.parse(apiResponse.body)
-        (responseBody \ "code").as[String] mustBe "404"
-        (responseBody \ "message").as[String] mustBe "Resource not found"
+        (responseBody \ "code").as[String] mustBe errorCode
+        (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
 
