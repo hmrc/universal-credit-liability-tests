@@ -105,6 +105,12 @@ class B001InsertBusinessScenario
         "End date before start date"
       ),
       (
+        "Error : API return 422 and cascade business error 65537 from HIP to DWP",
+        "EA040",
+        "65538",
+        "End date missing but the input was a Termination"
+      ),
+      (
         "Error : API return 422 and cascade business error 65541 from HIP to DWP",
         "BX100",
         "65541",
