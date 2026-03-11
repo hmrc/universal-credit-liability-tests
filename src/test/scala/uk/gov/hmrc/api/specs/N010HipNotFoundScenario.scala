@@ -22,22 +22,22 @@ import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.api.testData.*
 
-class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
+class N010HipNotFoundScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N008 : HIP fails to process the request from API when NINO is not found and returns 404 to API and API cascades the response to DWP"
+    "UCL_TC_N010 : HIP not found and returns 404 to API and API cascades the response to DWP"
   ) {
 
     val cases: Seq[(String, JsValue, ResponseErrorCode, ResponseErrorMessage)] = Seq(
       (
-        "Error : Insert cascades the HTTP 404 status with error payload from HIP to DWP when NINO is not found in HIP",
-        insertNotificationPayload(nino = ninoWithPrefix("CM110")),
+        "Error : Insert cascades the HTTP 404 to DWP when HIP is not found",
+        insertNotificationPayload(nino = ninoWithPrefix("XY404")),
         "404",
         "Resource not found"
       ),
       (
-        "Error : Terminate cascades the HTTP 404 to DWP when NINO is not found in HIP",
-        terminateNotificationPayload(nino = ninoWithPrefix("CM110")),
+        "Error : Terminate cascades the HTTP 404 to DWP when HIP is not found",
+        terminateNotificationPayload(nino = ninoWithPrefix("XY404")),
         "404",
         "Resource not found"
       )
@@ -52,7 +52,6 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
         Then("API returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe NOT_FOUND
-          System.out.println("---------- " + Json.parse(apiResponse.body))
         }
 
         And("Error response body must contain correct error details")

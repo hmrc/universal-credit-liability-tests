@@ -26,7 +26,7 @@ import uk.gov.hmrc.api.testData.*
 class N009Mdtp500ErrorMappingScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature(
-    "UCL_TC_N010 : API error handling for downstream errors 400, 401 and 403"
+    "UCL_TC_N009 : API error handling for downstream errors 400, 401 and 403"
   ) {
 
     val cases: Seq[(String, JsValue)] = Seq(
