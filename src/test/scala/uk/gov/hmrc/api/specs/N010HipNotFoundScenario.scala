@@ -33,13 +33,13 @@ class N010HipNotFoundScenario extends BaseSpec with GuiceOneServerPerSuite with 
         "Error : Insert cascades the HTTP 404 to DWP when HIP is not found",
         insertNotificationPayload(nino = ninoWithPrefix("XY404")),
         "404",
-        "Resource not found"
+        "Resource Not Found"
       ),
       (
         "Error : Terminate cascades the HTTP 404 to DWP when HIP is not found",
         terminateNotificationPayload(nino = ninoWithPrefix("XY404")),
         "404",
-        "Resource not found"
+        "Resource Not Found"
       )
     )
 
