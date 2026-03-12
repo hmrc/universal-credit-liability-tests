@@ -1,7 +1,7 @@
 meta {
-  name: 65541 - NINO matches Pseudo Account
+  name: 65538 - End date missing, input was Termination
   type: http
-  seq: 14
+  seq: 13
   tags: [
     DOWNSTREAM
   ]
@@ -22,7 +22,7 @@ headers {
 
 body:json {
   {
-    "nationalInsuranceNumber": "BX100000",
+    "nationalInsuranceNumber": "EA040000",
     "universalCreditRecordType": "{{universalCreditRecordType}}",
     "universalCreditAction": "Insert",
     "dateOfBirth": "2002-04-27",
@@ -34,14 +34,14 @@ assert {
   res.status: eq 422
   res.headers.correlationid: eq {{correlationId}}
   res.body: isJson
-  res.body.code: eq '65541'
-  res.body.message: eq 'The NINO input matches a Pseudo Account'
+  res.body.code: eq '65538'
+  res.body.message: eq 'End date missing but the input was a Termination'
 }
 
 script:pre-request {
   let ninoPrefix = req.body.nationalInsuranceNumber.substring(0, 5);
   
-  if (ninoPrefix != "BX100") {
-    throw new Error('The nationalInsuranceNumber should start with "BX100" to trigger a 65541.');
+  if (ninoPrefix != "EA040") {
+    throw new Error('The nationalInsuranceNumber should start with "EA040" to trigger a 65538.');
   }
 }
