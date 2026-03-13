@@ -1,9 +1,9 @@
 meta {
-  name: Invalid Date of Birth
+  name: Valid UC with dateOfBirth
   type: http
-  seq: 5
+  seq: 2
   tags: [
-    API
+    DOWNSTREAM
   ]
 }
 
@@ -23,17 +23,15 @@ headers {
 body:json {
   {
     "nationalInsuranceNumber": "{{nino}}",
-    "universalCreditRecordType": "LCW/LCWRA",
+    "universalCreditRecordType": "UC",
     "universalCreditAction": "Insert",
-    "dateOfBirth": "INVALID_DATE_OF_BIRTH",
+    "dateOfBirth": "2002-04-27",
     "liabilityStartDate": "2025-08-19"
   }
 }
 
 assert {
-  res.status: eq 400
+  res.status: eq 204
   res.headers.correlationid: eq {{correlationId}}
-  res.body: isJson
-  res.body.code: eq '400.1'
-  res.body.message: eq 'Constraint Violation - Invalid/Missing input parameter: dateOfBirth'
+  res.body: isEmpty
 }
