@@ -26,15 +26,12 @@ trait TestDataHip extends BaseTestData {
   def insertHipPayload(
     recordType: String = randomUniversalCreditRecordType,
     startDate: String = "2025-08-19",
-    dateOfBirth: String = "2002-04-27",
     endDate: Option[String] = Some("2026-06-30")
   ): JsObject = {
     val details = Json.obj(
       "universalCreditRecordType" -> recordType,
-      "liabilityStartDate"        -> startDate,
-      "dateOfBirth"               -> dateOfBirth
+      "liabilityStartDate"        -> startDate
     ) ++ optionalField("liabilityEndDate", endDate)
-
     Json.obj("universalCreditLiabilityDetails" -> details)
   }
 

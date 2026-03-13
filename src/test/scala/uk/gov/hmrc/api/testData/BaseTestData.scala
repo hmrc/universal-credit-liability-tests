@@ -162,7 +162,6 @@ trait BaseTestData {
   val InvalidInputCode: ResponseErrorCode = "400.1"
   val ForbiddenCode: ResponseErrorCode    = "403.2"
 
-  val dateOfBirth: String        = "2002-04-27"
   val liabilityStartDate: String = "2025-08-19"
   val liabilityEndDate: String   = "2026-06-30"
 

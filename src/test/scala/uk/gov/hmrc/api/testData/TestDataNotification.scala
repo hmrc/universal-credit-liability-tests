@@ -27,14 +27,13 @@ trait TestDataNotification extends BaseTestData {
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
     creditAction: String = "Insert",
-    dateOfBirth: Option[String] = Some("2002-04-27"),
     startDate: String = "2025-08-19"
   ): JsObject = Json.obj(
     "nationalInsuranceNumber"   -> nino,
     "universalCreditRecordType" -> recordType,
     "universalCreditAction"     -> creditAction,
     "liabilityStartDate"        -> startDate
-  ) ++ optionalField("dateOfBirth", dateOfBirth)
+  )
 
   def terminateNotificationPayload(
     nino: String = randomNino,

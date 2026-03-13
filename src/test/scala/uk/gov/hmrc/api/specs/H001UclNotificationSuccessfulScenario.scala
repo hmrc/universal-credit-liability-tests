@@ -19,7 +19,7 @@ package uk.gov.hmrc.api.specs
 import org.scalatest.matchers.must.Matchers.mustBe
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.http.Status.NO_CONTENT
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import uk.gov.hmrc.api.testData.*
 
@@ -45,10 +45,6 @@ class H001UclNotificationSuccessfulScenario extends BaseSpec with GuiceOneServer
       (
         "Success : Terminate UCL Notification successfully with valid Credit Record type LCW/LCWRA",
         terminateNotificationPayload(recordType = "LCW/LCWRA")
-      ),
-      (
-        "Success : Insert UCL Notification successfully without date of birth",
-        insertNotificationPayloadMissing("dateOfBirth")
       )
     )
 
