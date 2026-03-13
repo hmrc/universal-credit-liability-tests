@@ -20,9 +20,6 @@ import play.api.libs.json.{JsObject, Json}
 
 trait TestDataNotification extends BaseTestData {
 
-  private def optionalField(key: String, value: Option[String]): JsObject =
-    value.fold(Json.obj())(v => Json.obj(key -> v))
-
   def insertNotificationPayload(
     nino: String = randomNino,
     recordType: String = randomUniversalCreditRecordType,
