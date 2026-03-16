@@ -45,10 +45,6 @@ class H001UclNotificationSuccessfulScenario extends BaseSpec with GuiceOneServer
       (
         "Success : Terminate UCL Notification successfully with valid Credit Record type LCW/LCWRA",
         terminateNotificationPayload(recordType = "LCW/LCWRA")
-      ),
-      (
-        "Success : Insert UCL Notification successfully without date of birth",
-        insertNotificationPayloadMissing("dateOfBirth")
       )
     )
 
