@@ -1,7 +1,7 @@
 import sbt.*
 
 object Dependencies {
-  val pekkoVersion = "1.2.0"
+  val pekkoVersion = "1.4.0"
 
   val test: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"            %% "api-test-runner"             % "0.10.0" % Test,
