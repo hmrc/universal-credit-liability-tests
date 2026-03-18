@@ -74,9 +74,9 @@ class N002TerminateOriginatorIdValidationScenario
         (responseBody \ "message").as[String] mustBe "Forbidden"
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        val requestCorrelationId  = headers.toMap.get("correlationId")
-        val responseCorrelationId = apiResponse.headerValues("correlationId")
-        responseCorrelationId.headOption mustBe requestCorrelationId
+        val requestCorrelationId: Option[String]  = headers.toMap.get("correlationId")
+        val responseCorrelationId: Option[String] = apiResponse.header("correlationId")
+        responseCorrelationId mustBe requestCorrelationId
 
       }
     }
