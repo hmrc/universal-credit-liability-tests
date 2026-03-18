@@ -75,6 +75,11 @@ class N001TerminateAuthorisationValidationScenario
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
+        val resCorrId = apiResponse.headerValues("correlationId")
+        System.out.println("---resCorrId--- " + resCorrId)
+        val reqCorrId = validHeaders.toMap.get("correlationId")
+        System.out.println("---reqCorrId--- " + reqCorrId)
+        resCorrId.headOption mustBe reqCorrId
       }
     }
   }

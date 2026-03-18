@@ -57,6 +57,9 @@ class N005HipServiceUnavailableScenario extends BaseSpec with GuiceOneServerPerS
           .as[String] mustBe "The 'misc/universal-credit/liability' API is currently unavailable"
 
         And("CorrelationId in the response header should match the request CorrelationId")
+        val resCorrId = apiResponse.headerValues("correlationId")
+        val reqCorrId = validHeaders.toMap.get("correlationId")
+        resCorrId.headOption mustBe reqCorrId
 
       }
     }
