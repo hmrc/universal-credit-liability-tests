@@ -160,9 +160,9 @@ class B001InsertBusinessScenario
         (responseBody \ "message").as[String] mustBe businessErrorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-        val resCorrId = apiResponse.headerValues("correlationId")
-        val reqCorrId = validHeaders.toMap.get("correlationId")
-        resCorrId.headOption mustBe reqCorrId
+        val requestCorrelationId  = validHeaders.toMap.get("correlationId")
+        val responseCorrelationId = apiResponse.headerValues("correlationId")
+        responseCorrelationId.headOption mustBe requestCorrelationId
       }
     }
 
