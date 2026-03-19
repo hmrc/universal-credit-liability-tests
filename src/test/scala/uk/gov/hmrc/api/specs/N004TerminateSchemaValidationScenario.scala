@@ -107,6 +107,9 @@ class N004TerminateSchemaValidationScenario extends BaseSpec with GuiceOneServer
         (responseBody \ "message").as[String] mustBe errorResponseMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
+        val requestCorrelationId: Option[String]  = validHeaders.toMap.get("correlationId")
+        val responseCorrelationId: Option[String] = apiResponse.header("correlationId")
+        responseCorrelationId mustBe requestCorrelationId
 
       }
     }

@@ -52,7 +52,6 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
         Then("API returns HTTP status code 404 Not Found to DWP")
         withClue(s"Status=${apiResponse.status}, Body=${apiResponse.body}\n") {
           apiResponse.status mustBe NOT_FOUND
-          System.out.println("---------- " + Json.parse(apiResponse.body))
         }
 
         And("Error response body must contain correct error details")
@@ -61,7 +60,9 @@ class N008NinoNotFoundInHipScenario extends BaseSpec with GuiceOneServerPerSuite
         (responseBody \ "message").as[String] mustBe errorMessage
 
         And("CorrelationId in the response header should match the request CorrelationId")
-
+        val requestCorrelationId: Option[String]  = validHeaders.toMap.get("correlationId")
+        val responseCorrelationId: Option[String] = apiResponse.header("correlationId")
+        responseCorrelationId mustBe requestCorrelationId
       }
     }
   }

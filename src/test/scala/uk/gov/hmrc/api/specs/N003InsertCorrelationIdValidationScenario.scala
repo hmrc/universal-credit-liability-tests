@@ -59,6 +59,9 @@ class N003InsertCorrelationIdValidationScenario extends BaseSpec with GuiceOneSe
         (responseBody \ "message").as[String] mustBe constraintViolation("correlationId")
 
         And("CorrelationId in the response header should match the request CorrelationId")
+        val requestCorrelationId: Option[String]  = headers.toMap.get("correlationId")
+        val responseCorrelationId: Option[String] = apiResponse.header("correlationId")
+        responseCorrelationId mustBe requestCorrelationId
 
       }
     }
