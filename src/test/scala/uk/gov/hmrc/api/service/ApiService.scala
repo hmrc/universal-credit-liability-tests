@@ -19,14 +19,12 @@ package uk.gov.hmrc.api.service
 import play.api.libs.json.JsValue
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.client.HttpClient
-import uk.gov.hmrc.api.client.HttpClient.post
 import uk.gov.hmrc.api.conf.TestEnvironment
 import uk.gov.hmrc.api.helpers.AuthHelper
 
 class ApiService {
 
   private val apiHost: String = TestEnvironment.url("ucl")
-  private val hipHost: String = TestEnvironment.url("hip")
 
   // API
   def postNotification(
@@ -47,7 +45,7 @@ class ApiService {
   }
 
   // HIP
-  def postHipUcLiability(
+  /*def postHipUcLiability(
     headers: Seq[(String, String)],
     nino: String,
     requestBody: JsValue
@@ -57,9 +55,9 @@ class ApiService {
     val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
 
     post(insertionEndpointUrl, headersWithAuth, requestBody.toString)
-  }
+  }*/
 
-  def postHipUcTermination(
+  /*def postHipUcTermination(
     headers: Seq[(String, String)],
     nino: String,
     requestBody: JsValue
@@ -69,6 +67,6 @@ class ApiService {
     val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
 
     post(terminationEndpointUrl, headersWithAuth, requestBody.toString)
-  }
+  }*/
 
 }
