@@ -43,30 +43,4 @@ class ApiService {
     val endpointUrl: String = s"$apiHost/notification"
     HttpClient.post(endpointUrl, headers, requestBody.toString())
   }
-
-  // HIP
-  /*def postHipUcLiability(
-    headers: Seq[(String, String)],
-    nino: String,
-    requestBody: JsValue
-  ): StandaloneWSResponse = {
-    val insertionEndpointUrl: String           = s"$hipHost/ni/person/$nino/liability/universal-credit"
-    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
-    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
-
-    post(insertionEndpointUrl, headersWithAuth, requestBody.toString)
-  }*/
-
-  /*def postHipUcTermination(
-    headers: Seq[(String, String)],
-    nino: String,
-    requestBody: JsValue
-  ): StandaloneWSResponse = {
-    val terminationEndpointUrl: String         = s"$hipHost/ni/person/$nino/liability/universal-credit/termination"
-    val authHeader: Seq[(String, String)]      = Seq("Authorization" -> AuthHelper.getHipAuthToken)
-    val headersWithAuth: Seq[(String, String)] = headers ++ authHeader
-
-    post(terminationEndpointUrl, headersWithAuth, requestBody.toString)
-  }*/
-
 }
