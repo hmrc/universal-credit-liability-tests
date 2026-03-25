@@ -72,21 +72,9 @@ trait BaseTestData {
 
   def randomCorrelationId: String = UUID.randomUUID().toString
 
-  def randomGovUkOriginatorId: String = {
-    val length = 3 + Random.nextInt(38) // Generates a length between 3 and 40
-    Random.alphanumeric.take(length).mkString
-  }
-
   def baseHeaders: Seq[(String, String)] = Seq(
     "Content-Type"         -> jsonContentType,
     "correlationId"        -> randomCorrelationId,
-    "gov-uk-originator-id" -> govUkOriginatorIdProvidedByDwp
-  )
-
-  def invalidHeaders: Seq[(String, String)] = Seq(
-    "Content-Type"         -> jsonContentType,
-    "Authorization"        -> "Bearer INVALID",
-    "correlationId"        -> "INVALID",
     "gov-uk-originator-id" -> govUkOriginatorIdProvidedByDwp
   )
 
