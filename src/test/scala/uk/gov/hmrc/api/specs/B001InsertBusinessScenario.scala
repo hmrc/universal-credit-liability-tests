@@ -23,11 +23,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.StandaloneWSResponse
 import uk.gov.hmrc.api.testData.*
 
-class B001InsertBusinessScenario
-    extends BaseSpec
-    with GuiceOneServerPerSuite
-    with TestDataNotification
-    with TestDataHip {
+class B001InsertBusinessScenario extends BaseSpec with GuiceOneServerPerSuite with TestDataNotification {
 
   Feature("UCL_TC_B001 : Insert handle and cascade 422 and business error code from HIP to DWP") {
 

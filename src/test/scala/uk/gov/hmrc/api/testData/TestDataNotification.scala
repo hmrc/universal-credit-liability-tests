@@ -52,8 +52,6 @@ trait TestDataNotification extends BaseTestData {
   def terminateNotificationPayloadMissing(parameterName: String): JsObject =
     terminateNotificationPayload() - parameterName
 
-  val getInvalidAuthToken: String = "Invalid token"
-  val getNoAuthToken: String      = ""
   val getExpiredAuthToken: String =
     "GNAP dummy-2b5998dccb61446fa2fa9d0f7211e181,Bearer JDkThJhFPxDJlUABxXqtpxYmzIwWik1RYVp61xoEcLudlSq6higSU7OEQEqBlgTBQHTNWWRzZl4T8m8tfArtX2o7gA/qYAHhfHqWOxAp0flCPkSIhfyXuZyHTfLRXSQ8i6AejDV6nH4Td0KWtpjTSzP05ue6FHXdOIOSD7ZvHOwYgyplVeOQ7qHLUwzFwxEW/SsCJHiDyv5jJQREo7nuFQQ"
 }

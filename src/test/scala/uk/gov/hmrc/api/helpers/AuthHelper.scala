@@ -22,17 +22,15 @@ import uk.gov.hmrc.api.client.HttpClient
 import uk.gov.hmrc.api.conf.TestEnvironment
 import uk.gov.hmrc.totp.TotpGenerator
 
-import java.util.{Base64, UUID}
+import java.util.UUID
 
 object AuthHelper {
 
   private val config: Configuration = Configuration.load(Environment.simple())
 
-  private val hipClientId: String     = config.get[String]("hip.clientId")
-  private val hipClientSecret: String = config.get[String]("hip.clientSecret")
-  private val clientId: String        = config.get[String]("oauth.clientId")
-  private val clientSecret: String    = config.get[String]("oauth.clientSecret")
-  private val totpSecret: String      = config.get[String]("oauth.totpSecret")
+  private val clientId: String     = config.get[String]("oauth.clientId")
+  private val clientSecret: String = config.get[String]("oauth.clientSecret")
+  private val totpSecret: String   = config.get[String]("oauth.totpSecret")
 
   def getAuthToken: String = TestEnvironment.environment match {
     case "local"                                                  => getLocalAuthToken
@@ -107,12 +105,6 @@ object AuthHelper {
 
     val accessToken = (Json.parse(response.body) \ "access_token").as[String]
     s"Bearer $accessToken"
-  }
-
-  def getHipAuthToken: String = {
-    val credentials = s"$hipClientId:$hipClientSecret"
-    val encoded     = Base64.getEncoder.encodeToString(credentials.getBytes("UTF-8"))
-    s"Basic $encoded"
   }
 
 }
